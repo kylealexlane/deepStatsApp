@@ -21,7 +21,7 @@ export default class LoginScreen extends React.Component {
 
         <Text
           style={styles.linky}
-          onPress={() => this.props.navigation.navigate('drawerStack')} >
+          onPress={() => this.props.navigation.navigate('tabStack')} >
           Pretend we logged in
         </Text>
       </View>

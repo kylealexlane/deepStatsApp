@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
+import {colors} from '../styles/commonStyles'
 
 export default class Standings extends React.Component {
   static navigationOptions = {
@@ -28,7 +29,7 @@ export default class Standings extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: colors.greyDarkest,
     alignItems: 'center',
     justifyContent: 'center',
   },

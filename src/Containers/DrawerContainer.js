@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import img from '../img/diamondLogo.png'
+import { colors, appFonts } from '../styles/commonStyles';
 
 export default class DrawerContainer extends React.Component {
 
@@ -21,17 +22,8 @@ export default class DrawerContainer extends React.Component {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
-          <View style={styles.drawerHeading}>
-              {/*<Image*/}
-                  {/*source={require(`../img/triangleLogo.png`)}*/}
-                  {/*style={{height: 150, width: '100%', resizeMode: 'contain'}}*/}
-              {/*/>*/}
-              <Text style={styles.headerText}>
-                  Deep Stats
-              </Text>
-          </View>
           <View style={styles.drawerItem}>
-              <Icon name="sort-ascending" size={30} color="white" />
+              <Icon name="sort-ascending" size={30} color={colors.greyLight} />
               <Text
                   onPress={() => navigation.navigate('standings')}
                   style={styles.drawerText}
@@ -40,7 +32,7 @@ export default class DrawerContainer extends React.Component {
               </Text>
           </View>
           <View style={styles.drawerItem}>
-              <Icon name="human-greeting" size={30} color="white" />
+              <Icon name="human-greeting" size={30} color={colors.greyLight} />
               <Text
                   onPress={() => navigation.navigate('playerStats')}
                   style={styles.drawerText}
@@ -49,7 +41,7 @@ export default class DrawerContainer extends React.Component {
               </Text>
           </View>
           <View style={styles.drawerItem}>
-              <Icon name="account-multiple" size={30} color="white" />
+              <Icon name="account-multiple" size={30} color={colors.greyLight} />
               <Text
                   onPress={() => navigation.navigate('teamStats')}
                   style={styles.drawerText}
@@ -58,7 +50,7 @@ export default class DrawerContainer extends React.Component {
               </Text>
           </View>
           <View style={styles.drawerItem}>
-              <Icon name="trophy-award" size={30} color="white" />
+              <Icon name="trophy-award" size={30} color={colors.greyLight} />
               <Text
                   onPress={() => navigation.navigate('leaders')}
                   style={styles.drawerText}
@@ -94,14 +86,14 @@ export default class DrawerContainer extends React.Component {
 const styles = StyleSheet.create({
     container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: colors.greyDarkest,
     paddingTop: 16,
     paddingHorizontal: 0,
   },
   drawerItem: {
         width: '100%',
-      backgroundColor: 'black',
-      paddingVertical: 16,
+      backgroundColor: colors.greyDarkest,
+      paddingVertical: 8,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
@@ -109,27 +101,23 @@ const styles = StyleSheet.create({
       paddingHorizontal: 16,
   },
     drawerText: {
-        color: 'white',
+        color: colors.greyLightest,
         textAlign: 'center',
         // fontWeight: 'bold',
-        fontSize: 18,
+        ...appFonts.mdMedium,
         marginLeft: 16,
     },
     drawerHeading: {
         width: '100%',
-        height: 90,
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
+        justifyContent: 'flex-start',
     },
     headerText: {
         alignSelf: 'flex-start',
         paddingLeft: 16,
-        color: 'white',
+        color: colors.greyLightest,
         // textAlign: 'center',
         // fontWeight: 'bold',
-        fontSize: 30,
         // fontFamily: 'Arial', // Change for android later
-        letterSpacing: 4
+        ...appFonts.lgMedium
     }
 });
