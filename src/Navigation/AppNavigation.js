@@ -67,7 +67,7 @@ const TabStack = TabNavigator(
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Ionicons name={iconName} size={30} color={tintColor} style={{paddingTop: 2}}/>;
+                return <Ionicons name={iconName} size={30} color={tintColor} />;
             },
         tabBarLabel: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
@@ -96,6 +96,8 @@ const TabStack = TabNavigator(
                 borderWidth: 0,
                 // borderTopColor: colors.black,
                 borderTopColor: colors.black,
+                padding: 3,
+                backgroundColor: colors.greyDarker
             },
             tabStyle: {
                 borderWidth: 0,
