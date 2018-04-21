@@ -12,7 +12,8 @@ import {
     ListView
 } from 'react-native'
 import { nbaId, year } from '../config/commonVariables'
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem, SearchBar } from 'react-native-elements'
+import { colors } from '../styles/commonStyles'
 
 export default class PlayerStats extends React.Component {
     constructor(props){
@@ -87,17 +88,36 @@ export default class PlayerStats extends React.Component {
         // this.props.navigation.navigate('Details', { ...rowData });
     };
     renderRow(rowData){
+        const firstLast = rowData[2].split(" ");
+        console.log(firstLast);
+        console.log(`https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}`);
         return(
             <ListItem
                 key={rowData[0]}
                 roundAvatar
-                // avatar={{ uri: rowData.picture.thumbnail }}
+                // avatar={{ uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` }}
+                // leftAvatar={ small,  }
+                leftAvatar={{
+                    rounded: true,
+                    source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
+                    // medium: true,
+                    // containerStyle: { backgroundColor: 'white' },
+                    avatarStyle: {backgroundColor: colors.greyDarkest},
+                    height: 60,
+                    width: 60
+                }}
                 title={`${rowData[2].toUpperCase()}`}
+                titleStyle={{ color: colors.greyLight }}
                 subtitle={rowData[8]}
+                subtitleStyle={{ color: colors.greyBase }}
+                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 1, backgroundColor: colors.greyDarkest, height: 70 }}
+                chevronColor={ colors.greyLight }
+                bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}
             />
         );
     }
+
     filterSearch(text){
         const newData = this.state.playersList.filter(function(player){
             const itemData = player[2].toUpperCase();
@@ -112,14 +132,18 @@ export default class PlayerStats extends React.Component {
 
     render() {
         return (
-            <View style={{flex:1, marginTop: 50}}>
-                <TextInput
+            <View style={{flex:1, paddingTop: 20, backgroundColor: colors.greyDarkest }}>
+                <SearchBar
+                    round
                     onChangeText={(text) => this.filterSearch(text)}
                     value={this.state.text}
+                    placeholder={'search'}
+                    platform="ios"
+                    containerStyle={{ backgroundColor: colors.greyDarkest, borderColor: colors.greyDarkest }}
                 />
                 <ListView
                     enableEmptySections={true}
-                    style={{marginHorizontal:10}}
+                    style={{marginHorizontal: 0}}
                     renderRow={this.renderRow.bind(this)}
                     dataSource={this.state.dataSource}
                 />
