@@ -9,7 +9,8 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    ListView
+    ListView,
+    SafeAreaView
 } from 'react-native'
 import { nbaId, year } from '../config/commonVariables'
 import { List, ListItem, SearchBar } from 'react-native-elements'
@@ -112,8 +113,9 @@ export default class PlayerStats extends React.Component {
                 titleStyle={{ color: colors.baseText }}
                 subtitle={rowData[8]}
                 subtitleStyle={{ color: colors.secondaryText }}
-                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 1, backgroundColor: colors.greyDarkest, height: 70 }}
-                chevronColor={ colors.baseText }
+                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 1, backgroundColor: colors.greyDarkest, height: 70, borderLeftColor: primaryColor, borderLeftWidth: 2 }}
+                chevronColor={colors.baseText}
+                chevron
                 bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}
             />
@@ -134,7 +136,11 @@ export default class PlayerStats extends React.Component {
 
     render() {
         return (
-            <View style={{flex:1, paddingTop: 20, backgroundColor: colors.greyDarkest }}>
+            <SafeAreaView style={{flex:1, paddingTop: 20, backgroundColor: colors.greyDarkest }}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={colors.greyDarkest}
+                />
                 <SearchBar
                     round
                     onChangeText={(text) => this.filterSearch(text)}
@@ -149,7 +155,7 @@ export default class PlayerStats extends React.Component {
                     renderRow={this.renderRow.bind(this)}
                     dataSource={this.state.dataSource}
                 />
-            </View>
+            </SafeAreaView>
         );
     }
 }

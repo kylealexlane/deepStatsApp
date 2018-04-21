@@ -49,11 +49,11 @@ const TabStack = TabNavigator(
                 if (routeName === 'standings') {
                     iconName = `ios-stats${focused ? '' : '-outline'}`;
                 } else if (routeName === 'playerStats') {
-                    iconName = `ios-person${focused ? '' : '-outline'}`;
+                    iconName = `ios-search${focused ? '' : '-outline'}`;
                 } else if (routeName === 'teamStats') {
                     iconName = `ios-people${focused ? '' : '-outline'}`;
                 } else if (routeName === 'leaders') {
-                    iconName = `ios-ribbon${focused ? '' : '-outline'}`;
+                    iconName = `ios-star${focused ? '' : '-outline'}`;
                 }
                 // if (routeName === 'standings') {
                 //     iconName = `sort-ascending`;
