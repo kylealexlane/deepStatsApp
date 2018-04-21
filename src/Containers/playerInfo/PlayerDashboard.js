@@ -12,42 +12,32 @@ import {
     ListView,
     SafeAreaView
 } from 'react-native'
-import { nbaId, year } from '../config/commonVariables'
+import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
 import { List, ListItem, SearchBar } from 'react-native-elements'
-import { colors, teamColors } from '../styles/commonStyles'
+import { colors, teamColors } from '../../styles/commonStyles'
 
-export default class PlayerStats extends React.Component {
-    static propTypes = {
-        playerID: PropTypes.oneOfType([
-               PropTypes.string,
-               PropTypes.number
-           ]).isRequired,
-    };
+export default class PlayerDashboard extends React.Component {
     constructor(props){
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
         this.state ={
-            dataSource: ds.cloneWithRows([]),
             isLoading: true,
-            playersList: [],
+            playerBio: [],
+            playerStats: [],
         }
     }
 
     componentDidMount(){
-        return fetch(`https://stats.nba.com/stats/commonallplayers/?leagueId=${nbaId}&season=${year}&isOnlyCurrentSeason=1`)
-        // return fetch('https://stats.nba.com/stats/commonallplayers/?leagueId=00&season=2015-16&isOnlyCurrentSeason=1')
+        console.log('id', this.props.navigation.state.params.playerId);
+        return fetch(`https://stats.nba.com/stats/playerprofilev2/?playerId=${this.props.navigation.state.params.playerId}&leagueId=${nbaId}&perMode=PerGame`)
             .then((response) => response.json())
             .then((responseJson) => {
-
+                console.log(responseJson);
                 this.setState({
                     isLoading: false,
-                    dataSource: this.state.dataSource.cloneWithRows(responseJson.resultSets[0].rowSet),
+                    dataSource: responseJson.resultSets[0].rowSet,
                     playersList: responseJson.resultSets[0].rowSet,
-                }, function(){
-                    console.log(responseJson.resultSets[0].rowSet);
                 });
-
             })
             .catch((error) =>{
                 console.error(error);
@@ -61,7 +51,9 @@ export default class PlayerStats extends React.Component {
                     barStyle="light-content"
                     backgroundColor={colors.greyDarkest}
                 />
+                <View>
 
+                </View>
             </SafeAreaView>
         );
     }
