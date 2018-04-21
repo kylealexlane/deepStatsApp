@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import { nbaId, year } from '../config/commonVariables'
 import { List, ListItem, SearchBar } from 'react-native-elements'
-import { colors } from '../styles/commonStyles'
+import { colors, teamColors } from '../styles/commonStyles'
 
 export default class PlayerStats extends React.Component {
     constructor(props){
@@ -89,6 +89,8 @@ export default class PlayerStats extends React.Component {
     };
     renderRow(rowData){
         const firstLast = rowData[2].split(" ");
+        const primaryColor = teamColors[rowData[10]] ? teamColors[rowData[10]].primary : colors.greyDarkest;
+        const secondaryColor = teamColors[rowData[10]] ? teamColors[rowData[10]].secondary : colors.greyDarkest;
         console.log(firstLast);
         console.log(`https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}`);
         return(
@@ -102,16 +104,16 @@ export default class PlayerStats extends React.Component {
                     source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
                     // medium: true,
                     // containerStyle: { backgroundColor: 'white' },
-                    avatarStyle: {backgroundColor: colors.greyBase},
+                    avatarStyle: { backgroundColor: primaryColor },
                     height: 60,
                     width: 60
                 }}
                 title={`${rowData[2].toUpperCase()}`}
-                titleStyle={{ color: colors.greyLight }}
+                titleStyle={{ color: colors.baseText }}
                 subtitle={rowData[8]}
-                subtitleStyle={{ color: colors.greyBase }}
+                subtitleStyle={{ color: colors.secondaryText }}
                 containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 1, backgroundColor: colors.greyDarkest, height: 70 }}
-                chevronColor={ colors.greyLight }
+                chevronColor={ colors.baseText }
                 bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}
             />
