@@ -75,9 +75,9 @@ const TabStack = TabNavigator(
                 if (routeName === 'standings') {
                     label = `Standings`;
                 } else if (routeName === 'playerStats') {
-                    label = `Player Stats`;
+                    label = `Players`;
                 } else if (routeName === 'teamStats') {
-                    label = `Team Stats`;
+                    label = `Teams`;
                 } else if (routeName === 'leaders') {
                     label = 'Leaders';
                 }
