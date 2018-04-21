@@ -102,7 +102,7 @@ export default class PlayerStats extends React.Component {
                     source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
                     // medium: true,
                     // containerStyle: { backgroundColor: 'white' },
-                    avatarStyle: {backgroundColor: colors.greyDarkest},
+                    avatarStyle: {backgroundColor: colors.greyBase},
                     height: 60,
                     width: 60
                 }}
