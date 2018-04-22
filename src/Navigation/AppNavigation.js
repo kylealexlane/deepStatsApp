@@ -8,6 +8,7 @@ import Standings from '../Containers/Standings';
 import PlayerStats from '../Containers/PlayerStats';
 import TeamStats from '../Containers/TeamStats';
 import Leaders from '../Containers/Leaders';
+import PlayerDashboard from '../Containers/playerInfo/PlayerDashboard';
 import DrawerContainer from '../Containers/DrawerContainer';
 import { colors } from '../styles/commonStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,10 +35,23 @@ const noTransitionConfig = () => ({
 //
 // });
 
+const PlayerStatsStack = StackNavigator({
+    home: { screen: PlayerStats },
+    playerDashboard: { screen: PlayerDashboard },
+},{
+    headerMode: 'float',
+    navigationOptions: {
+        headerStyle: {backgroundColor: colors.greyDarker},
+        title: 'Test',
+        headerTintColor: 'white',
+        header: null,
+    }
+});
+
 const TabStack = TabNavigator(
     {
         standings: { screen: Standings },
-        playerStats: { screen: PlayerStats },
+        playerStats: { screen: PlayerStatsStack },
         teamStats: { screen: TeamStats },
         leaders: {screen: Leaders},
     },
@@ -112,6 +126,7 @@ const TabStack = TabNavigator(
     }
 );
 
+
 // const drawerButton = (navigation) =>
 //   <Text
 //     style={{padding: 5, color: colors.baseText}}
@@ -152,7 +167,7 @@ const LoginStack = StackNavigator({
     title: 'You are not logged in',
     headerTintColor: 'white'
   }
-})
+});
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({

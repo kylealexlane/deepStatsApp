@@ -260,6 +260,8 @@ export const colors = {
 
     white: '#FFFFFF',
 
+     highlight: '#20d6ff',
+
 };
 
 export const fontSize = {

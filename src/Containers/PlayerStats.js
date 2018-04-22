@@ -15,6 +15,8 @@ import {
 import { nbaId, year } from '../config/commonVariables'
 import { List, ListItem, SearchBar } from 'react-native-elements'
 import { colors, teamColors } from '../styles/commonStyles'
+import LinearGradient from 'react-native-linear-gradient'
+import { hexToRgbA } from "../helpers/Helpers";
 
 export default class PlayerStats extends React.Component {
     constructor(props){
@@ -86,7 +88,10 @@ export default class PlayerStats extends React.Component {
     // }
 
     onLearnMore = (rowData) => {
-        // this.props.navigation.navigate('Details', { ...rowData });
+        console.log('navigating', rowData);
+        console.log('navigating', rowData[0]);
+
+        this.props.navigation.push('playerDashboard', { playerId: rowData[0] });
     };
     renderRow(rowData){
         const firstLast = rowData[2].split(" ");
@@ -104,20 +109,43 @@ export default class PlayerStats extends React.Component {
                     rounded: true,
                     source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
                     // medium: true,
-                    // containerStyle: { backgroundColor: 'white' },
-                    avatarStyle: { backgroundColor: primaryColor },
+                    // containerStyle: { backgroundImage: 'white' },
+                    avatarStyle: { backgroundColor: primaryColor, borderWidth: 1, borderColor: secondaryColor },
                     height: 60,
                     width: 60
                 }}
+                // scaleProps={{
+                //     friction: 90,
+                //     tension: 100,
+                //     activeScale: 0.95,
+                // }}
+                linearGradientProps={{
+                    colors: [hexToRgbA(primaryColor, 0.1), colors.greyDarkest],
+                    style:styles.linearGradient,
+                    start:{x: 0.0, y: 0.5},
+                    end:{x: 0.25, y: 0.5},
+                    // locations:[0,0.5,0.6],
+                }}
+                ViewComponent={LinearGradient}
                 title={`${rowData[2].toUpperCase()}`}
                 titleStyle={{ color: colors.baseText }}
                 subtitle={rowData[8]}
                 subtitleStyle={{ color: colors.secondaryText }}
-                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 1, backgroundColor: colors.greyDarkest, height: 70, borderLeftColor: primaryColor, borderLeftWidth: 2 }}
+                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 2, backgroundColor: 'transparent', height: 70 }}
                 chevronColor={colors.baseText}
                 chevron
                 bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}
+                // linear-gradient(to bottom, #002d62 0%, #002d62 38%, transparent 100%) no-repeat,#0b1a36;
+    //             content: "";
+    // background: url(http://i.cdn.turner.com/nba/nba/assets/logos/teams/primary/web/OKC.svg) center center/100% no-repeat;
+    // opacity: 0.2;
+    // top: 0;
+    // left: 0;
+    // bottom: 0;
+    // right: 0;
+    // position: absolute;
+    // z-index: 0;
             />
         );
     }
@@ -136,7 +164,7 @@ export default class PlayerStats extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={{flex:1, paddingTop: 20, backgroundColor: colors.greyDarkest }}>
+            <SafeAreaView style={{flex:1, backgroundColor: colors.greyDarkest }}>
                 <StatusBar
                     barStyle="light-content"
                     backgroundColor={colors.greyDarkest}
@@ -167,4 +195,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 0,
+        paddingRight: 0,
+        borderRadius: 0,
+    },
 });
