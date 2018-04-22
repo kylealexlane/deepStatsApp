@@ -15,12 +15,13 @@ export function playerPic(firstName = null, lastName = "", full = "") {
     let first = '';
     let last = '';
     if (first !== null){
-        firstName = first;
-        lastName = last;
+        first = firstName;
+        last = lastName;
     } else {
         const firstLast = full.split(" ");
         first = firstLast[1];
         last = firstLast[0];
     }
-    return `https://nba-players.herokuapp.com/players/${first}/${last}`;
+    console.log(`https://nba-players.herokuapp.com/players/${last}/${first}`);
+    return `https://nba-players.herokuapp.com/players/${last}/${first}`;
 }
