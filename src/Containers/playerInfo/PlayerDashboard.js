@@ -11,7 +11,7 @@ import {
     ScrollView,
     ListView,
     SafeAreaView,
-    Image
+    Image,
 } from 'react-native'
 import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
@@ -19,6 +19,10 @@ import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
 import { colors, teamColors, windowSize, appFonts } from '../../styles/commonStyles'
 import { playerPic, hexToRgbA } from "../../helpers/Helpers"
 import LinearGradient from 'react-native-linear-gradient'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import moment from 'moment'
 
 export default class PlayerDashboard extends React.Component {
     constructor(props){
@@ -31,7 +35,8 @@ export default class PlayerDashboard extends React.Component {
             seasonIndex: 0,
             currentTeamIndex: 0,
             firstName: "",
-            lastName: ""
+            lastName: "",
+            selectedTab: "bio"
         }
     }
 
@@ -76,6 +81,153 @@ export default class PlayerDashboard extends React.Component {
             });
     }
 
+    showSelectedTab() {
+        if(this.state.selectedTab === 'stats') {
+            return(
+                <View style={styles.statsContainer}>
+
+
+                </View>
+            );
+        }
+        else if(this.state.selectedTab === 'bio') {
+            const heightArray = this.state.playerBio[0].rowSet[0][10].split("-");
+            const weight = this.state.playerBio[0].rowSet[0][11];
+            const school = this.state.playerBio[0].rowSet[0][7];
+            const birthday = moment(this.state.playerBio[0].rowSet[0][6], moment.ISO_8601).format("MMM Do YYYY");
+            const age = moment(this.state.playerBio[0].rowSet[0][6], moment.ISO_8601).fromNow(true);
+            const country = this.state.playerBio[0].rowSet[0][8];
+            const draftYear = this.state.playerBio[0].rowSet[0][26];
+            const drafRound = this.state.playerBio[0].rowSet[0][27];
+            const draftNumber = this.state.playerBio[0].rowSet[0][28];
+
+            return(
+                <View style={styles.bioContainer}>
+                    <View style={styles.bioRowContainer}>
+                        <View style={styles.bioRowSubContainer}>
+                            <Ionicons name={'ios-body-outline'} size={40} color={colors.highlight} />
+                        </View>
+
+                        <View style={styles.bioRowSubContainerWide}>
+                            <Text>
+                                <Text style={[styles.mainTextColor,styles.bioTextLarge]}>
+                                    {heightArray[0]}
+                                </Text>
+                                <Text style={[{color: colors.greyBase}, styles.bioTextSmaller]}>
+                                    ft{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {heightArray[1]}
+                                </Text>
+                                <Text style={[{color: colors.greyBase}, styles.bioTextSmaller]}>
+                                    in
+                                </Text>
+                            </Text>
+                            <Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {weight}
+                                </Text>
+                                <Text style={[{color: colors.greyBase}, appFonts.lgRegular]}>
+                                    lbs
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.bioRowContainer}>
+                        <View style={styles.bioRowSubContainer}>
+                            <FontAwesome name={'birthday-cake'} size={30} color={colors.highlight} />
+                        </View>
+                        <View style={styles.bioRowSubContainerWide}>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    born{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {birthday}
+                                </Text>
+                            </Text>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    age{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {age}
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.bioRowContainer}>
+                        <View style={styles.bioRowSubContainer}>
+                            <MaterialIcons name={'format-list-numbered'} size={40} color={colors.highlight} />
+                        </View>
+                        <View style={styles.bioRowSubContainerWide}>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    drafted{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {draftYear}
+                                </Text>
+                            </Text>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    round{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {drafRound}
+                                </Text>
+                            </Text>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    selected{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {draftNumber}
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.bioRowContainer}>
+                        <View style={styles.bioRowSubContainer}>
+                            <Ionicons name={'ios-home'} size={40} color={colors.highlight} />
+                        </View>
+                        <View style={styles.bioRowSubContainerWide}>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    home{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {country}
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+
+                    <View style={styles.bioRowContainer}>
+                        <View style={styles.bioRowSubContainer}>
+                            <Ionicons name={'ios-school'} size={40} color={colors.highlight} />
+                        </View>
+                        <View style={styles.bioRowSubContainerWide}>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    school{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {school}
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                </View>
+            );
+        }
+    }
+
     render() {
         console.log(this.state);
         console.log('first', this.state.firstName);
@@ -86,7 +238,7 @@ export default class PlayerDashboard extends React.Component {
                     barStyle="light-content"
                     backgroundColor={colors.greyDarkest}
                 />
-                <View style={styles.container}>
+                <ScrollView style={styles.container}>
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                     <View style={[styles.headerContainer, { backgroundColor: this.state.isLoading ? colors.greyBase : hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.2) }]}>
                         <LinearGradient colors={['#000000', hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.5)]} style={styles.linearGradient}>
@@ -117,7 +269,7 @@ export default class PlayerDashboard extends React.Component {
                                     {this.state.playerBio[0].rowSet[0][2]}
                                 </Text>
                                 <Text style={[styles.mainTextColor, appFonts.mdRegular]}>
-                                    # {this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
+                                    #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
                                 </Text>
                             </View>
                             <Text style={[ appFonts.mdRegular, {color: colors.greyBase, position: 'absolute', top: 8, right: 0 }]}>
@@ -125,7 +277,25 @@ export default class PlayerDashboard extends React.Component {
                             </Text>
                         </View>
                     </View>}
-                </View>
+                    {!this.state.isLoading && !this.state.isLoadingBio &&
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 16, marginHorizontal: 30}}>
+                        <TouchableOpacity
+                            style={[styles.tabContainer, this.state.selectedTab === "bio" && styles.tabTextSelected]}
+                            onPress={() => this.setState({ selectedTab: "bio"})}
+                        >
+                            <Text style={[styles.tabText]}>Bio</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.tabContainer, this.state.selectedTab === "stats" && styles.tabTextSelected]}
+                            onPress={() => this.setState({ selectedTab: "stats"})}
+                        >
+                            <Text style={[styles.tabText]}>Stats</Text>
+                        </TouchableOpacity>
+                    </View> }
+                    {!this.state.isLoading && !this.state.isLoadingBio &&
+                this.showSelectedTab()
+                }
+                </ScrollView>
             </SafeAreaView>
         );
     }
@@ -156,6 +326,9 @@ const styles = StyleSheet.create({
     mainTextColor: {
         color: colors.greyLightest,
     },
+    bioSubTextColor: {
+        color: colors.greyBase
+    },
     subTextColor: {
         color: colors.greyLighter,
     },
@@ -164,6 +337,53 @@ const styles = StyleSheet.create({
     },
     mediumText: {
         ...appFonts.xlBold
+    },
+    tabText: {
+        ...appFonts.lgRegular,
+        color: colors.greyLightest
+    },
+    tabTextSelected: {
+        borderBottomWidth: 1,
+        borderBottomColor: colors.highlight
+    },
+    tabContainer: {
+        flex: 0,
+    },
+    statsContainer: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+    bioContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
+    },
+    bioTextLarge: {
+        ...appFonts.lgBold
+    },
+    bioRowContainer: {
+        flex: 1,
+        width: '80%',
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bioRowSubContainer: {
+        width: '30%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 20
+    },
+    bioRowSubContainerWide: {
+        width: '70%',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingTop: 28
+    },
+    bioTextSmaller: {
+        ...appFonts.mdRegular
     }
 });
 
