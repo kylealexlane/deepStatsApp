@@ -40,7 +40,6 @@ export default class PlayerStats extends React.Component {
                     dataSource: this.state.dataSource.cloneWithRows(responseJson.resultSets[0].rowSet),
                     playersList: responseJson.resultSets[0].rowSet,
                 }, function(){
-                  console.log(responseJson.resultSets[0].rowSet);
                 });
 
             })
@@ -97,8 +96,6 @@ export default class PlayerStats extends React.Component {
         const firstLast = rowData[2].split(" ");
         const primaryColor = teamColors[rowData[10]] ? teamColors[rowData[10]].primary : colors.greyDarkest;
         const secondaryColor = teamColors[rowData[10]] ? teamColors[rowData[10]].secondary : colors.greyDarkest;
-        console.log(firstLast);
-        console.log(`https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}`);
         return(
             <ListItem
                 key={rowData[0]}

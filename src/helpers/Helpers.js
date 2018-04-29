@@ -25,3 +25,12 @@ export function playerPic(firstName = null, lastName = "", full = "") {
     console.log(`https://nba-players.herokuapp.com/players/${last}/${first}`);
     return `https://nba-players.herokuapp.com/players/${last}/${first}`;
 }
+
+export function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function round(value, precision) {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+}

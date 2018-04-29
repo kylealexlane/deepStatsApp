@@ -17,12 +17,14 @@ import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
 import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
 import { colors, teamColors, windowSize, appFonts } from '../../styles/commonStyles'
-import { playerPic, hexToRgbA } from "../../helpers/Helpers"
+import { playerPic, hexToRgbA, capitalizeFirstLetter } from "../../helpers/Helpers"
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
+
+import StatsTab from './StatsTab';
 
 export default class PlayerDashboard extends React.Component {
     constructor(props){
@@ -36,7 +38,7 @@ export default class PlayerDashboard extends React.Component {
             currentTeamIndex: 0,
             firstName: "",
             lastName: "",
-            selectedTab: "bio"
+            selectedTab: "stats"
         }
     }
 
@@ -83,10 +85,12 @@ export default class PlayerDashboard extends React.Component {
 
     showSelectedTab() {
         if(this.state.selectedTab === 'stats') {
+            console.log('state', this.state);
             return(
                 <View style={styles.statsContainer}>
-
-
+                    <StatsTab
+                        parentState={this.state}
+                    />
                 </View>
             );
         }
@@ -105,7 +109,7 @@ export default class PlayerDashboard extends React.Component {
                 <View style={styles.bioContainer}>
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <Ionicons name={'ios-body-outline'} size={40} color={colors.highlight} />
+                            <Ionicons name={'ios-body-outline'} size={30} color={colors.highlight} />
                         </View>
 
                         <View style={styles.bioRowSubContainerWide}>
@@ -136,23 +140,23 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <FontAwesome name={'birthday-cake'} size={30} color={colors.highlight} />
+                            <FontAwesome name={'birthday-cake'} size={24} color={colors.highlight} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    born{' '}
+                                    Age{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {birthday}
+                                    {age}
                                 </Text>
                             </Text>
                             <Text>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    age{' '}
+                                    Born{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {age}
+                                    {birthday}
                                 </Text>
                             </Text>
                         </View>
@@ -160,20 +164,12 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <MaterialIcons name={'format-list-numbered'} size={40} color={colors.highlight} />
+                            <MaterialIcons name={'format-list-numbered'} size={30} color={colors.highlight} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    drafted{' '}
-                                </Text>
-                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {draftYear}
-                                </Text>
-                            </Text>
-                            <Text>
-                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    round{' '}
+                                    Round{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {drafRound}
@@ -181,10 +177,18 @@ export default class PlayerDashboard extends React.Component {
                             </Text>
                             <Text>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    selected{' '}
+                                    Selected{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {draftNumber}
+                                </Text>
+                            </Text>
+                            <Text>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    Drafted{' '}
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {draftYear}
                                 </Text>
                             </Text>
                         </View>
@@ -192,12 +196,12 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <Ionicons name={'ios-home'} size={40} color={colors.highlight} />
+                            <Ionicons name={'ios-home'} size={30} color={colors.highlight} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    home{' '}
+                                    Home{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {country}
@@ -209,12 +213,12 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <Ionicons name={'ios-school'} size={40} color={colors.highlight} />
+                            <Ionicons name={'ios-school'} size={30} color={colors.highlight} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    school{' '}
+                                    School{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {school}
@@ -280,16 +284,16 @@ export default class PlayerDashboard extends React.Component {
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 16, marginHorizontal: 30}}>
                         <TouchableOpacity
-                            style={[styles.tabContainer, this.state.selectedTab === "bio" && styles.tabTextSelected]}
-                            onPress={() => this.setState({ selectedTab: "bio"})}
-                        >
-                            <Text style={[styles.tabText]}>Bio</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
                             style={[styles.tabContainer, this.state.selectedTab === "stats" && styles.tabTextSelected]}
                             onPress={() => this.setState({ selectedTab: "stats"})}
                         >
                             <Text style={[styles.tabText]}>Stats</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.tabContainer, this.state.selectedTab === "bio" && styles.tabTextSelected]}
+                            onPress={() => this.setState({ selectedTab: "bio"})}
+                        >
+                            <Text style={[styles.tabText]}>Bio</Text>
                         </TouchableOpacity>
                     </View> }
                     {!this.state.isLoading && !this.state.isLoadingBio &&
@@ -314,7 +318,7 @@ const styles = StyleSheet.create({
     headerBackgroundLogo: {
         width: windowSize.width*2,
         height: windowSize.width*2,
-        opacity: 0.05,
+        opacity: 0.1,
         alignSelf: 'center',
         position: 'absolute',
         top: -(windowSize.width)+100
@@ -371,16 +375,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     bioRowSubContainer: {
-        width: '30%',
+        width: '10%',
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 20
     },
     bioRowSubContainerWide: {
-        width: '70%',
+        width: '90%',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        paddingTop: 28
+        paddingTop: 20,
+        paddingLeft: 16
     },
     bioTextSmaller: {
         ...appFonts.mdRegular
