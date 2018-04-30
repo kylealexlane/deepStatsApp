@@ -21,7 +21,7 @@ import { round } from "../../helpers/Helpers"
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import moment from 'moment'
 
 import VerticalSeperator from '../commonComponents/VerticalSeperator'
@@ -40,7 +40,12 @@ export default class StatsTab extends React.Component {
         return (
             <View style={styles.statsContainer}>
                 <View style={[styles.statsRowContainer]}>
-                    <Text style={[styles.mainTextColor, styles.statsTextLarge]}>{currentYearStats[1]}</Text>
+                    <View style={{flex: 0}}>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge, {...appFonts.xlBold}]}>{currentYearStats[1]}</Text>
+                    </View>
+                    <View style={{ justifyContent: 'flex-end', alignItems: 'flex-start', flex: 1}}>
+                        <MaterialCommunityIcon name="currency-eth" size={20} color={colors.highlight} />
+                    </View>
                 </View>
                 <View style={[styles.statsRowContainer, { paddingTop: 10 }]}>
                     <View style={[styles.statsRowSubContainer]}>
@@ -52,6 +57,22 @@ export default class StatsTab extends React.Component {
                         <Text>
                             <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                                 {currentYearStats[6]}
+                            </Text>
+                        </Text>
+                    </View>
+
+                    <VerticalSeperator/>
+
+
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text>
+                            <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                                GS
+                            </Text>
+                        </Text>
+                        <Text>
+                            <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                                {currentYearStats[7]}
                             </Text>
                         </Text>
                     </View>
@@ -77,12 +98,12 @@ export default class StatsTab extends React.Component {
                     <View style={[styles.statsRowSubContainer]}>
                         <Text>
                             <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                PPG
+                                TEAM
                             </Text>
                         </Text>
                         <Text>
                             <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[26]}
+                                {currentYearStats[4]}
                             </Text>
                         </Text>
                     </View>
@@ -91,31 +112,156 @@ export default class StatsTab extends React.Component {
 
 
                     <View style={[styles.statsRowSubContainer]}>
-                        <Text>
                             <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                APG
+                                AGE
                             </Text>
-                        </Text>
-                        <Text>
                             <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[21]}
+                                {currentYearStats[5]}
                             </Text>
+                    </View>
+                </View>
+
+
+                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
+                    <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
+                        Shooting
+                    </Text>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            FT%
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[17]}
                         </Text>
                     </View>
-
-                    <VerticalSeperator/>
-
                     <View style={[styles.statsRowSubContainer]}>
-                        <Text>
-                            <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                FG%
-                            </Text>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            3%
                         </Text>
-                        <Text>
-                            <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[11]}
-                            </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[14]}
                         </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            FG%
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[11]}
+                        </Text>
+                    </View>
+                    <View>
+                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                    </View>
+                </View>
+
+
+                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
+                    <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
+                        Offence
+                    </Text>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            PTS
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[26]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            OREB
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[18]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            APG
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[21]}
+                        </Text>
+                    </View>
+                    <View>
+                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                    </View>
+                </View>
+
+
+                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
+                    <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
+                        Defence
+                    </Text>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            STL
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[22]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            BLK
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[23]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            PF
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[24]}
+                        </Text>
+                    </View>
+                    <View>
+                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                    </View>
+                </View>
+
+
+                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
+                    <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
+                        Advanced
+                    </Text>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            APG
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[21]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            APG
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[21]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            APG
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[21]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            APG
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[21]}
+                        </Text>
+                    </View>
+                    <View>
+                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
                     </View>
                 </View>
             </View>
@@ -217,4 +363,10 @@ const styles = StyleSheet.create({
     statsTextSmaller: {
         ...appFonts.mdRegular
     },
+    darkBorderTop: {
+        borderTopColor: colors.black,
+        borderTopWidth: 1,
+        paddingTop: 12,
+        marginTop: 12
+    }
 });

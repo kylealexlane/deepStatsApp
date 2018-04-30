@@ -102,16 +102,17 @@ const TabStack = TabNavigator(
             },
         }),
         tabBarOptions: {
-            activeTintColor: colors.greyLightest,
-            inactiveTintColor: colors.greyLight,
-            activeBackgroundColor: colors.greyDarker,
-            inactiveBackgroundColor: colors.greyDarker,
+            activeTintColor: colors.greyLight,
+            inactiveTintColor: colors.greyBase,
+            activeBackgroundColor: colors.greyDarkest,
+            inactiveBackgroundColor: colors.greyDarkest,
             style: {
                 borderWidth: 0,
                 // borderTopColor: colors.black,
                 borderTopColor: colors.black,
+                borderTopWidth: 1,
                 padding: 3,
-                backgroundColor: colors.greyDarker
+                backgroundColor: colors.greyDarkest
             },
             tabStyle: {
                 borderWidth: 0,
