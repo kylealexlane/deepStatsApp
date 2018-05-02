@@ -30,23 +30,84 @@ import VerticalSeperator from '../commonComponents/VerticalSeperator'
 import HorizontalSeperator from "../commonComponents/HorizontalSeperator"
 import Logo from '../commonComponents/Logo'
 
+import RNPickerSelect from 'react-native-picker-select';
+
+
 export default class StatsTab extends React.Component {
     constructor(props){
         super(props);
+
+        this.inputRefs = {};
+
         this.state ={
+            seasons: [
+            ],
+            seasonSelected: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1],
+            // seasonSelected: null,
+
+            // seasonSelectedLabel: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1][1],
+            // seasonSelectedLabel: null,
+
         }
     }
 
+    componentWillMount() {
+        this.putSeasonsInArray();
+    }
+
+    putSeasonsInArray() {
+        let previousYear = 0;
+        let newSeasons = this.state.seasons;
+        this.props.parentState.playerStats[0].rowSet.forEach((season, index) => {
+            let year = season[1];
+            if ( (this.props.parentState.playerStats[0].rowSet[index - 1]  && year === this.props.parentState.playerStats[0].rowSet[index - 1][1]) || (this.props.parentState.playerStats[0].rowSet[index + 1] && year === this.props.parentState.playerStats[0].rowSet[index + 1][1])) {
+                year += ' (' + season[4] + ')';
+            }
+            console.log('seasons', this.state.seasons);
+            console.log('year', year);
+            console.log(season);
+            newSeasons.push({ label: year, value: season });
+            console.log('newSeasons', newSeasons);
+            // previousYear = year;
+        });
+        this.setState({ seasons: newSeasons});
+    }
+
+
     render() {
         console.log('props', this.props);
-        const currentYearStats = this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length-1];
+        // const currentYearStats = this.props.parentState.playerStats[0].rowSet[this.state.seasonIndex];
+        const currentYearStats = this.state.seasonSelected;
         const careerStats = this.props.parentState.playerStats[1].rowSet[0];
-        const numGames = currentYearStats[6];
         return (
             <View style={styles.statsContainer}>
                 <View style={[styles.statsRowContainer]}>
                     <View style={{flex: 0}}>
-                        <Text style={[styles.statsHighlightTextColor, styles.statsTextLarge, {...appFonts.xlBold}]}>{currentYearStats[1]}</Text>
+                        {/*<Text style={[styles.statsHighlightTextColor, styles.statsTextLarge, {...appFonts.xlBold}]}>{currentYearStats[1]}</Text>*/}
+                        <RNPickerSelect
+                            placeholder={{
+                            }}
+                            items={this.state.seasons}
+                            onValueChange={(value, index) => {
+                                this.setState({
+                                    seasonSelected: value,
+                                    seasonSelectedLabel: this.state.seasons[index].label
+                                });
+                            }}
+                            // onUpArrow={() => {
+                            //     this.inputRefs.name.focus();
+                            // }}
+                            // onDownArrow={() => {
+                            //     this.inputRefs.picker2.togglePicker();
+                            // }}
+                            hideIcon={true}
+                            // placeholderColor={colors.highlight}
+                            style={{ ...pickerSelectStyles }}
+                            value={this.state.seasonSelected}
+                            ref={(el) => {
+                                this.inputRefs.picker = el;
+                            }}
+                        />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end', flex: 1}}>
                         <EntypoIcon name="select-arrows" size={20} color={colors.highlight} />
@@ -431,4 +492,12 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         marginTop: 12
     }
+});
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        ...appFonts.xlBold,
+        color: colors.highlight,
+    },
+    // placeholderColor: { color: 'red' },
 });
