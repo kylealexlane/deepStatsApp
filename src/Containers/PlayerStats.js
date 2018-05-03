@@ -19,6 +19,10 @@ import LinearGradient from 'react-native-linear-gradient'
 import { hexToRgbA } from "../helpers/Helpers";
 
 export default class PlayerStats extends React.Component {
+    static navigationOptions = {
+        header: null,
+    };
+
     constructor(props){
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
@@ -107,7 +111,7 @@ export default class PlayerStats extends React.Component {
                     source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
                     // medium: true,
                     // containerStyle: { backgroundImage: 'white' },
-                    avatarStyle: { backgroundColor: primaryColor, borderWidth: 1, borderColor: secondaryColor },
+                    avatarStyle: { backgroundColor: colors.greyDarkest, borderWidth: 1, borderColor: primaryColor },
                     height: 60,
                     width: 60
                 }}
@@ -120,7 +124,7 @@ export default class PlayerStats extends React.Component {
                     colors: [hexToRgbA(primaryColor, 0.1), colors.greyDarkest],
                     style:styles.linearGradient,
                     start:{x: 0.0, y: 0.5},
-                    end:{x: 0.25, y: 0.5},
+                    end:{x: 0.7, y: 0.5},
                     // locations:[0,0.5,0.6],
                 }}
                 ViewComponent={LinearGradient}
@@ -129,7 +133,7 @@ export default class PlayerStats extends React.Component {
                 subtitle={rowData[8]}
                 subtitleStyle={{ color: colors.secondaryText }}
                 containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 2, backgroundColor: 'transparent', height: 70 }}
-                chevronColor={colors.baseText}
+                chevronColor={colors.highlight}
                 chevron
                 bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}

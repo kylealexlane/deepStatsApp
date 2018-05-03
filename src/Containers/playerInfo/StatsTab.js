@@ -36,7 +36,7 @@ import RNPickerSelect from 'react-native-picker-select';
 export default class StatsTab extends React.Component {
     constructor(props){
         super(props);
-
+        this.navigateToGeneralShooting = this.navigateToGeneralShooting.bind(this);
         this.inputRefs = {};
 
         this.state ={
@@ -71,6 +71,10 @@ export default class StatsTab extends React.Component {
             // previousYear = year;
         });
         this.setState({ seasons: newSeasons});
+    }
+
+    navigateToGeneralShooting() {
+        this.props.navigation.push('generalShooting', {});
     }
 
 
@@ -110,11 +114,14 @@ export default class StatsTab extends React.Component {
                         />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end', flex: 1}}>
-                        <EntypoIcon name="select-arrows" size={20} color={colors.highlight} />
+                        <EntypoIcon name="select-arrows" size={20} color={colors.highlight} onPress={() => {
+                            console.log('toggling');
+                            this.inputRefs.picker.togglePicker();
+                        }}/>
                         {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>(Per Game)</Text>*/}
                     </View>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
                     </View>
                 </View>
                 <View style={[styles.statsRowContainer, { paddingTop: 10 }]}>
@@ -272,8 +279,10 @@ export default class StatsTab extends React.Component {
 
 
 
-                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
-                    <Text style={[styles.statsHighlightTextColor, styles.statsTextLarge]}>
+                <TouchableOpacity
+                    onPress={this.navigateToGeneralShooting}
+                    style={[styles.statsRowContainer, styles.darkBorderTop]}>
+                    <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                         Shooting
                     </Text>
                     <View style={[styles.statsRowSubContainer]}>
@@ -301,13 +310,13 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </View>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
                     </View>
-                </View>
+                </TouchableOpacity>
 
 
                 <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
-                    <Text style={[styles.statsHighlightTextColor, styles.statsTextLarge]}>
+                    <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                         Career
                     </Text>
                     <View style={[styles.statsRowSubContainer]}>
@@ -335,50 +344,50 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </View>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
                     </View>
                 </View>
 
 
                 <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
                     <Text>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
-                            Deep{' '}
-                        </Text>
-                        <Text style={[styles.statsHighlightTextColor, styles.statsTextLarge]}>
+                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>*/}
+                            {/*Deep{' '}*/}
+                        {/*</Text>*/}
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                             Rebounding
                         </Text>
                     </Text>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
                     </View>
                 </View>
 
                 <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
                     <Text>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
-                            Deep{' '}
-                        </Text>
-                        <Text style={[styles.statsHighlightTextColor, styles.statsTextLarge]}>
+                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>*/}
+                            {/*Deep{' '}*/}
+                        {/*</Text>*/}
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                             Defense
                         </Text>
                     </Text>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
                     </View>
                 </View>
 
                 <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
                     <Text>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>
-                            Deep{' '}
-                        </Text>
-                        <Text style={[styles.statsHighlightTextColor, styles.statsTextLarge]}>
+                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>*/}
+                            {/*Deep{' '}*/}
+                        {/*</Text>*/}
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                             Shooting Locations
                         </Text>
                     </Text>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={30} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
                     </View>
                 </View>
 
@@ -497,7 +506,7 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
         ...appFonts.xlBold,
-        color: colors.highlight,
+        color: colors.white,
     },
     // placeholderColor: { color: 'red' },
 });

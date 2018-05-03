@@ -26,11 +26,7 @@ import moment from 'moment'
 
 import StatsTab from './StatsTab';
 
-export default class PlayerDashboard extends React.Component {
-    static navigationOptions = {
-        header: null,
-    };
-
+export default class GeneralShooting extends React.Component {
     constructor(props){
         super(props);
         this.state ={
@@ -94,7 +90,6 @@ export default class PlayerDashboard extends React.Component {
                 <View style={styles.statsContainer}>
                     <StatsTab
                         parentState={this.state}
-                        navigation={this.props.navigation}
                     />
                 </View>
             );
@@ -257,10 +252,7 @@ export default class PlayerDashboard extends React.Component {
 
                             // source={{uri: `https://i.cdn.turner.com/nba/nba/assets/logos/teams/primary/web/${this.state.playerStats[0].rowSet[this.state.seasonIndex][4]}.png`}}
                         />
-                        <LinearGradient
-                            colors={['#000000', hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.1)]} style={styles.linearGradient}
-                            start={{ x: 0.5, y: 0 }}
-                            end={{ x: 0.5, y: 1 }} >
+                        <LinearGradient colors={['#000000', hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.1)]} style={styles.linearGradient}>
                         </LinearGradient>
                         {/*<LinearGradient colors={['#000000', '#000000']} style={styles.linearGradientDark}>*/}
                         {/*</LinearGradient>*/}
@@ -307,8 +299,8 @@ export default class PlayerDashboard extends React.Component {
                         </TouchableOpacity>
                     </View> }
                     {!this.state.isLoading && !this.state.isLoadingBio &&
-                this.showSelectedTab()
-                }
+                    this.showSelectedTab()
+                    }
                 </ScrollView>
             </SafeAreaView>
         );
@@ -328,7 +320,7 @@ const styles = StyleSheet.create({
     headerBackgroundLogo: {
         width: windowSize.width*2,
         height: windowSize.width*2,
-        opacity: 0.3,
+        opacity: 0.1,
         alignSelf: 'center',
         position: 'absolute',
         top: -(windowSize.width)+100
@@ -409,6 +401,6 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent(
-    'PlayerDashboard',
-    () => PlayerDashboard
+    'GeneralShooting',
+    () => GeneralShooting
 );

@@ -9,6 +9,7 @@ import PlayerStats from '../Containers/PlayerStats';
 import TeamStats from '../Containers/TeamStats';
 import Leaders from '../Containers/Leaders';
 import PlayerDashboard from '../Containers/playerInfo/PlayerDashboard';
+import GeneralShooting from '../Containers/playerInfo/GeneralShooting';
 import DrawerContainer from '../Containers/DrawerContainer';
 import { colors } from '../styles/commonStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -38,13 +39,12 @@ const noTransitionConfig = () => ({
 const PlayerStatsStack = StackNavigator({
     home: { screen: PlayerStats },
     playerDashboard: { screen: PlayerDashboard },
+    generalShooting: { screen: GeneralShooting },
 },{
-    headerMode: 'float',
     navigationOptions: {
         headerStyle: {backgroundColor: colors.greyDarker},
         title: 'Test',
         headerTintColor: 'white',
-        header: null,
     }
 });
 
@@ -157,28 +157,27 @@ const TabStack = TabNavigator(
 // })
 
 // login stack
-const LoginStack = StackNavigator({
-  loginScreen: { screen: LoginScreen },
-  signupScreen: { screen: SignupScreen },
-  forgottenPasswordScreen: { screen: ForgottenPasswordScreen, navigationOptions: { title: 'Forgot Password' } }
-}, {
-  headerMode: 'float',
-  navigationOptions: {
-    headerStyle: {backgroundColor: '#E73536'},
-    title: 'You are not logged in',
-    headerTintColor: 'white'
-  }
-});
+// const LoginStack = StackNavigator({
+//   loginScreen: { screen: LoginScreen },
+//   signupScreen: { screen: SignupScreen },
+//   forgottenPasswordScreen: { screen: ForgottenPasswordScreen, navigationOptions: { title: 'Forgot Password' } }
+// }, {
+//   headerMode: 'screen',
+//   navigationOptions: {
+//     headerStyle: {backgroundColor: '#E73536'},
+//     title: 'You are not logged in',
+//     headerTintColor: 'white'
+//   }
+// });
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  loginStack: { screen: LoginStack },
   tabStack: { screen: TabStack }
 }, {
   // Default config for all screens
   headerMode: 'none',
   title: 'Main',
-  initialRouteName: 'loginStack',
+  initialRouteName: 'tabStack',
   transitionConfig: noTransitionConfig,
 });
 
