@@ -28,7 +28,7 @@ import StatsTab from './StatsTab';
 
 export default class PlayerDashboard extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerTransparent: true,
     };
 
     constructor(props){

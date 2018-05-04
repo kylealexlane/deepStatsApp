@@ -120,19 +120,19 @@ export default class PlayerStats extends React.Component {
                 //     tension: 100,
                 //     activeScale: 0.95,
                 // }}
-                linearGradientProps={{
-                    colors: [hexToRgbA(primaryColor, 0.1), colors.greyDarkest],
-                    style:styles.linearGradient,
-                    start:{x: 0.0, y: 0.5},
-                    end:{x: 0.7, y: 0.5},
-                    // locations:[0,0.5,0.6],
-                }}
-                ViewComponent={LinearGradient}
+                // linearGradientProps={{
+                //     colors: [hexToRgbA(primaryColor, 0.1), colors.greyDarkest],
+                //     style:styles.linearGradient,
+                //     start:{x: 0.0, y: 0.5},
+                //     end:{x: 0.7, y: 0.5},
+                //     // locations:[0,0.5,0.6],
+                // }}
+                // ViewComponent={LinearGradient}
                 title={`${rowData[2].toUpperCase()}`}
                 titleStyle={{ color: colors.baseText }}
                 subtitle={rowData[8]}
                 subtitleStyle={{ color: colors.secondaryText }}
-                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 2, backgroundColor: 'transparent', height: 70 }}
+                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 2, backgroundColor: 'transparent', height: 70, borderLeftWidth: 1, borderLeftColor: primaryColor }}
                 chevronColor={colors.highlight}
                 chevron
                 bottomDivider={false}

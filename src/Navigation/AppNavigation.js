@@ -42,9 +42,9 @@ const PlayerStatsStack = StackNavigator({
     generalShooting: { screen: GeneralShooting },
 },{
     navigationOptions: {
-        headerStyle: {backgroundColor: colors.greyDarker},
-        title: 'Test',
-        headerTintColor: 'white',
+        headerStyle: {borderBottomWidth: 0},
+        // title: 'Test',
+        // headerTintColor: 'white',
     }
 });
 
@@ -176,7 +176,7 @@ const PrimaryNav = StackNavigator({
 }, {
   // Default config for all screens
   headerMode: 'none',
-  title: 'Main',
+  // title: 'Main',
   initialRouteName: 'tabStack',
   transitionConfig: noTransitionConfig,
 });
