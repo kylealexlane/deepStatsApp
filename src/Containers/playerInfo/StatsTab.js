@@ -74,7 +74,13 @@ export default class StatsTab extends React.Component {
     }
 
     navigateToGeneralShooting() {
-        this.props.navigation.push('generalShooting', {});
+        this.props.navigation.push('generalShooting', {
+            playerId: this.props.navigation.state.params.playerId,
+            teamId: this.props.parentState.playerBio[0].rowSet[0][16],
+            playerName: this.props.parentState.playerBio[0].rowSet[0][3],
+            playerTeamShort: this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4],
+            teamImageURI: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]}.png`
+        });
     }
 
 

@@ -27,8 +27,13 @@ import moment from 'moment'
 import StatsTab from './StatsTab';
 
 export default class PlayerDashboard extends React.Component {
-    static navigationOptions = {
-        headerTransparent: true,
+    static navigationOptions = ({ navigation }) => {
+        const { params } = navigation.state;
+
+        return {
+            headerTintColor: params.playerTeamShort ? teamColors[params.playerTeamShort].primary : 'transparent',
+            headerTransparent: true,
+        }
     };
 
     constructor(props){
@@ -61,6 +66,7 @@ export default class PlayerDashboard extends React.Component {
                     seasonIndex: responseJson.resultSets[0].rowSet.length-1,
                     currentTeamIndex: responseJson.resultSets[0].rowSet[responseJson.resultSets[0].rowSet.length-1][4] === 'TOT' ? responseJson.resultSets[0].rowSet.length-2 : responseJson.resultSets[0].rowSet.length-1
                 });
+                this.props.navigation.setParams({ playerTeamShort: responseJson.resultSets[0].rowSet[responseJson.resultSets[0].rowSet.length-1][4] === 'TOT' ? responseJson.resultSets[0].rowSet[responseJson.resultSets[0].rowSet.length-2][4] : responseJson.resultSets[0].rowSet[responseJson.resultSets[0].rowSet.length-1][4]})
             })
             .catch((error) =>{
                 console.error(error);

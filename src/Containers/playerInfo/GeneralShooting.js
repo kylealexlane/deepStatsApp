@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    ListView,
+    // ListView,
     SafeAreaView,
     Image,
 } from 'react-native'
@@ -17,154 +17,138 @@ import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
 import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
 import { colors, teamColors, windowSize, appFonts } from '../../styles/commonStyles'
-import { playerPic, hexToRgbA, capitalizeFirstLetter } from "../../helpers/Helpers"
+import { playerPic, hexToRgbA, capitalizeFirstLetter, swapInArray } from "../../helpers/Helpers"
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 
-
-import {
-    Cell,
-    DataTable,
-    Header,
-    HeaderCell,
-    Row,
-} from 'react-native-data-table';
-import { ListView } from 'realm/react-native';
+import { Table, TableWrapper, Row } from 'react-native-table-component';
 
 import StatsTab from './StatsTab';
 
+import GeneralTable from '../commonComponents/GeneralTable'
+
 export default class GeneralShooting extends React.Component {
+    static navigationOptions = ({ navigation }) => {
+        const { params } = navigation.state;
+
+        return {
+            title: params ? params.playerName : 'Shooting',
+            headerStyle: {
+                backgroundColor: params.playerTeamShort ? hexToRgbA(teamColors[params.playerTeamShort].primary, 1) : colors.greyDarkest,
+                // borderBottomColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.greyDarkest
+                borderBottomColor: colors.white
+
+            },
+            headerTitleStyle: {
+                ...appFonts.lgBold,
+                color: colors.white
+            },
+            // headerTintColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.white,
+            headerTintColor: colors.white,
+
+            // headerBackground:  <Image
+            //     style={styles.headerBackgroundLogo}
+            //     source={{uri: params ? params.teamImageURI : ''}}
+            // />,
+            headerTransparent: false,
+        }
+    };
+
     constructor(props) {
         super(props);
-        const dataSource = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        });
         this.state = {
-            data: null,
-            dataSource: dataSource,
-        };
-        this.unfilteredData = null;
-        this.onSearchChange = this.onSearchChange.bind(this);
-        this.onFilterChange = this.onFilterChange.bind(this);
-        this.renderHeader = this.renderHeader.bind(this);
-        this.renderRow = this.renderRow.bind(this);
+            // tableHead: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
+            tableHead: ['TYPE', 'GP', 'GAPP', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableData: [],
+            widthArr: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+            year: '2017-18'
+        }
     }
 
     componentWillMount() {
-        const data = this.props.database.objects('User');
-        this.setState({
-            data: data,
-            dataSource: this.state.dataSource.cloneWithRows(data),
-        });
-    }
-
-    onFilterChange(filterString) {
-        if (!this.unfilteredData) return;
-        let data = null;
-        if (filterString === '') { // if filter is emptied, clear filter
-            data = this.unfilteredData;
-        } else {
-            try {
-                // using this.unfilteredData, so we don't stack filters
-                data = this.unfilteredData.filtered(filterString);
-            } catch (err) {
-                // ignore error silently
-            }
-        }
-
-        if (data) {
-            this.setState({
-                data,
-                dataSource: this.state.dataSource.cloneWithRows(data),
+        console.log('id', this.props.navigation.state.params.playerId);
+        console.log('teamId', this.props.navigation.state.params.teamId);
+        return fetch(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${this.state.year}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${this.props.navigation.state.params.teamId}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                // console.log(responseJson.resultSets[0].rowSet.length-1[4]);
+                let data = responseJson.resultSets[1].rowSet;
+                let headers = responseJson.resultSets[1].headers;
+                headers = swapInArray(swapInArray(headers.slice(3), 0, 2), 1, 2);
+                const newData = data.map((dataRow, index) => {
+                    console.log('row', dataRow);
+                    return swapInArray(swapInArray(dataRow.slice(3), 0, 2), 1, 2);
+                });
+                console.log('headers', headers);
+                this.setState({
+                    // tableHead: headers,
+                    tableData: newData,
+                });
+                // this.setState({
+                //     // isLoading: false,
+                //     // playerBio: responseJson.resultSets[0].rowSet,
+                //     playerStats: responseJson.resultSets,
+                //     seasonIndex: responseJson.resultSets[0].rowSet.length-1,
+                //     currentTeamIndex: responseJson.resultSets[0].rowSet[responseJson.resultSets[0].rowSet.length-1][4] === 'TOT' ? responseJson.resultSets[0].rowSet.length-2 : responseJson.resultSets[0].rowSet.length-1
+                // });
+            })
+            .catch((error) =>{
+                console.error(error);
             });
-        }
-    }
 
-
-    onSearchChange(searchTerm) {
-        if (OBJECT_TYPES.indexOf(searchTerm) < 0) return;
-        const data = this.props.database.objects(searchTerm);
-        this.unfilteredData = data;
-        this.setState({
-            data: data,
-            dataSource: this.state.dataSource.cloneWithRows(data),
-        });
-    }
-
-    renderHeader() {
-        const headerCells = [];
-        if (this.state.data && this.state.data.length > 0) {
-            const firstObject = this.state.data[0];
-            for (const [key] of Object.entries(firstObject)) {
-                headerCells.push(
-                    <HeaderCell
-                        key={key}
-                        style={globalStyles.headerCell}
-                        textStyle={globalStyles.text}
-                        width={1}
-                        text={key}
-                    />
-                );
-            }
-        }
-        return (
-            <Header style={globalStyles.header}>
-                {headerCells}
-            </Header>
-        );
-    }
-
-    renderRow(item) {
-        const cells = [];
-        if (this.state.data && this.state.data.length > 0) {
-            const firstObject = this.state.data[0];
-            for (const [key] of Object.entries(firstObject)) {
-                let itemString = item[key]
-                    && ((typeof item[key] === 'string')
-                        || (typeof item[key] === 'number')
-                        || (typeof item[key].getMonth === 'function'))
-                    && String(item[key]);
-                if (!itemString && item[key] && item[key].length) itemString = item[key].length;
-                if (typeof item[key] === 'boolean') itemString = item[key] ? 'True' : 'False';
-                if (!itemString && item[key] && item[key].id) itemString = item[key].id;
-                cells.push(
-                    <Cell
-                        key={key}
-                        style={globalStyles.cell}
-                        textStyle={globalStyles.text}
-                        width={1}
-                    >
-                        {itemString}
-                    </Cell>
-                );
-            }
-        }
-        return (
-            <Row style={globalStyles.row}>
-                {cells}
-            </Row>
-        );
     }
 
     render() {
+        const state = this.state;
+        // const tableData = [];
+        // for (let i = 0; i < 30; i += 1) {
+        //     const rowData = [];
+        //     for (let j = 0; j < 9; j += 1) {
+        //         rowData.push(`${i}${j}`);
+        //     }
+        //     tableData.push(rowData);
+        // }
+        const tableData = state.tableData;
+        console.log('tableData', tableData);
+
         return (
-            <View style={[globalStyles.container]}>
-                <SearchBar onChange={this.onSearchChange} placeholder="Table Name" />
-                <SearchBar onChange={this.onFilterChange} placeholder="Filter" />
-                <DataTable
-                    style={globalStyles.container}
-                    listViewStyle={globalStyles.container}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderHeader={this.renderHeader}
+            <View style={styles.container}>
+                <GeneralTable
+                    title={'Overall Shooting'}
+                    headerRow={this.state.tableHead}
+                    rowsData={this.state.tableData}
+                    widthArr={this.state.widthArr}
+                    titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}
+                    headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 0.5) : colors.greyDarkest }}
                 />
             </View>
-        );
+        )
     }
 }
+
+const styles = StyleSheet.create({
+    container: { flex: 1, padding: 0, paddingTop: 30, backgroundColor: colors.greyDarkest },
+    header: { height: 30, backgroundColor: colors.greyDarkest },
+    text: { textAlign: 'center', ...appFonts.smRegular, color: colors.white },
+    dataWrapper: { marginTop: -1 },
+    row: { height: 20, backgroundColor: colors.greyDarkest },
+    secondaryRow: {
+        backgroundColor: colors.greyDarkest
+    },
+    headerBackgroundLogo: {
+        width: windowSize.width*2,
+        // height: windowSize.width*2,
+        opacity: 0.1,
+        alignSelf: 'center',
+        // position: 'absolute',
+        // top: -(windowSize.width)+100
+    },
+});
+
 //     constructor(props){
 //         super(props);
 //         this.state ={
