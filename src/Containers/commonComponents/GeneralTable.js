@@ -45,14 +45,14 @@ export default class GeneralTable extends React.Component {
         if (rowsData.length > 0) {
             rowsData = rowsData.map((row, index) => {
                 console.log('row', row);
-                console.log(row.slice(1, row.length-1));
-                return row.slice(1, row.length-1);
+                console.log(row.slice(1, row.length));
+                return row.slice(1, row.length);
             });
         }
-        headerRow = headerRow.slice(1, headerRow.length-1);
+        headerRow = headerRow.slice(1, headerRow.length);
         let widthArr = this.props.widthArr ? this.props.widthArr : [];
         const firstColWidth = widthArr.slice(0, 1);
-        widthArr = widthArr.slice(1, widthArr.length-1);
+        widthArr = widthArr.slice(1, widthArr.length);
 
         console.log('headerRow', headerRow);
         console.log('rowsData', rowsData);
@@ -62,10 +62,10 @@ export default class GeneralTable extends React.Component {
 
 
         return (
-            <View>
+            <View style={this.props.containerStyle}>
                 <View style={[styles.titleContainer, this.props.titleStyle]}>
                     <Text style={styles.titleText}>{this.props.title}</Text>
-                    {/*<MaterialCommunityIcons name={'gesture-swipe-right'} size={20} color={colors.white} style={styles.iconStyle} />*/}
+                    {this.props.showSwipeIcon && <MaterialCommunityIcons name={'gesture-swipe-left'} size={20} color={colors.white} style={styles.iconStyle} />}
                 </View>
                 <View style={styles.tableContainer}>
                     <View style={{ width: firstColWidth[0] ? firstColWidth[0] : 0 }}>
