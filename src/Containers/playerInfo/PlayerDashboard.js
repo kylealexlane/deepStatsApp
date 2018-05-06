@@ -32,7 +32,8 @@ export default class PlayerDashboard extends React.Component {
         const { params } = navigation.state;
 
         return {
-            headerTintColor: params.playerTeamShort ? teamColors[params.playerTeamShort].primary : 'transparent',
+            // headerTintColor: params.playerTeamShort ? teamColors[params.playerTeamShort].primary : 'transparent',
+            headerTintColor: colors.white,
             headerTransparent: true,
         }
     };
@@ -125,28 +126,37 @@ export default class PlayerDashboard extends React.Component {
                         </View>
 
                         <View style={styles.bioRowSubContainerWide}>
-                            <Text>
-                                <Text style={[styles.mainTextColor,styles.bioTextLarge]}>
-                                    {heightArray[0]}
-                                </Text>
+                            <View style={styles.bioRowSubSubColumn}>
                                 <Text style={[styles.subTextColor, styles.bioTextSmaller]}>
-                                    ft{' '}
+                                    Height
                                 </Text>
-                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {heightArray[1]}
+                                <Text>
+                                    <Text style={[styles.mainTextColor,styles.bioTextLarge]}>
+                                        {heightArray[0]}
+                                    </Text>
+                                    <Text style={[styles.subTextColor, styles.bioTextSmaller]}>
+                                        ft
+                                    </Text>
+                                    <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                        {heightArray[1]}
+                                    </Text>
+                                    <Text style={[styles.subTextColor, styles.bioTextSmaller]}>
+                                        in
+                                    </Text>
                                 </Text>
+                            </View>
+                            <View style={styles.bioRowSubSubColumn}>
                                 <Text style={[styles.subTextColor, styles.bioTextSmaller]}>
-                                    in
+                                    Weight
+                                </Text>                                <Text>
+                                    <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                        {weight}
+                                    </Text>
+                                    <Text style={[styles.subTextColor, appFonts.lgRegular]}>
+                                        lbs
+                                    </Text>
                                 </Text>
-                            </Text>
-                            <Text>
-                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {weight}
-                                </Text>
-                                <Text style={[styles.subTextColor, appFonts.lgRegular]}>
-                                    lbs
-                                </Text>
-                            </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -155,22 +165,18 @@ export default class PlayerDashboard extends React.Component {
                             <FontAwesome name={'birthday-cake'} size={24} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
-                            <Text>
+                            <View style={styles.bioRowSubSubColumn}>
+                                    <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>Age{' '}</Text>
+                                    <Text style={[styles.mainTextColor, styles.bioTextLarge]}>{age}</Text>
+                            </View>
+                            <View style={styles.bioRowSubSubColumn}>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    Age{' '}
-                                </Text>
-                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {age}
-                                </Text>
-                            </Text>
-                            <Text>
-                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    Born{' '}
+                                    Born
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {birthday}
                                 </Text>
-                            </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -179,30 +185,30 @@ export default class PlayerDashboard extends React.Component {
                             <MaterialIcons name={'format-list-numbered'} size={30} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
-                            <Text>
+                            <View style={styles.bioRowSubSubColumn}>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    Round{' '}
-                                </Text>
-                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {drafRound}
-                                </Text>
-                            </Text>
-                            <Text>
-                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    Selected{' '}
-                                </Text>
-                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
-                                    {draftNumber}
-                                </Text>
-                            </Text>
-                            <Text>
-                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    Drafted{' '}
+                                    Drafted
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {draftYear}
                                 </Text>
-                            </Text>
+                            </View>
+                            <View style={styles.bioRowSubSubColumn}>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    Round
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {drafRound}
+                                </Text>
+                            </View>
+                            <View style={styles.bioRowSubSubColumn}>
+                                <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
+                                    Pick
+                                </Text>
+                                <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
+                                    {draftNumber}
+                                </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -211,14 +217,14 @@ export default class PlayerDashboard extends React.Component {
                             <Ionicons name={'ios-home'} size={30} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
-                            <Text>
+                            <View style={styles.bioRowSubSubColumn}>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    Home{' '}
+                                    Home
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {country}
                                 </Text>
-                            </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -228,14 +234,14 @@ export default class PlayerDashboard extends React.Component {
                             <Ionicons name={'ios-school'} size={30} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
-                            <Text>
+                            <View style={styles.bioRowSubSubColumn}>
                                 <Text style={[styles.bioSubTextColor, styles.bioTextSmaller]}>
-                                    School{' '}
+                                    School
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {school}
                                 </Text>
-                            </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -246,8 +252,6 @@ export default class PlayerDashboard extends React.Component {
 
     render() {
         console.log(this.state);
-        console.log('first', this.state.firstName);
-        console.log(this.state.lastName);
         let primaryColor = '#000000';
         if (!this.state.isLoading && !this.state.isLoadingBio) {
             primaryColor = teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary;
@@ -294,12 +298,20 @@ export default class PlayerDashboard extends React.Component {
                                 <Text style={[styles.mainTextColor, appFonts.xxlBold, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][2]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
-                                    #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
+                                <Text style={[styles.mainTextColor, appFonts.lgBold, { color: colors.white }]}>
+                                    #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][18]}
+                                </Text>
+                                <Text style={[styles.mainTextColor, appFonts.lgBold, { color: colors.white }]}>
+                                    {this.state.playerBio[0].rowSet[0][14]}
                                 </Text>
                             </View>
                             <Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 0 }]}>
-                                {this.state.playerBio[0].rowSet[0][10]}  {this.state.playerBio[0].rowSet[0][11]}
+                                <Text>{this.state.playerBio[0].rowSet[0][10].split("-")[0]}</Text>
+                                <Text style={styles.upperRightSubText}>'</Text>
+                                <Text>{this.state.playerBio[0].rowSet[0][10].split("-")[1]}</Text>
+                                <Text style={styles.upperRightSubText}>"{' '}</Text>
+                                <Text>{this.state.playerBio[0].rowSet[0][11]}</Text>
+                                <Text style={styles.upperRightSubText}>lbs</Text>
                             </Text>
                         </View>
                     </View>}
@@ -429,7 +441,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: colors.secondaryBackground,
+        paddingBottom: 16
     },
     bioRowSubContainer: {
         width: '10%',
@@ -439,8 +454,9 @@ const styles = StyleSheet.create({
     },
     bioRowSubContainerWide: {
         width: '90%',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
         paddingTop: 20,
         paddingLeft: 16
     },
@@ -453,6 +469,15 @@ const styles = StyleSheet.create({
         // paddingVertical: 8,
         paddingHorizontal: 0,
         height: 38
+    },
+    upperRightSubText: {
+        color: colors.greyLight,
+        ...appFonts.xsRegular
+    },
+    bioRowSubSubColumn: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

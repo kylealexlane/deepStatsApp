@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { nbaId, year } from '../config/commonVariables'
 import { List, ListItem, SearchBar } from 'react-native-elements'
-import { colors, teamColors } from '../styles/commonStyles'
+import { colors, teamColors, appFonts } from '../styles/commonStyles'
 import LinearGradient from 'react-native-linear-gradient'
 import { hexToRgbA } from "../helpers/Helpers";
 
@@ -111,7 +111,7 @@ export default class PlayerStats extends React.Component {
                     source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
                     // medium: true,
                     // containerStyle: { backgroundImage: 'white' },
-                    avatarStyle: { backgroundColor: colors.baseBackground, borderWidth: 1, borderColor: primaryColor },
+                    avatarStyle: { backgroundColor: primaryColor, borderWidth: 1, borderColor: secondaryColor },
                     height: 60,
                     width: 60
                 }}
@@ -128,10 +128,10 @@ export default class PlayerStats extends React.Component {
                 //     // locations:[0,0.5,0.6],
                 // }}
                 // ViewComponent={LinearGradient}
-                title={`${rowData[2].toUpperCase()}`}
-                titleStyle={{ color: colors.baseText }}
+                title={`${rowData[2]}`}
+                titleStyle={{ color: colors.baseText, ...appFonts.lgBold }}
                 subtitle={rowData[8]}
-                subtitleStyle={{ color: colors.secondaryText }}
+                subtitleStyle={{ color: colors.secondaryText, ...appFonts.mdMedium }}
                 containerStyle={{ borderBottomColor: colors.secondaryBackground, borderBottomWidth: 1, backgroundColor: 'transparent', height: 80 }}
                 chevronColor={colors.secondaryText}
                 chevron

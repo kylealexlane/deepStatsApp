@@ -144,57 +144,67 @@ export default class GeneralShooting extends React.Component {
         console.log('seasonSelected', this.state.seasonSelected);
         const firstLast = this.props.navigation.state.params.playerName.split(" ");
         return (
-            <ScrollView style={styles.container}>
-                <View style={styles.selectorContainer}>
-                    <View style={{flex: 0}}>
-                        {/*<Text style={[styles.statsHighlightTextColor, styles.statsTextLarge, {...appFonts.xlBold}]}>{currentYearStats[1]}</Text>*/}
-                        <RNPickerSelect
-                            placeholder={{
-                            }}
-                            items={this.state.seasons}
-                            onValueChange={(value, index) => {
-                                this.fetchNewData(value);
-                                this.setState({
-                                    seasonSelected: value,
-                                    seasonSelectedLabel: this.state.seasons[index].label
-                                });
-                            }}
-                            // onUpArrow={() => {
-                            //     this.inputRefs.name.focus();
-                            // }}
-                            // onDownArrow={() => {
-                            //     this.inputRefs.picker2.togglePicker();
-                            // }}
-                            hideIcon={true}
-                            // placeholderColor={colors.highlight}
-                            style={{ ...pickerSelectStyles }}
-                            value={this.state.seasonSelected}
-                            ref={(el) => {
-                                this.inputRefs.picker = el;
-                            }}
-                        />
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end', flex: 1}}>
-                        <EntypoIcon name="select-arrows" size={20} color={teamColors[this.props.navigation.state.params.playerTeamShort].primary} onPress={() => {
-                            console.log('toggling');
-                            this.inputRefs.picker.togglePicker();
-                        }}/>
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>(Per Game)</Text>*/}
-                    </View>
+            <ScrollView
+                style={styles.container}
+                stickyHeaderIndices={[1]}
+            >
+                <View style={[styles.displayContainer, {paddingTop: 30}]}>
+                    <Text>
+                        <Text style={styles.nameText}>{firstLast[0]}{' '}</Text>
+                        <Text style={styles.nameText}>{firstLast[1]}</Text>
+                    </Text>
                 </View>
-                <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'flex-start', flexDirection: 'row'}]}>
-                    {/*<View style={[containerStyle.rowContainer, {paddingHorizontal: 8, paddingVertical: 16, justifyContent: 'center'}]}>*/}
-                    <View style={[styles.displayContainer, {alignItems: 'flex-start'}]}>
-                        <Text style={styles.besideSelectorSecondaryText}>{firstLast[0].toUpperCase()}</Text>
-                        <Text style={styles.besideSelectorText}>{firstLast[1].toUpperCase()}</Text>
-                    </View>
-                    <View style={styles.displayContainer}>
-                        <Text style={styles.besideSelectorSecondaryText}>GP</Text>
-                        <Text style={styles.besideSelectorText}>{this.state.seasonSelected[7]}</Text>
-                    </View>
-                    <View style={styles.displayContainer}>
-                        <Text style={styles.besideSelectorSecondaryText}>TEAM</Text>
-                        <Text style={styles.besideSelectorText}>{this.state.seasonSelected[4]}</Text>
+                <View style={{backgroundColor: colors.baseBackground, borderBottomWidth: 1,borderBottomColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest}}>
+                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                        {/*<View style={[containerStyle.rowContainer, {paddingHorizontal: 8, paddingVertical: 16, justifyContent: 'center'}]}>*/}
+                        <View style={styles.displayContainerSelector}>
+                            <Text style={styles.besideSelectorSecondaryText}>YEAR</Text>
+                            <View style={styles.selectorContainer}>
+                                <View style={{flex: 0}}>
+                                    {/*<Text style={[styles.statsHighlightTextColor, styles.statsTextLarge, {...appFonts.xlBold}]}>{currentYearStats[1]}</Text>*/}
+                                    <RNPickerSelect
+                                        placeholder={{
+                                        }}
+                                        items={this.state.seasons}
+                                        onValueChange={(value, index) => {
+                                            this.fetchNewData(value);
+                                            this.setState({
+                                                seasonSelected: value,
+                                                seasonSelectedLabel: this.state.seasons[index].label
+                                            });
+                                        }}
+                                        // onUpArrow={() => {
+                                        //     this.inputRefs.name.focus();
+                                        // }}
+                                        // onDownArrow={() => {
+                                        //     this.inputRefs.picker2.togglePicker();
+                                        // }}
+                                        hideIcon={true}
+                                        // placeholderColor={colors.highlight}
+                                        style={{ ...pickerSelectStyles }}
+                                        value={this.state.seasonSelected}
+                                        ref={(el) => {
+                                            this.inputRefs.picker = el;
+                                        }}
+                                    />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end', flex: 0}}>
+                                    <EntypoIcon name="select-arrows" size={20} color={teamColors[this.props.navigation.state.params.playerTeamShort].primary} onPress={() => {
+                                        console.log('toggling');
+                                        this.inputRefs.picker.togglePicker();
+                                    }}/>
+                                    {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>(Per Game)</Text>*/}
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.displayContainer}>
+                            <Text style={styles.besideSelectorSecondaryText}>GP</Text>
+                            <Text style={styles.besideSelectorText}>{this.state.seasonSelected[7]}</Text>
+                        </View>
+                        <View style={styles.displayContainer}>
+                            <Text style={styles.besideSelectorSecondaryText}>TEAM</Text>
+                            <Text style={styles.besideSelectorText}>{this.state.seasonSelected[4]}</Text>
+                        </View>
                     </View>
                 </View>
                 <GeneralTable
@@ -243,7 +253,7 @@ export default class GeneralShooting extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 0, paddingVertical: 30, backgroundColor: colors.baseBackground },
+    container: { flex: 1, padding: 0, paddingVertical: 0, backgroundColor: colors.baseBackground },
     header: { height: 30, backgroundColor: colors.greyDarkest },
     text: { textAlign: 'center', ...appFonts.smRegular, color: colors.mainTextColor },
     dataWrapper: { marginTop: -1 },
@@ -271,19 +281,26 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     selectorContainer: {
-        flex: 1,
+        // flex: 2,
         flexDirection: 'row',
         flexWrap: 'nowrap',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 16
     },
     displayContainer: {
-        flex: 1,
+        flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    displayContainerSelector: {
+        flex: 0,
+        flexDirection: 'column',
+        // flexWrap: 'nowrap',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // flexGrow: 4
     },
     besideSelectorText: {
         color: colors.mainTextColor,
@@ -297,7 +314,7 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        ...appFonts.xxlBold,
+        ...appFonts.xlBold,
         color: colors.mainTextColor,
     },
     // placeholderColor: { color: 'red' },
