@@ -248,6 +248,7 @@ export const colors = {
 
     black: '#000000',
     greyDarkest: '#1d1e20',
+
     greyDarker: '#313236',
     grey: '#797676',
     greyBase: '#797676',
@@ -255,12 +256,17 @@ export const colors = {
     greyLighter: '#F0EBEB',
     greyLightest: '#FBF8F8',
 
-    baseText: '#FBF8F8',
-    secondaryText: '#CFCACA',
+    // baseText: '#FBF8F8',
+    // secondaryText: '#CFCACA',
+
+    baseText: '#1d1e20',
+    secondaryText: '#797676',
+    baseBackground: '#FFFFFF',
+    secondaryBackground: '#F0EBEB',
 
     white: '#FFFFFF',
 
-     highlight: '#20d6ff',
+    highlight: '#20d6ff',
 
 };
 
@@ -355,6 +361,11 @@ export const spacing = {
 };
 
 export const containerStyle = StyleSheet.create({
+    rowContainer: {
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        width: '100%'
+    },
     container: {
         flex: 1,
         flexDirection: 'column',

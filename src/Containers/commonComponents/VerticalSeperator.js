@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     seperator: {
         height: '90%',
-        backgroundColor: colors.greyBase,
+        backgroundColor: colors.greyLight,
         width: 1
     }
 });

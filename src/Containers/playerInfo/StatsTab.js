@@ -43,6 +43,7 @@ export default class StatsTab extends React.Component {
             seasons: [
             ],
             seasonSelected: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1],
+            teamIdArray: []
             // seasonSelected: null,
 
             // seasonSelectedLabel: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1][1],
@@ -58,25 +59,35 @@ export default class StatsTab extends React.Component {
     putSeasonsInArray() {
         let previousYear = 0;
         let newSeasons = this.state.seasons;
+        let newTeamIdArray = [];
         this.props.parentState.playerStats[0].rowSet.forEach((season, index) => {
             let year = season[1];
+            let teamId = season[3];
             if ( (this.props.parentState.playerStats[0].rowSet[index - 1]  && year === this.props.parentState.playerStats[0].rowSet[index - 1][1]) || (this.props.parentState.playerStats[0].rowSet[index + 1] && year === this.props.parentState.playerStats[0].rowSet[index + 1][1])) {
                 year += ' (' + season[4] + ')';
             }
-            console.log('seasons', this.state.seasons);
-            console.log('year', year);
+            console.log('season', season);
+            console.log('teamId', teamId);
             console.log(season);
+            newTeamIdArray.push(teamId);
             newSeasons.push({ label: year, value: season });
             console.log('newSeasons', newSeasons);
             // previousYear = year;
         });
-        this.setState({ seasons: newSeasons});
+        this.setState({
+            seasons: newSeasons,
+            teamIdArray: newTeamIdArray
+        });
     }
 
     navigateToGeneralShooting() {
+        console.log('props when moving', this.props);
         this.props.navigation.push('generalShooting', {
+            seasons: this.state.seasons,
+            seasonSelected: this.state.seasonSelected,
             playerId: this.props.navigation.state.params.playerId,
-            teamId: this.props.parentState.playerBio[0].rowSet[0][16],
+            // teamId: this.props.parentState.playerBio[0].rowSet[0][16],
+            teamIdArray: this.state.teamIdArray,
             playerName: this.props.parentState.playerBio[0].rowSet[0][3],
             playerTeamShort: this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4],
             teamImageURI: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]}.png`
@@ -86,6 +97,7 @@ export default class StatsTab extends React.Component {
 
     render() {
         console.log('props', this.props);
+        const primaryColor = teamColors[this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]].primary;
         // const currentYearStats = this.props.parentState.playerStats[0].rowSet[this.state.seasonIndex];
         const currentYearStats = this.state.seasonSelected;
         const careerStats = this.props.parentState.playerStats[1].rowSet[0];
@@ -111,7 +123,7 @@ export default class StatsTab extends React.Component {
                             //     this.inputRefs.picker2.togglePicker();
                             // }}
                             hideIcon={true}
-                            // placeholderColor={colors.highlight}
+                            // placeholderColor={primaryColor}
                             style={{ ...pickerSelectStyles }}
                             value={this.state.seasonSelected}
                             ref={(el) => {
@@ -120,15 +132,15 @@ export default class StatsTab extends React.Component {
                         />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end', flex: 1}}>
-                        <EntypoIcon name="select-arrows" size={20} color={colors.highlight} onPress={() => {
+                        <EntypoIcon name="select-arrows" size={20} color={primaryColor} onPress={() => {
                             console.log('toggling');
                             this.inputRefs.picker.togglePicker();
                         }}/>
                         {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>(Per Game)</Text>*/}
                     </View>
-                    <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
-                    </View>
+                    {/*<View>*/}
+                        {/*<MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />*/}
+                    {/*</View>*/}
                 </View>
                 <View style={[styles.statsRowContainer, { paddingTop: 10 }]}>
                     <View style={[styles.statsRowSubContainer]}>
@@ -316,7 +328,7 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </View>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
                     </View>
                 </TouchableOpacity>
 
@@ -350,7 +362,7 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </View>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
                     </View>
                 </View>
 
@@ -365,7 +377,7 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </Text>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
                     </View>
                 </View>
 
@@ -379,7 +391,7 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </Text>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
                     </View>
                 </View>
 
@@ -393,7 +405,7 @@ export default class StatsTab extends React.Component {
                         </Text>
                     </Text>
                     <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />
+                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
                     </View>
                 </View>
 
@@ -410,7 +422,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex:1,
-        backgroundColor: colors.greyDarkest
+        backgroundColor: colors.baseBackground
     },
     headerContainer: {
         width: '100%',
@@ -430,26 +442,22 @@ const styles = StyleSheet.create({
         height: 200,
     },
     mainTextColor: {
-        color: colors.greyLightest,
+        color: colors.baseText,
     },
     statsSubTextColor: {
-        color: colors.greyBase
+        color: colors.secondaryText
     },
     statsHighlightTextColor: {
         color: colors.highlight
     },
     subTextColor: {
-        color: colors.greyLighter,
+        color: colors.secondaryText,
     },
     largeText: {
         ...appFonts.xxlBold
     },
     mediumText: {
         ...appFonts.xlBold
-    },
-    tabText: {
-        ...appFonts.lgRegular,
-        color: colors.greyLightest
     },
     tabTextSelected: {
         borderBottomWidth: 1,
@@ -484,25 +492,25 @@ const styles = StyleSheet.create({
     },
     leftBorder: {
         borderLeftWidth: 1,
-        borderColor: colors.greyBase
+        borderColor: colors.greyLight
     },
     rightBorder: {
         borderRightWidth: 1,
-        borderColor: colors.greyBase
+        borderColor: colors.greyLight
     },
     bottomBorder: {
         borderBottomWidth: 1,
-        borderColor: colors.greyBase
+        borderColor: colors.greyLight
     },
     topBorder: {
       borderTopWidth: 1,
-      borderColor: colors.greyBase
+      borderColor: colors.greyLight
     },
     statsTextSmaller: {
         ...appFonts.mdRegular
     },
     darkBorderTop: {
-        borderTopColor: colors.black,
+        borderTopColor: colors.greyLight,
         borderTopWidth: 1,
         paddingTop: 12,
         marginTop: 12
@@ -511,8 +519,9 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
+        marginLeft: 0,
         ...appFonts.xlBold,
-        color: colors.white,
+        color: colors.baseText,
     },
     // placeholderColor: { color: 'red' },
 });

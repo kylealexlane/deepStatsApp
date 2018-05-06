@@ -111,7 +111,7 @@ export default class PlayerStats extends React.Component {
                     source: { uri: `https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}` },
                     // medium: true,
                     // containerStyle: { backgroundImage: 'white' },
-                    avatarStyle: { backgroundColor: colors.greyDarkest, borderWidth: 1, borderColor: primaryColor },
+                    avatarStyle: { backgroundColor: colors.baseBackground, borderWidth: 1, borderColor: primaryColor },
                     height: 60,
                     width: 60
                 }}
@@ -121,10 +121,10 @@ export default class PlayerStats extends React.Component {
                 //     activeScale: 0.95,
                 // }}
                 // linearGradientProps={{
-                //     colors: [hexToRgbA(primaryColor, 0.1), colors.greyDarkest],
+                //     colors: [hexToRgbA(primaryColor, 0.1), colors.baseBackground],
                 //     style:styles.linearGradient,
                 //     start:{x: 0.0, y: 0.5},
-                //     end:{x: 0.7, y: 0.5},
+                //     end:{x: 0.2, y: 0.5},
                 //     // locations:[0,0.5,0.6],
                 // }}
                 // ViewComponent={LinearGradient}
@@ -132,8 +132,8 @@ export default class PlayerStats extends React.Component {
                 titleStyle={{ color: colors.baseText }}
                 subtitle={rowData[8]}
                 subtitleStyle={{ color: colors.secondaryText }}
-                containerStyle={{ borderBottomColor: 'black', borderBottomWidth: 2, backgroundColor: 'transparent', height: 70, borderLeftWidth: 1, borderLeftColor: primaryColor }}
-                chevronColor={colors.highlight}
+                containerStyle={{ borderBottomColor: colors.secondaryBackground, borderBottomWidth: 1, backgroundColor: 'transparent', height: 80 }}
+                chevronColor={colors.secondaryText}
                 chevron
                 bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}
@@ -165,18 +165,18 @@ export default class PlayerStats extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={{flex:1, backgroundColor: colors.greyDarkest }}>
+            <SafeAreaView style={{flex:1, backgroundColor: colors.baseBackground }}>
                 <StatusBar
-                    barStyle="light-content"
-                    backgroundColor={colors.greyDarkest}
+                    barStyle="dark-content"
+                    backgroundColor={colors.baseBackground}
                 />
                 <SearchBar
                     round
                     onChangeText={(text) => this.filterSearch(text)}
                     value={this.state.text}
-                    placeholder={'search'}
+                    placeholder={'Search'}
                     platform="ios"
-                    containerStyle={{ backgroundColor: colors.greyDarkest, borderColor: colors.greyDarkest }}
+                    containerStyle={{ backgroundColor: colors.baseBackground, borderColor: colors.baseBackground }}
                 />
                 <ListView
                     enableEmptySections={true}

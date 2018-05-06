@@ -33,7 +33,6 @@ export default class GeneralTable extends React.Component {
     render() {
         let headerRow = this.props.headerRow ? this.props.headerRow : [];
         let rowsData = this.props.rowsData ? this.props.rowsData : [];
-        // const firstColumn = this.props.rowsData ? this.props.firstColumn : [];
         let firstColumn = [];
         if (rowsData.length > 0) {
             firstColumn = rowsData.map((row) => {
@@ -53,13 +52,6 @@ export default class GeneralTable extends React.Component {
         let widthArr = this.props.widthArr ? this.props.widthArr : [];
         const firstColWidth = widthArr.slice(0, 1);
         widthArr = widthArr.slice(1, widthArr.length);
-
-        console.log('headerRow', headerRow);
-        console.log('rowsData', rowsData);
-        console.log('firstColumn', firstColumn);
-        console.log('firstColumnHeader', firstColumnHeader);
-
-
 
         return (
             <View style={this.props.containerStyle}>
@@ -145,12 +137,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'nowrap',
     },
-    header: { height: 25, borderBottomColor: colors.black, borderBottomWidth: 1 },
-    text: { textAlign: 'center', ...appFonts.smRegular, color: colors.white },
-    headerText: { textAlign: 'center', ...appFonts.smRegular, color: colors.greyLightest },
+    header: { height: 18, borderLeftWidth: 0 },
+    text: { textAlign: 'center', ...appFonts.smRegular, color: colors.mainTextColor },
+    headerText: { textAlign: 'center', ...appFonts.xsBold, color: colors.greyLighter },
     dataWrapper: { marginTop: -1 },
-    row: { height: 25, backgroundColor: colors.greyDarkest, borderBottomColor: colors.black, borderBottomWidth: 1 },
+    row: { height: 28, backgroundColor: colors.baseBackground, borderBottomColor: colors.black, borderBottomWidth: 0 },
     secondaryRow: {
-        backgroundColor: colors.greyDarkest
+        backgroundColor: colors.secondaryBackground
     }
 });

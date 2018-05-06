@@ -25,6 +25,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 
 import StatsTab from './StatsTab';
+import VerticalSeperator from "../commonComponents/VerticalSeperator";
 
 export default class PlayerDashboard extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -95,7 +96,6 @@ export default class PlayerDashboard extends React.Component {
 
     showSelectedTab() {
         if(this.state.selectedTab === 'stats') {
-            console.log('state', this.state);
             return(
                 <View style={styles.statsContainer}>
                     <StatsTab
@@ -106,6 +106,7 @@ export default class PlayerDashboard extends React.Component {
             );
         }
         else if(this.state.selectedTab === 'bio') {
+            const primaryColor = teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary;
             const heightArray = this.state.playerBio[0].rowSet[0][10].split("-");
             const weight = this.state.playerBio[0].rowSet[0][11];
             const school = this.state.playerBio[0].rowSet[0][7];
@@ -120,7 +121,7 @@ export default class PlayerDashboard extends React.Component {
                 <View style={styles.bioContainer}>
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <Ionicons name={'ios-body-outline'} size={30} color={colors.highlight} />
+                            <Ionicons name={'ios-body-outline'} size={30} color={primaryColor} />
                         </View>
 
                         <View style={styles.bioRowSubContainerWide}>
@@ -128,13 +129,13 @@ export default class PlayerDashboard extends React.Component {
                                 <Text style={[styles.mainTextColor,styles.bioTextLarge]}>
                                     {heightArray[0]}
                                 </Text>
-                                <Text style={[{color: colors.greyBase}, styles.bioTextSmaller]}>
+                                <Text style={[styles.subTextColor, styles.bioTextSmaller]}>
                                     ft{' '}
                                 </Text>
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {heightArray[1]}
                                 </Text>
-                                <Text style={[{color: colors.greyBase}, styles.bioTextSmaller]}>
+                                <Text style={[styles.subTextColor, styles.bioTextSmaller]}>
                                     in
                                 </Text>
                             </Text>
@@ -142,7 +143,7 @@ export default class PlayerDashboard extends React.Component {
                                 <Text style={[styles.mainTextColor, styles.bioTextLarge]}>
                                     {weight}
                                 </Text>
-                                <Text style={[{color: colors.greyBase}, appFonts.lgRegular]}>
+                                <Text style={[styles.subTextColor, appFonts.lgRegular]}>
                                     lbs
                                 </Text>
                             </Text>
@@ -151,7 +152,7 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <FontAwesome name={'birthday-cake'} size={24} color={colors.highlight} />
+                            <FontAwesome name={'birthday-cake'} size={24} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
@@ -175,7 +176,7 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <MaterialIcons name={'format-list-numbered'} size={30} color={colors.highlight} />
+                            <MaterialIcons name={'format-list-numbered'} size={30} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
@@ -207,7 +208,7 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <Ionicons name={'ios-home'} size={30} color={colors.highlight} />
+                            <Ionicons name={'ios-home'} size={30} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
@@ -224,7 +225,7 @@ export default class PlayerDashboard extends React.Component {
 
                     <View style={styles.bioRowContainer}>
                         <View style={styles.bioRowSubContainer}>
-                            <Ionicons name={'ios-school'} size={30} color={colors.highlight} />
+                            <Ionicons name={'ios-school'} size={30} color={primaryColor} />
                         </View>
                         <View style={styles.bioRowSubContainerWide}>
                             <Text>
@@ -247,6 +248,11 @@ export default class PlayerDashboard extends React.Component {
         console.log(this.state);
         console.log('first', this.state.firstName);
         console.log(this.state.lastName);
+        let primaryColor = '#000000';
+        if (!this.state.isLoading && !this.state.isLoadingBio) {
+            primaryColor = teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary;
+        }
+        console.log('state yo', this.state);
         return (
             <SafeAreaView style={{flex:1, backgroundColor: 'black' }}>
                 <StatusBar
@@ -264,7 +270,7 @@ export default class PlayerDashboard extends React.Component {
                             // source={{uri: `https://i.cdn.turner.com/nba/nba/assets/logos/teams/primary/web/${this.state.playerStats[0].rowSet[this.state.seasonIndex][4]}.png`}}
                         />
                         <LinearGradient
-                            colors={['#000000', hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.1)]} style={styles.linearGradient}
+                            colors={['#000000', hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.4)]} style={styles.linearGradient}
                             start={{ x: 0.5, y: 0 }}
                             end={{ x: 0.5, y: 1 }} >
                         </LinearGradient>
@@ -282,35 +288,55 @@ export default class PlayerDashboard extends React.Component {
                             <View style={{ height: '100%', width: '50%'}}>
                             </View>
                             <View style={{ width: '50%', height: '100%', alignItems: 'flex-start', justifyContent: 'center', paddingVertical: 16 }}>
-                                <Text style={[styles.subTextColor,appFonts.lgRegular]}>
+                                <Text style={[appFonts.lgRegular, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][1]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.xxlBold]}>
+                                <Text style={[styles.mainTextColor, appFonts.xxlBold, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][2]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.mdRegular]}>
+                                <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
                                     #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
                                 </Text>
                             </View>
-                            <Text style={[ appFonts.mdRegular, {color: colors.greyBase, position: 'absolute', top: 8, right: 0 }]}>
+                            <Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 0 }]}>
                                 {this.state.playerBio[0].rowSet[0][10]}  {this.state.playerBio[0].rowSet[0][11]}
                             </Text>
                         </View>
                     </View>}
                     {!this.state.isLoading && !this.state.isLoadingBio &&
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 16, marginHorizontal: 30}}>
-                        <TouchableOpacity
-                            style={[styles.tabContainer, this.state.selectedTab === "stats" && styles.tabTextSelected]}
-                            onPress={() => this.setState({ selectedTab: "stats"})}
-                        >
-                            <Text style={[styles.tabText]}>Stats</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.tabContainer, this.state.selectedTab === "bio" && styles.tabTextSelected]}
-                            onPress={() => this.setState({ selectedTab: "bio"})}
-                        >
-                            <Text style={[styles.tabText]}>Bio</Text>
-                        </TouchableOpacity>
+                    <View>
+                        {this.state.selectedTab === "stats" ?
+                            <View style={[styles.tabRowContainer]}>
+                                <TouchableOpacity
+                                    style={[styles.tabContainer, styles.tabTextSelected]}
+                                    onPress={() => this.setState({ selectedTab: "stats"})}
+                                >
+                                    <Text style={[styles.tabSelectedText]}>Stats</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                style={[styles.tabContainer, {backgroundColor: primaryColor}]}
+                                onPress={() => this.setState({ selectedTab: "bio"})}
+                                >
+                                <Text style={[styles.tabText]}>Bio</Text>
+                                </TouchableOpacity>
+                            </View>
+                        :
+                            <View style={[styles.tabRowContainer]}>
+                                <TouchableOpacity
+                                    style={[styles.tabContainer, {backgroundColor: primaryColor}]}
+                                    onPress={() => this.setState({ selectedTab: "stats"})}
+                                >
+                                    <Text style={[styles.tabText]}>Stats</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[styles.tabContainer, {backgroundColor: primaryColor}, this.state.selectedTab === "bio" && styles.tabTextSelected]}
+                                    onPress={() => this.setState({ selectedTab: "bio"})}
+                                >
+                                    <Text style={[styles.tabSelectedText]}>Bio</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+
                     </View> }
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                 this.showSelectedTab()
@@ -324,7 +350,7 @@ export default class PlayerDashboard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor: colors.greyDarkest
+        backgroundColor: colors.baseBackground
     },
     headerContainer: {
         width: '100%',
@@ -350,13 +376,13 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     mainTextColor: {
-        color: colors.greyLightest,
+        color: colors.mainTextColor,
     },
     bioSubTextColor: {
-        color: colors.greyBase
+        color: colors.secondaryText
     },
     subTextColor: {
-        color: colors.greyLighter,
+        color: colors.secondaryText,
     },
     largeText: {
         ...appFonts.xxlBold
@@ -365,15 +391,24 @@ const styles = StyleSheet.create({
         ...appFonts.xlBold
     },
     tabText: {
-        ...appFonts.lgRegular,
-        color: colors.greyLightest
+        ...appFonts.xlBold,
+        color: colors.white
     },
     tabTextSelected: {
-        borderBottomWidth: 1,
-        borderBottomColor: colors.highlight
+        // borderLeftWidth: 1,
+        // borderTopWidth: 1,
+        // borderRightWidth: 1,
+        // borderColor: colors.white,
+        backgroundColor: colors.white
+    },
+    tabSelectedText: {
+        ...appFonts.xlBold,
+        color: colors.mainTextColor
     },
     tabContainer: {
-        flex: 0,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     statsContainer: {
         flex: 1,
@@ -411,6 +446,13 @@ const styles = StyleSheet.create({
     },
     bioTextSmaller: {
         ...appFonts.mdRegular
+    },
+    tabRowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        // paddingVertical: 8,
+        paddingHorizontal: 0,
+        height: 38
     }
 });
 
