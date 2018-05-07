@@ -83,36 +83,38 @@ const TabStack = TabNavigator(
                 // icon component from react-native-vector-icons
                 return <Ionicons name={iconName} size={30} color={tintColor} />;
             },
-        tabBarLabel: ({ focused, tintColor }) => {
-                const { routeName } = navigation.state;
-                let label;
-                if (routeName === 'standings') {
-                    label = `Standings`;
-                } else if (routeName === 'playerStats') {
-                    label = `Players`;
-                } else if (routeName === 'teamStats') {
-                    label = `Teams`;
-                } else if (routeName === 'leaders') {
-                    label = 'Leaders';
-                }
-
-                // You can return any component that you like here! We usually use an
-                // icon component from react-native-vector-icons
-                return `${label}`;
-            },
+        // tabBarLabel: ({ focused, tintColor }) => {
+        //         const { routeName } = navigation.state;
+        //         let label;
+        //         if (routeName === 'standings') {
+        //             label = `Standings`;
+        //         } else if (routeName === 'playerStats') {
+        //             label = `Players`;
+        //         } else if (routeName === 'teamStats') {
+        //             label = `Teams`;
+        //         } else if (routeName === 'leaders') {
+        //             label = 'Leaders';
+        //         }
+        //
+        //         // You can return any component that you like here! We usually use an
+        //         // icon component from react-native-vector-icons
+        //         return `${label}`;
+        //     },
         }),
         tabBarOptions: {
-            activeTintColor: colors.greyLight,
+            activeTintColor: colors.greyDarkest,
             inactiveTintColor: colors.greyBase,
-            activeBackgroundColor: colors.greyDarkest,
-            inactiveBackgroundColor: colors.greyDarkest,
+            activeBackgroundColor: colors.greyLightest,
+            inactiveBackgroundColor: colors.greyLightest,
+            showLabel: false,
             style: {
                 borderWidth: 0,
                 // borderTopColor: colors.black,
-                borderTopColor: colors.black,
+                borderTopColor: colors.greyLight,
                 borderTopWidth: 1,
-                padding: 3,
-                backgroundColor: colors.greyDarkest
+                padding: 0,
+                backgroundColor: colors.greyDarkest,
+                height: 44
             },
             tabStyle: {
                 borderWidth: 0,

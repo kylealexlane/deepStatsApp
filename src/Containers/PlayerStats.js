@@ -137,16 +137,6 @@ export default class PlayerStats extends React.Component {
                 chevron
                 bottomDivider={false}
                 onPress={() => this.onLearnMore(rowData)}
-                // linear-gradient(to bottom, #002d62 0%, #002d62 38%, transparent 100%) no-repeat,#0b1a36;
-    //             content: "";
-    // background: url(http://i.cdn.turner.com/nba/nba/assets/logos/teams/primary/web/OKC.svg) center center/100% no-repeat;
-    // opacity: 0.2;
-    // top: 0;
-    // left: 0;
-    // bottom: 0;
-    // right: 0;
-    // position: absolute;
-    // z-index: 0;
             />
         );
     }

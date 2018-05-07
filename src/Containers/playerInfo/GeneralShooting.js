@@ -83,10 +83,12 @@ export default class GeneralShooting extends React.Component {
 
             tableHeadClosestD: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
             tableDataClosestD: [],
-            widthArrClosestD: [145, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrClosestD: [150, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
 
             seasonSelected: this.props.navigation.state.params.seasonSelected,
             seasons: this.props.navigation.state.params.seasons,
+
+            errorMessage: false
         }
     }
 
@@ -97,11 +99,18 @@ export default class GeneralShooting extends React.Component {
     }
 
     fetchNewData(season) {
+        console.log(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${season[1]}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${season[3]}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`);
         return fetch(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${season[1]}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${season[3]}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`)
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log('response!', responseJson);
                 // console.log(responseJson.resultSets[0].rowSet.length-1[4]);
+                if(responseJson.resultSets[0].rowSet.length < 1){
+                    this.setState({ errorMessage: true });
+                    return
+                } else {
+                    this.setState({ errorMessage: false });
+                }
                 let data = responseJson.resultSets[1].rowSet;
                 data.push(responseJson.resultSets[0].rowSet[0]);
                 const newData = data.map((dataRow, index) => {
@@ -148,14 +157,14 @@ export default class GeneralShooting extends React.Component {
                 style={styles.container}
                 stickyHeaderIndices={[1]}
             >
-                <View style={[styles.displayContainer, {paddingTop: 30}]}>
+                <View style={[styles.displayContainer, {paddingTop: 16}]}>
                     <Text>
                         <Text style={styles.nameText}>{firstLast[0]}{' '}</Text>
                         <Text style={styles.nameText}>{firstLast[1]}</Text>
                     </Text>
                 </View>
                 <View style={{backgroundColor: colors.baseBackground, borderBottomWidth: 1,borderBottomColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest}}>
-                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'flex-start', flexDirection: 'row'}]}>
                         {/*<View style={[containerStyle.rowContainer, {paddingHorizontal: 8, paddingVertical: 16, justifyContent: 'center'}]}>*/}
                         <View style={styles.displayContainerSelector}>
                             <Text style={styles.besideSelectorSecondaryText}>YEAR</Text>
@@ -208,7 +217,8 @@ export default class GeneralShooting extends React.Component {
                     </View>
                 </View>
                 <GeneralTable
-                    showSwipeIcon={true}
+                    showHideIcon={true}
+                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
                     title={'GENERAL'}
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.tableDataOverall}
@@ -218,7 +228,8 @@ export default class GeneralShooting extends React.Component {
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
-                    showSwipeIcon={true}
+                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
+                    showHideIcon={true}
                     title={'SHOT CLOCK'}
                     headerRow={this.state.tableHeadShotClock}
                     rowsData={this.state.tableDataShotClock}
@@ -228,7 +239,8 @@ export default class GeneralShooting extends React.Component {
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
-                    showSwipeIcon={true}
+                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
+                    showHideIcon={true}
                     title={'DRIBBLES'}
                     headerRow={this.state.tableHeadDribble}
                     rowsData={this.state.tableDataDribble}
@@ -238,7 +250,8 @@ export default class GeneralShooting extends React.Component {
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
-                    showSwipeIcon={true}
+                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
+                    showHideIcon={true}
                     title={'CLOSEST DEFENDER'}
                     headerRow={this.state.tableHeadClosestD}
                     rowsData={this.state.tableDataClosestD}
@@ -270,7 +283,7 @@ const styles = StyleSheet.create({
         // top: -(windowSize.width)+100
     },
     tableContainer: {
-        marginTop: 30
+        marginTop: 16
     },
     blankView: {
         height: 50
@@ -291,14 +304,15 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingLeft: 16
     },
     displayContainerSelector: {
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'center',
         // flexGrow: 4
     },

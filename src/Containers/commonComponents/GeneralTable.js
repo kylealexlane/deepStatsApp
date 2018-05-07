@@ -26,8 +26,14 @@ import { Table, TableWrapper, Row } from 'react-native-table-component';
 export default class GeneralTable extends React.Component {
     constructor(props) {
         super(props);
+        this.toggleShowData=this.toggleShowData.bind(this);
         this.state = {
+            hideTable: false
         }
+    }
+
+    toggleShowData() {
+        this.setState({ hideTable: !this.state.hideTable });
     }
 
     render() {
@@ -53,59 +59,83 @@ export default class GeneralTable extends React.Component {
         const firstColWidth = widthArr.slice(0, 1);
         widthArr = widthArr.slice(1, widthArr.length);
 
+        console.log('error', this.props.errorMessage);
+
         return (
             <View style={this.props.containerStyle}>
                 <View style={[styles.titleContainer, this.props.titleStyle]}>
                     <Text style={styles.titleText}>{this.props.title}</Text>
-                    {this.props.showSwipeIcon && <MaterialCommunityIcons name={'gesture-swipe-left'} size={20} color={colors.white} style={styles.iconStyle} />}
+                    {this.props.showHideIcon &&
+                        this.state.hideTable ?
+                            <MaterialCommunityIcons
+                                name={'plus'}
+                                size={20}
+                                color={colors.white}
+                                style={styles.iconStyle}
+                                onPress={this.toggleShowData}
+                            />
+                        :
+                            <MaterialCommunityIcons
+                                name={'close'}
+                                size={20}
+                                color={colors.white}
+                                style={styles.iconStyle}
+                                onPress={this.toggleShowData}
+                            />
+                    }
                 </View>
-                <View style={styles.tableContainer}>
-                    <View style={{ width: firstColWidth[0] ? firstColWidth[0] : 0 }}>
-                        <View>
-                            <Table borderStyle={{borderColor: 'transparent'}}>
-                                <Row
-                                    data={firstColumnHeader}
-                                    widthArr={firstColWidth}
-                                    style={[styles.header, this.props.headerStyle]}
-                                    textStyle={[styles.headerText, styles.firstColumnText]}
-                                />
-                            </Table>
-                            <Table borderStyle={{borderColor: 'transparent'}}>
-                                {
-                                    firstColumn.map((tableData, index) => (
-                                        <Row
-                                            key={index}
-                                            data={tableData}
-                                            widthArr={firstColWidth}
-                                            style={[styles.row, index%2 && styles.secondaryRow]}
-                                            textStyle={[styles.text, styles.firstColumnText]}
-                                        />
-                                    ))
-                                }
-                            </Table>
+                { !this.state.hideTable && !(this.props.errorMessage.length > 0) &&
+                    <View style={styles.tableContainer}>
+                        <View style={{ width: firstColWidth[0] ? firstColWidth[0] : 0 }}>
+                            <View>
+                                <Table borderStyle={{borderColor: this.props.headerStyle.backgroundColor ? this.props.headerStyle.backgroundColor : 'transparent'}}>
+                                    <Row
+                                        data={firstColumnHeader}
+                                        widthArr={firstColWidth}
+                                        style={[styles.header, this.props.headerStyle]}
+                                        textStyle={[styles.headerText, styles.firstColumnText, appFonts.xsBold]}
+                                    />
+                                </Table>
+                                <Table borderStyle={{borderColor: 'transparent'}}>
+                                    {
+                                        firstColumn.map((tableData, index) => (
+                                            <Row
+                                                key={index}
+                                                data={tableData}
+                                                widthArr={firstColWidth}
+                                                style={[styles.row, index%2 && styles.secondaryRow]}
+                                                textStyle={[styles.text, styles.firstColumnText]}
+                                            />
+                                        ))
+                                    }
+                                </Table>
+                            </View>
                         </View>
+                        <ScrollView horizontal={true}>
+                            <View>
+                                <Table borderStyle={{borderColor: this.props.headerStyle.backgroundColor ? this.props.headerStyle.backgroundColor : 'transparent'}}>
+                                    <Row data={headerRow} widthArr={widthArr} style={[styles.header, this.props.headerStyle]} textStyle={styles.headerText}/>
+                                </Table>
+                                <Table borderStyle={{borderColor: 'transparent'}}>
+                                    {
+                                        rowsData.map((tableData, index) => (
+                                            <Row
+                                                key={index}
+                                                data={tableData}
+                                                widthArr={widthArr}
+                                                style={[styles.row, index%2 && styles.secondaryRow]}
+                                                textStyle={styles.text}
+                                            />
+                                        ))
+                                    }
+                                </Table>
+                            </View>
+                        </ScrollView>
                     </View>
-                    <ScrollView horizontal={true}>
-                        <View>
-                            <Table borderStyle={{borderColor: 'transparent'}}>
-                                <Row data={headerRow} widthArr={widthArr} style={[styles.header, this.props.headerStyle]} textStyle={styles.headerText}/>
-                            </Table>
-                            <Table borderStyle={{borderColor: 'transparent'}}>
-                                {
-                                    rowsData.map((tableData, index) => (
-                                        <Row
-                                            key={index}
-                                            data={tableData}
-                                            widthArr={widthArr}
-                                            style={[styles.row, index%2 && styles.secondaryRow]}
-                                            textStyle={styles.text}
-                                        />
-                                    ))
-                                }
-                            </Table>
-                        </View>
-                    </ScrollView>
-                </View>
+                }
+                {(this.props.errorMessage.length > 0) &&
+                    <Text style={styles.errorText}>{this.props.errorMessage}</Text>
+                }
             </View>
         )
     }
@@ -114,7 +144,8 @@ export default class GeneralTable extends React.Component {
 const styles = StyleSheet.create({
     firstColumnText: {
         textAlign: 'left',
-        marginLeft: 6
+        marginLeft: 6,
+        ...appFonts.smBold
     },
     iconStyle: {
         marginRight: 6
@@ -144,5 +175,11 @@ const styles = StyleSheet.create({
     row: { height: 28, backgroundColor: colors.baseBackground, borderBottomColor: colors.black, borderBottomWidth: 0 },
     secondaryRow: {
         backgroundColor: colors.secondaryBackground
+    },
+    errorText: {
+        ...appFonts.mdRegular,
+        color: colors.secondaryText,
+        paddingVertical: 16,
+        textAlign: 'center'
     }
 });
