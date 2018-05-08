@@ -10,9 +10,11 @@ import TeamStats from '../Containers/TeamStats';
 import Leaders from '../Containers/Leaders';
 import PlayerDashboard from '../Containers/playerInfo/PlayerDashboard';
 import GeneralShooting from '../Containers/playerInfo/GeneralShooting';
+import CareerStats from '../Containers/playerInfo/CareerStats';
 import DrawerContainer from '../Containers/DrawerContainer';
 import { colors } from '../styles/commonStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Scores from '../Containers/Scores';
 
 // https://github.com/react-community/react-navigation/issues/1254
 const noTransitionConfig = () => ({
@@ -40,6 +42,7 @@ const PlayerStatsStack = StackNavigator({
     home: { screen: PlayerStats },
     playerDashboard: { screen: PlayerDashboard },
     generalShooting: { screen: GeneralShooting },
+    careerStats: { screen: CareerStats },
 },{
     navigationOptions: {
         headerStyle: {borderBottomWidth: 0},
@@ -50,6 +53,7 @@ const PlayerStatsStack = StackNavigator({
 
 const TabStack = TabNavigator(
     {
+        scores: { screen: Scores },
         standings: { screen: Standings },
         playerStats: { screen: PlayerStatsStack },
         teamStats: { screen: TeamStats },
@@ -68,6 +72,8 @@ const TabStack = TabNavigator(
                     iconName = `ios-people${focused ? '' : '-outline'}`;
                 } else if (routeName === 'leaders') {
                     iconName = `ios-star${focused ? '' : '-outline'}`;
+                } else if (routeName === 'scores') {
+                    iconName = `ios-stats${focused ? '' : '-outline'}`;
                 }
                 // if (routeName === 'standings') {
                 //     iconName = `sort-ascending`;

@@ -34,7 +34,7 @@ import StatsTab from './StatsTab';
 
 import GeneralTable from '../commonComponents/GeneralTable'
 
-export default class GeneralShooting extends React.Component {
+export default class CareerStats extends React.Component {
     static navigationOptions = ({ navigation }) => {
         const { params } = navigation.state;
 
@@ -69,21 +69,21 @@ export default class GeneralShooting extends React.Component {
         console.log('passedParams', this.props.navigation.state.params);
         this.state = {
             // tableHeadOverall: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
-            tableHeadOverall: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
-            tableDataOverall: [],
-            widthArrOverall: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            tableHeadCareer: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableDataCareer: [],
+            widthArrCareer: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
 
-            tableHeadShotClock: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
-            tableDataShotClock: [],
-            widthArrShotClock: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
-
-            tableHeadDribble: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
-            tableDataDribble: [],
-            widthArrDribble: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
-
-            tableHeadClosestD: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
-            tableDataClosestD: [],
-            widthArrClosestD: [150, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            // tableHeadShotClock: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            // tableDataShotClock: [],
+            // widthArrShotClock: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            //
+            // tableHeadDribble: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            // tableDataDribble: [],
+            // widthArrDribble: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            //
+            // tableHeadClosestD: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            // tableDataClosestD: [],
+            // widthArrClosestD: [150, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
 
             seasonSelected: this.props.navigation.state.params.seasonSelected,
             seasons: this.props.navigation.state.params.seasons,
@@ -93,59 +93,82 @@ export default class GeneralShooting extends React.Component {
     }
 
     componentWillMount() {
-        console.log('id', this.props.navigation.state.params.playerId);
-        console.log('teamId', this.props.navigation.state.params.teamId);
-        this.fetchNewData(this.state.seasonSelected);
+        this.formatData(this.props.navigation.state.params.playerStats);
     }
 
-    fetchNewData(season) {
-        console.log(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${season[1]}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${season[3]}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`);
-        return fetch(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${season[1]}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${season[3]}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('response!', responseJson);
-                // console.log(responseJson.resultSets[0].rowSet.length-1[4]);
-                if(responseJson.resultSets[0].rowSet.length < 1){
-                    this.setState({ errorMessage: true });
-                    return
+
+    formatData(playerStats) {
+        console.log('player stats', playerStats);
+        let copyOfPlayerStats = playerStats.slice(0);
+        let careerStatsRows = [];
+        const types = { CareerTotalsRegularSeason: 'Regular Season', CareerTotalsPostSeason: 'Post Season', CareerTotalsAllStarSeason: 'All Star Season', CareerTotalsCollegeSeason: 'College Season', CareerTotalsPreseason: 'Pre Season'};
+        copyOfPlayerStats.forEach((row, index) => {
+            if(row.name.indexOf('CareerTotals') >= 0){
+                // let playerStatName = playerStat.name.replace('CareerTotals');
+                if(row.rowSet.length > 0){
+                    console.log(row.rowSet[0]);
+                    row.rowSet[0].unshift(types[row.name]);
+                    row.rowSet[0].splice(1, 3);
+                    console.log(row.rowSet[0]);
+                    careerStatsRows.push(row.rowSet[0]);
                 } else {
-                    this.setState({ errorMessage: false });
+                    row.rowSet.unshift(types[row.name]);
+                    // playerStat.rowSet.splice(1, 3);
+                    careerStatsRows.push(row.rowSet);
                 }
-                let data = responseJson.resultSets[1].rowSet;
-                data.push(responseJson.resultSets[0].rowSet[0]);
-                const newData = data.map((dataRow, index) => {
-                    return dataRow.slice(5);
-                });
-
-                let shotClockData = responseJson.resultSets[2].rowSet;
-                const newShotClockData = shotClockData.map((dataRow, index) => {
-                    return dataRow.slice(5);
-                });
-
-
-                let dribbleData = responseJson.resultSets[3].rowSet;
-                const newDribbleData = dribbleData.map((dataRow, index) => {
-                    return dataRow.slice(5);
-                });
-
-
-                let closestD = responseJson.resultSets[4].rowSet;
-                const newClosestD = closestD.map((dataRow, index) => {
-                    return dataRow.slice(5);
-                });
-
-
-                this.setState({
-                    tableDataOverall: newData,
-                    tableDataShotClock: newShotClockData,
-                    tableDataDribble: newDribbleData,
-                    tableDataClosestD: newClosestD,
-                });
-            })
-            .catch((error) =>{
-                console.error(error);
-            });
+            }
+        });
+        this.setState({ tableDataCareer: careerStatsRows });
+        console.log('stats rows career', careerStatsRows);
     }
+    // fetchNewData(season) {
+    //     console.log(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${season[1]}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${season[3]}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`);
+    //     return fetch(`https://stats.nba.com/stats/playerdashptshots/?perMode=PerGame&leagueId=00&season=${season[1]}&seasonType=Regular+Season&playerId=${this.props.navigation.state.params.playerId}&teamId=${season[3]}&outcome=&location=&month=0&seasonSegment=&dateFrom=&dateTo=&opponentTeamId=0&vsConference=&vsDivision=&gameSegment=&period=0&lastNGames=0`)
+    //         .then((response) => response.json())
+    //         .then((responseJson) => {
+    //             console.log('response!', responseJson);
+    //             // console.log(responseJson.resultSets[0].rowSet.length-1[4]);
+    //             if(responseJson.resultSets[0].rowSet.length < 1){
+    //                 this.setState({ errorMessage: true });
+    //                 return
+    //             } else {
+    //                 this.setState({ errorMessage: false });
+    //             }
+    //             let data = responseJson.resultSets[1].rowSet;
+    //             data.push(responseJson.resultSets[0].rowSet[0]);
+    //             const newData = data.map((dataRow, index) => {
+    //                 return dataRow.slice(5);
+    //             });
+    //
+    //             let shotClockData = responseJson.resultSets[2].rowSet;
+    //             const newShotClockData = shotClockData.map((dataRow, index) => {
+    //                 return dataRow.slice(5);
+    //             });
+    //
+    //
+    //             let dribbleData = responseJson.resultSets[3].rowSet;
+    //             const newDribbleData = dribbleData.map((dataRow, index) => {
+    //                 return dataRow.slice(5);
+    //             });
+    //
+    //
+    //             let closestD = responseJson.resultSets[4].rowSet;
+    //             const newClosestD = closestD.map((dataRow, index) => {
+    //                 return dataRow.slice(5);
+    //             });
+    //
+    //
+    //             this.setState({
+    //                 tableDataOverall: newData,
+    //                 tableDataShotClock: newShotClockData,
+    //                 tableDataDribble: newDribbleData,
+    //                 tableDataClosestD: newClosestD,
+    //             });
+    //         })
+    //         .catch((error) =>{
+    //             console.error(error);
+    //         });
+    // }
 
     render() {
         const state = this.state;
@@ -155,7 +178,7 @@ export default class GeneralShooting extends React.Component {
         return (
             <ScrollView
                 style={styles.container}
-                stickyHeaderIndices={[0]}
+                stickyHeaderIndices={[1]}
             >
                 {/*<View style={[styles.displayContainer, {paddingTop: 16}]}>*/}
                     {/*<Text>*/}
@@ -220,45 +243,45 @@ export default class GeneralShooting extends React.Component {
                     showHideIcon={true}
                     errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
                     title={'GENERAL'}
-                    headerRow={this.state.tableHeadOverall}
-                    rowsData={this.state.tableDataOverall}
-                    widthArr={this.state.widthArrOverall}
+                    headerRow={this.state.tableHeadCareer}
+                    rowsData={this.state.tableDataCareer}
+                    widthArr={this.state.widthArrCareer}
                     titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}
                     headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}
                 />
-                <GeneralTable
-                    containerStyle={styles.tableContainer}
-                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
-                    showHideIcon={true}
-                    title={'SHOT CLOCK'}
-                    headerRow={this.state.tableHeadShotClock}
-                    rowsData={this.state.tableDataShotClock}
-                    widthArr={this.state.widthArrShotClock}
-                    titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}
-                    headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}
-                />
-                <GeneralTable
-                    containerStyle={styles.tableContainer}
-                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
-                    showHideIcon={true}
-                    title={'DRIBBLES'}
-                    headerRow={this.state.tableHeadDribble}
-                    rowsData={this.state.tableDataDribble}
-                    widthArr={this.state.widthArrDribble}
-                    titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}
-                    headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}
-                />
-                <GeneralTable
-                    containerStyle={styles.tableContainer}
-                    errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}
-                    showHideIcon={true}
-                    title={'CLOSEST DEFENDER'}
-                    headerRow={this.state.tableHeadClosestD}
-                    rowsData={this.state.tableDataClosestD}
-                    widthArr={this.state.widthArrClosestD}
-                    titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}
-                    headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}
-                />
+                {/*<GeneralTable*/}
+                    {/*containerStyle={styles.tableContainer}*/}
+                    {/*errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}*/}
+                    {/*showHideIcon={true}*/}
+                    {/*title={'SHOT CLOCK'}*/}
+                    {/*headerRow={this.state.tableHeadShotClock}*/}
+                    {/*rowsData={this.state.tableDataShotClock}*/}
+                    {/*widthArr={this.state.widthArrShotClock}*/}
+                    {/*titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}*/}
+                    {/*headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}*/}
+                {/*/>*/}
+                {/*<GeneralTable*/}
+                    {/*containerStyle={styles.tableContainer}*/}
+                    {/*errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}*/}
+                    {/*showHideIcon={true}*/}
+                    {/*title={'DRIBBLES'}*/}
+                    {/*headerRow={this.state.tableHeadDribble}*/}
+                    {/*rowsData={this.state.tableDataDribble}*/}
+                    {/*widthArr={this.state.widthArrDribble}*/}
+                    {/*titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}*/}
+                    {/*headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}*/}
+                {/*/>*/}
+                {/*<GeneralTable*/}
+                    {/*containerStyle={styles.tableContainer}*/}
+                    {/*errorMessage={this.state.errorMessage ? 'Data not available prior to 2013-14 season' : ''}*/}
+                    {/*showHideIcon={true}*/}
+                    {/*title={'CLOSEST DEFENDER'}*/}
+                    {/*headerRow={this.state.tableHeadClosestD}*/}
+                    {/*rowsData={this.state.tableDataClosestD}*/}
+                    {/*widthArr={this.state.widthArrClosestD}*/}
+                    {/*titleStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest }}*/}
+                    {/*headerStyle={{ backgroundColor: this.props.navigation.state.params.playerTeamShort ?  colorLuminance(teamColors[this.props.navigation.state.params.playerTeamShort].primary, -0.5) : colors.greyDarkest }}*/}
+                {/*/>*/}
                 <View style={styles.blankView}/>
             </ScrollView>
         )
@@ -304,7 +327,7 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
         paddingLeft: 16
     },
@@ -312,7 +335,7 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
         // flexGrow: 4
     },

@@ -1,16 +1,37 @@
-import React from 'react'
-import {StyleSheet, Text, View, Image, ListView} from 'react-native'
-import {colors} from '../styles/commonStyles'
-import {nbaId, year} from "../config/commonVariables";
+import React, { Component } from 'react'
+import {
+    AppRegistry,
+    StatusBar,
+    StyleSheet,
+    Text,
+    View,
+    Alert,
+    TouchableOpacity,
+    TextInput,
+    ScrollView,
+    ListView,
+    SafeAreaView,
+    Image,
+} from 'react-native'
+import { nbaId, year } from '../config/commonVariables'
+import PropTypes from 'prop-types';
+import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
+import { colors, teamColors, windowSize, appFonts } from '../styles/commonStyles'
+import { playerPic, hexToRgbA, capitalizeFirstLetter } from "../helpers/Helpers"
+import LinearGradient from 'react-native-linear-gradient'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import moment from 'moment'
+
+import StatsTab from './playerInfo/StatsTab';
+import VerticalSeperator from "./commonComponents/VerticalSeperator";
 
 export default class Standings extends React.Component {
     constructor(props){
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1,r2) => r1 !== r2});
         this.state ={
-            dataSource: ds.cloneWithRows([]),
-            isLoading: true,
-            playersList: [],
+            currentDate: ''
         }
     }
   static navigationOptions = {
@@ -24,26 +45,34 @@ export default class Standings extends React.Component {
   };
 
   componentDidMount() {
-      return fetch(`https://stats.nba.com/stats/commonallplayers/?leagueId=${nbaId}&season=${year}&isOnlyCurrentSeason=1`)
+      return fetch(`https://ca.global.nba.com/stats2/scores/gamedaystatus.json?locale=en&tz=-5`)
       // return fetch('https://stats.nba.com/stats/commonallplayers/?leagueId=00&season=2015-16&isOnlyCurrentSeason=1')
-          .then((response) => response.json())
+          .then((response) =>
+              response.json())
           .then((responseJson) => {
-              let playerImages=[];
-              responseJson.resultSets[0].rowSet.forEach((player) => {
-                const firstLast = player[2].split(" ");
-                console.log(firstLast);
-                console.log(player);
-                console.log(`https://nba-players.herokuapp.com/players/${firstLast[1]}/${firstLast[0]}`);
-                  // fetch(`https://nba-players.herokuapp.com/players/${}/${}`)
-              });
+              this.fetchForDate('2018-05-05');
+              console.log('response from gameday', responseJson);
               this.setState({
-                  isLoading: false,
-                  dataSource: this.state.dataSource.cloneWithRows(responseJson.resultSets[0].rowSet),
-                  playersList: responseJson.resultSets[0].rowSet,
-              }, function(){
-                  console.log(responseJson.resultSets[0].rowSet);
+                  // dataSource: this.state.dataSource.cloneWithRows(responseJson.resultSets[0].rowSet),
               });
+          })
+          .catch((error) =>{
+              console.error(error);
+          });
+  }
 
+  fetchForDate(date) {
+      const tz = '-5';
+      console.log(`https://ca.global.nba.com/stats2/scores/gamedaystatus.json?gameDate=${date}&locale=en&tz=${tz}`);
+      return fetch(`https://ca.global.nba.com/stats2/scores/daily.json?countryCode=CA&gameDate=${date}&locale=en&tz=${tz}`)
+      // return fetch(`https://ca.global.nba.com/stats2/scores/gamedaystatus.json?gameDate=${date}&locale=en&tz=${tz}`)
+          .then((response) =>
+            response.json())
+          .then((responseJson) => {
+              console.log('response from gameday3', responseJson);
+              this.setState({
+                  // dataSource: this.state.dataSource.cloneWithRows(responseJson.resultSets[0].rowSet),
+              });
           })
           .catch((error) =>{
               console.error(error);

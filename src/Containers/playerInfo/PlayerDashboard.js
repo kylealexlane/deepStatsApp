@@ -54,12 +54,9 @@ export default class PlayerDashboard extends React.Component {
     }
 
     componentDidMount(){
-        console.log('id', this.props.navigation.state.params.playerId);
         return fetch(`https://stats.nba.com/stats/playerprofilev2/?playerId=${this.props.navigation.state.params.playerId}&leagueId=${nbaId}&perMode=PerGame`)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
-                console.log(responseJson.resultSets[0].rowSet.length-1[4]);
                 this.loadPlayerBio();
                 this.setState({
                     isLoading: false,
@@ -79,8 +76,6 @@ export default class PlayerDashboard extends React.Component {
         return fetch(`https://stats.nba.com/stats/commonplayerinfo/?playerId=${this.props.navigation.state.params.playerId}&leagueId=${nbaId}`)
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log('second', responseJson);
-                console.log('sss', responseJson.resultSets[0].rowSet[0][1]);
                 this.setState({
                     isLoadingBio: false,
                     playerBio: responseJson.resultSets,
@@ -251,7 +246,6 @@ export default class PlayerDashboard extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         let primaryColor = '#000000';
         if (!this.state.isLoading && !this.state.isLoadingBio) {
             primaryColor = teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary;
@@ -283,7 +277,6 @@ export default class PlayerDashboard extends React.Component {
                         <Image
                             // rounded
                             source={{uri: playerPic(this.state.firstName, this.state.lastName)}}
-                            // onPress={() => console.log("Works!")}
                             // containerStyle={{ backgroundColor: 'transparent', justifyContent: 'flex-end', alignItems: 'flex-end'}}
                             // overlayContainerStyle={{ marginRight: 0, backgroundColor: 'transparent', justifyContent: 'flex-end', alignItems: 'flex-end'}}
                             style={{ height: 150, width: 200, position: 'absolute', left: 0, bottom: 0}}
@@ -305,7 +298,7 @@ export default class PlayerDashboard extends React.Component {
                                     {this.state.playerBio[0].rowSet[0][14]}
                                 </Text>
                             </View>
-                            <Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 0 }]}>
+                            <Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 16 }]}>
                                 <Text>{this.state.playerBio[0].rowSet[0][10].split("-")[0]}</Text>
                                 <Text style={styles.upperRightSubText}>'</Text>
                                 <Text>{this.state.playerBio[0].rowSet[0][10].split("-")[1]}</Text>

@@ -91,9 +91,6 @@ export default class PlayerStats extends React.Component {
     // }
 
     onLearnMore = (rowData) => {
-        console.log('navigating', rowData);
-        console.log('navigating', rowData[0]);
-
         this.props.navigation.push('playerDashboard', { playerId: rowData[0] });
     };
     renderRow(rowData){

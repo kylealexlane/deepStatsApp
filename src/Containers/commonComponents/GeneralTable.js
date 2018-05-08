@@ -64,25 +64,25 @@ export default class GeneralTable extends React.Component {
         return (
             <View style={this.props.containerStyle}>
                 <View style={[styles.titleContainer, this.props.titleStyle]}>
-                    <Text style={styles.titleText}>{this.props.title}</Text>
                     {this.props.showHideIcon &&
-                        this.state.hideTable ?
-                            <MaterialCommunityIcons
-                                name={'plus'}
-                                size={20}
-                                color={colors.white}
-                                style={styles.iconStyle}
-                                onPress={this.toggleShowData}
-                            />
+                    this.state.hideTable ?
+                        <MaterialCommunityIcons
+                            name={'chevron-right'}
+                            size={20}
+                            color={colors.white}
+                            style={styles.iconStyle}
+                            onPress={this.toggleShowData}
+                        />
                         :
-                            <MaterialCommunityIcons
-                                name={'close'}
-                                size={20}
-                                color={colors.white}
-                                style={styles.iconStyle}
-                                onPress={this.toggleShowData}
-                            />
+                        <MaterialCommunityIcons
+                            name={'chevron-down'}
+                            size={20}
+                            color={colors.white}
+                            style={styles.iconStyle}
+                            onPress={this.toggleShowData}
+                        />
                     }
+                    <Text style={styles.titleText}>{this.props.title}</Text>
                 </View>
                 { !this.state.hideTable && !(this.props.errorMessage.length > 0) &&
                     <View style={styles.tableContainer}>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 30,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         paddingLeft: 6,
         flexDirection: 'row'
         // paddingBottom: 16

@@ -37,6 +37,7 @@ export default class StatsTab extends React.Component {
     constructor(props){
         super(props);
         this.navigateToGeneralShooting = this.navigateToGeneralShooting.bind(this);
+        this.navigateToCareerStats = this.navigateToCareerStats.bind(this);
         this.inputRefs = {};
 
         this.state ={
@@ -83,6 +84,21 @@ export default class StatsTab extends React.Component {
     navigateToGeneralShooting() {
         console.log('props when moving', this.props);
         this.props.navigation.push('generalShooting', {
+            seasons: this.state.seasons,
+            seasonSelected: this.state.seasonSelected,
+            playerId: this.props.navigation.state.params.playerId,
+            // teamId: this.props.parentState.playerBio[0].rowSet[0][16],
+            teamIdArray: this.state.teamIdArray,
+            playerName: this.props.parentState.playerBio[0].rowSet[0][3],
+            playerTeamShort: this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4],
+            teamImageURI: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]}.png`
+        });
+    }
+
+    navigateToCareerStats() {
+        console.log('moving to career', this.props);
+        this.props.navigation.push('careerStats', {
+            playerStats: this.props.parentState.playerStats,
             seasons: this.state.seasons,
             seasonSelected: this.state.seasonSelected,
             playerId: this.props.navigation.state.params.playerId,
@@ -215,78 +231,79 @@ export default class StatsTab extends React.Component {
                 </View>
 
                 <View style={{paddingTop: 10}}/>
-                <HorizontalSeperator containerStyles={{width: '100%'}}/>
+                {/*<HorizontalSeperator containerStyles={{width: '100%', marginVertical: 4}}/>*/}
 
-                <View style={[styles.statsRowContainer, { paddingTop: 10 }]}>
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text>
-                            <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                PTS
-                            </Text>
-                        </Text>
-                        <Text>
-                            <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[26]}
-                            </Text>
-                        </Text>
-                    </View>
+                {/*<View style={[styles.statsRowContainer, { paddingTop: 10 }]}>*/}
+                    {/*<View style={[styles.statsRowSubContainer]}>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
+                                {/*PTS*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
+                                {/*{currentYearStats[26]}*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                    {/*</View>*/}
 
-                    <VerticalSeperator/>
+                    {/*<VerticalSeperator/>*/}
 
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text>
-                            <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                AST
-                            </Text>
-                        </Text>
-                        <Text>
-                            <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[21]}
-                            </Text>
-                        </Text>
-                    </View>
+                    {/*<View style={[styles.statsRowSubContainer]}>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
+                                {/*AST*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
+                                {/*{currentYearStats[21]}*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                    {/*</View>*/}
 
-                    <VerticalSeperator/>
+                    {/*<VerticalSeperator/>*/}
 
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text>
-                            <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                REB
-                            </Text>
-                        </Text>
-                        <Text>
-                            <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[20]}
-                            </Text>
-                        </Text>
-                    </View>
+                    {/*<View style={[styles.statsRowSubContainer]}>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
+                                {/*REB*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
+                                {/*{currentYearStats[20]}*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                    {/*</View>*/}
 
-                    <VerticalSeperator/>
+                    {/*<VerticalSeperator/>*/}
 
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text>
-                            <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                                STL
-                            </Text>
-                        </Text>
-                        <Text>
-                            <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                                {currentYearStats[22]}
-                            </Text>
-                        </Text>
-                    </View>
+                    {/*<View style={[styles.statsRowSubContainer]}>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
+                                {/*STL*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                        {/*<Text>*/}
+                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
+                                {/*{currentYearStats[22]}*/}
+                            {/*</Text>*/}
+                        {/*</Text>*/}
+                    {/*</View>*/}
 
-                    <VerticalSeperator/>
+                    {/*<VerticalSeperator/>*/}
 
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                            BLK
-                        </Text>
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            {currentYearStats[23]}
-                        </Text>
-                    </View>
-                </View>
+                    {/*<View style={[styles.statsRowSubContainer]}>*/}
+                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
+                            {/*BLK*/}
+                        {/*</Text>*/}
+                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
+                            {/*{currentYearStats[23]}*/}
+                        {/*</Text>*/}
+                    {/*</View>*/}
+                {/*</View>*/}
+                <View style={{height: 100}} />
 
 
 
@@ -303,22 +320,22 @@ export default class StatsTab extends React.Component {
                     <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                         Shooting
                     </Text>
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*FT%*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{currentYearStats[17]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*3%*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{currentYearStats[14]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            FT%
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[17]}
+                        </Text>
+                    </View>
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            3%
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {currentYearStats[14]}
+                        </Text>
+                    </View>
                     {/*<View style={[styles.statsRowSubContainer]}>*/}
                         {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
                             {/*FG%*/}
@@ -333,18 +350,21 @@ export default class StatsTab extends React.Component {
                 </TouchableOpacity>
 
 
-                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
+                <TouchableOpacity
+                    style={[styles.statsRowContainer, styles.darkBorderTop]}
+                    onPress={this.navigateToCareerStats}
+                >
                     <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
                         Career
                     </Text>
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*PTS*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{careerStats[23]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
+                    <View style={[styles.statsRowSubContainer]}>
+                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
+                            PTS
+                        </Text>
+                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
+                            {careerStats[23]}
+                        </Text>
+                    </View>
                     {/*<View style={[styles.statsRowSubContainer]}>*/}
                         {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
                             {/*AST*/}
@@ -364,7 +384,7 @@ export default class StatsTab extends React.Component {
                     <View>
                         <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
                     </View>
-                </View>
+                </TouchableOpacity>
 
 
                 <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
@@ -507,7 +527,7 @@ const styles = StyleSheet.create({
       borderColor: colors.greyLight
     },
     statsTextSmaller: {
-        ...appFonts.mdRegular
+        ...appFonts.smRegular
     },
     darkBorderTop: {
         borderTopColor: colors.greyLight,
