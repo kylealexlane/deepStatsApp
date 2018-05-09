@@ -51,9 +51,19 @@ const PlayerStatsStack = StackNavigator({
     }
 });
 
+const ScoresStack = StackNavigator({
+    home: { screen: Scores },
+},{
+    navigationOptions: {
+        headerStyle: {borderBottomWidth: 0},
+        // title: 'Test',
+        // headerTintColor: 'white',
+    }
+});
+
 const TabStack = TabNavigator(
     {
-        scores: { screen: Scores },
+        scores: { screen: ScoresStack },
         standings: { screen: Standings },
         playerStats: { screen: PlayerStatsStack },
         teamStats: { screen: TeamStats },

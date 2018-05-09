@@ -22,27 +22,49 @@ import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Octicons from 'react-native-vector-icons/Octicons'
 import moment from 'moment'
+import SVGImage from 'react-native-svg-image';
+
 
 import StatsTab from './playerInfo/StatsTab';
 import VerticalSeperator from "./commonComponents/VerticalSeperator";
 
-export default class Standings extends React.Component {
+export default class Scores extends React.Component {
+    static navigationOptions = {
+        // title: params ? params.playerName : 'Shooting',
+        title: 'Scores',
+
+        headerStyle: {
+            backgroundColor: colors.mainAccent,
+            // borderBottomColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.greyDarkest
+            borderBottomColor: colors.mainAccent,
+        },
+        headerTitleStyle: {
+            ...appFonts.lgBold,
+            color: colors.white
+        },
+        // headerTintColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.white,
+        headerTintColor: colors.white,
+
+        // headerBackground:  <Image
+        //     style={styles.headerBackgroundLogo}
+        //     source={{uri: params ? params.teamImageURI : ''}}
+        // />,
+        headerTransparent: false,
+    };
+
     constructor(props){
         super(props);
+        this.getCurrentDateDisplay = this.getCurrentDateDisplay.bind(this);
+        this.moveDateUp = this.moveDateUp.bind(this);
+        this.moveDateDown = this.moveDateDown.bind(this);
+        this.launchCalendar = this.launchCalendar.bind(this);
         this.state ={
             currentDate: moment().format('YYYY[-]MM[-]DD')
         }
     }
-    static navigationOptions = {
-        // drawerLabel: 'Standings',
-        // drawerIcon: () => (
-        //   <Image
-        //     source={{uri: `https://dummyimage.com/60x60/000/fff.jpg&text=1`}}
-        //     style={{width: 30, height: 30, borderRadius: 15}}
-        //   />
-        // )
-    };
 
     componentDidMount() {
         this.fetchForDate(this.state.currentDate);
@@ -65,14 +87,63 @@ export default class Standings extends React.Component {
             });
     }
 
+    getCurrentDateDisplay() {
+        console.log('getting');
+        const displayDate = this.state.currentDate;
+        if (displayDate === moment().format('YYYY[-]MM[-]DD')) {
+            return 'Today'
+        } else if (displayDate === moment().add(1, 'days').format('YYYY[-]MM[-]DD')) {
+            return 'Tomorrow'
+        } else if (displayDate === moment().subtract(1, 'days').format('YYYY[-]MM[-]DD')){
+            return 'Yesterday'
+        }
+        return moment(displayDate).format('MMMM D YYYY');
+    }
+
+    moveDateUp() {
+        this.changeDate(moment(this.state.currentDate).add(1, 'days'));
+    }
+
+    moveDateDown() {
+        this.changeDate(moment(this.state.currentDate).subtract(1, 'days'));
+    }
+
+    changeDate(date) {
+        this.setState({
+            currentDate: date.format('YYYY[-]MM[-]DD')
+        })
+    }
 
     render() {
         return (
             <SafeAreaView style={{flex:1, backgroundColor: colors.baseBackground }}>
-                <StatusBar barStyle="dark-content" />
+                <StatusBar barStyle="light-content" />
                 <ScrollView style={styles.container}>
-                    <View>
-
+                    <View style={styles.chooseDateBar}>
+                        <MaterialIcons
+                            name={'chevron-left'}
+                            size={30}
+                            color={colors.white}
+                            style={styles.iconStyle}
+                            onPress={this.moveDateDown}
+                        />
+                        <View style={styles.rowContainer}>
+                            <Text style={styles.dateText}>{this.getCurrentDateDisplay()}</Text>
+                            <Octicons
+                                name={'calendar'}
+                                size={20}
+                                color={colors.white}
+                                style={styles.iconStyle}
+                                onPress={this.launchCalendar}
+                            />
+                        </View>
+                        <MaterialIcons
+                            name={'chevron-right'}
+                            size={30}
+                            color={colors.white}
+                            style={styles.iconStyle}
+                            onPress={this.moveDateUp}
+                        />
                     </View>
 
                 </ScrollView>
@@ -86,4 +157,20 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.baseBackground,
     },
+    chooseDateBar: {
+        width: '100%',
+        paddingVertical: 8,
+        backgroundColor: colors.mainAccent,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    dateText: {
+        ...appFonts.lgMedium,
+        color: colors.white,
+        marginRight: 8
+    },
+    rowContainer: {
+        flexDirection: 'row'
+    }
 });

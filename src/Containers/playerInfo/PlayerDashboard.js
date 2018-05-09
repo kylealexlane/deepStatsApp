@@ -23,6 +23,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
+import SVGImage from 'react-native-svg-image';
+
 
 import StatsTab from './StatsTab';
 import VerticalSeperator from "../commonComponents/VerticalSeperator";
@@ -247,8 +249,10 @@ export default class PlayerDashboard extends React.Component {
 
     render() {
         let primaryColor = '#000000';
+        let teamAbbr = '';
         if (!this.state.isLoading && !this.state.isLoadingBio) {
             primaryColor = teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary;
+            teamAbbr = this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4];
         }
         console.log('state yo', this.state);
         return (
@@ -260,12 +264,16 @@ export default class PlayerDashboard extends React.Component {
                 <ScrollView style={styles.container}>
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                     <View style={[styles.headerContainer, { backgroundColor: this.state.isLoading ? colors.greyBase : hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.2) }]}>
-                        <Image
-                            style={styles.headerBackgroundLogo}
-                            source={{uri: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]}.png`}}
-                            // source={{uri: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${'TOR'}.png`}}
+                        {/*<Image*/}
+                            {/*style={styles.headerBackgroundLogo}*/}
+                            {/*source={{uri: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]}.png`}}*/}
+                            {/*// source={{uri: `https://ca.global.nba.com/media/img/teams/00/logos/${teamAbbr}_logo.svg`}}*/}
 
-                            // source={{uri: `https://i.cdn.turner.com/nba/nba/assets/logos/teams/primary/web/${this.state.playerStats[0].rowSet[this.state.seasonIndex][4]}.png`}}
+                            {/*// source={{uri: `https://i.cdn.turner.com/nba/nba/assets/logos/teams/primary/web/${this.state.playerStats[0].rowSet[this.state.seasonIndex][4]}.png`}}*/}
+                        {/*/>*/}
+                        <SVGImage
+                            style={styles.headerBackgroundLogo}
+                            source={{uri: `https://ca.global.nba.com/media/img/teams/00/logos/${teamAbbr}_logo.svg`}}
                         />
                         <LinearGradient
                             colors={['#000000', hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.4)]} style={styles.linearGradient}
@@ -288,24 +296,24 @@ export default class PlayerDashboard extends React.Component {
                                 <Text style={[appFonts.lgRegular, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][1]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.xxlBold, { color: colors.white }]}>
+                                <Text style={[styles.mainTextColor, appFonts.xxxlBold, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][2]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.lgBold, { color: colors.white }]}>
-                                    #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][18]}
+                                <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
+                                    #{this.state.playerBio[0].rowSet[0][13]}  {this.state.playerBio[0].rowSet[0][18]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.lgBold, { color: colors.white }]}>
+                                <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][14]}
                                 </Text>
                             </View>
-                            <Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 16 }]}>
-                                <Text>{this.state.playerBio[0].rowSet[0][10].split("-")[0]}</Text>
-                                <Text style={styles.upperRightSubText}>'</Text>
-                                <Text>{this.state.playerBio[0].rowSet[0][10].split("-")[1]}</Text>
-                                <Text style={styles.upperRightSubText}>"{' '}</Text>
-                                <Text>{this.state.playerBio[0].rowSet[0][11]}</Text>
-                                <Text style={styles.upperRightSubText}>lbs</Text>
-                            </Text>
+                            {/*<Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 16 }]}>*/}
+                                {/*<Text>{this.state.playerBio[0].rowSet[0][10].split("-")[0]}</Text>*/}
+                                {/*<Text style={styles.upperRightSubText}>'</Text>*/}
+                                {/*<Text>{this.state.playerBio[0].rowSet[0][10].split("-")[1]}</Text>*/}
+                                {/*<Text style={styles.upperRightSubText}>"{' '}</Text>*/}
+                                {/*<Text>{this.state.playerBio[0].rowSet[0][11]}</Text>*/}
+                                {/*<Text style={styles.upperRightSubText}>lbs</Text>*/}
+                            {/*</Text>*/}
                         </View>
                     </View>}
                     {!this.state.isLoading && !this.state.isLoadingBio &&

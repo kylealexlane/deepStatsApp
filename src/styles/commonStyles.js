@@ -266,6 +266,8 @@ export const colors = {
 
     white: '#FFFFFF',
 
+
+    mainAccent: '#1A237E',
     highlight: '#20d6ff',
 
 };
