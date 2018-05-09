@@ -16,6 +16,8 @@ import {
 import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
 import { colors, teamColors, windowSize, appFonts } from '../../styles/commonStyles'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import moment from 'moment'
+
 
 import SVGImage from 'react-native-svg-image'
 
@@ -34,22 +36,41 @@ export default class GameScore extends React.Component {
         // }
     }
 
-    renderMiddleView(boxscore){
-        const date = new Date();
-        const offset = date.getTimezoneOffset() / 60 ;
+    renderMiddleView(boxscore, profile, broadcasters) {
+        let name = 'TBD';
+        if(broadcasters[0] && broadcasters[0].name) {
+            name = broadcasters[0].name;
+        }
+        console.log(profile);
+        const date = new Date(0);
+        console.log(profile.utcMillis);
+        date.setUTCMilliseconds(profile.utcMillis);
         if (boxscore.status === '1' || boxscore.status === '0') {
             return(
-                <Text>Hellow</Text>
+                <Text>
+                    <Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>
+                    <Text style={styles.timeText, styles.secondaryText}>  </Text>
+                    <Text style={styles.timeText}>{name}</Text>
+                </Text>
             );
         }
         return(
-            <Text>yo</Text>
+            <View>
+                <Text>
+                    <Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>
+                    <Text style={styles.timeText, styles.secondaryText}>  </Text>
+                    <Text style={styles.timeText}>{name}</Text>
+                </Text>
+                <View>
+                    
+                </View>
+            </View>
         );
     }
 
     render() {
         console.log('item', this.props.item);
-        const {homeTeam, awayTeam, boxscore} = this.props.item;
+        const {homeTeam, awayTeam, boxscore, profile, broadcasters} = this.props.item;
         return (
             <View style={styles.overallContainer}>
                 <View style={styles.columnContainer}>
@@ -60,7 +81,7 @@ export default class GameScore extends React.Component {
                     {this.renderBottomText(homeTeam, boxscore)}
                 </View>
                 <View>
-                    {this.renderMiddleView(boxscore)}
+                    {this.renderMiddleView(boxscore, profile, broadcasters)}
                 </View>
                 <View style={styles.columnContainer}>
                     <SVGImage
@@ -104,6 +125,13 @@ const styles = StyleSheet.create({
     },
     recordText: {
         ...appFonts.smRegular,
+        color: colors.secondaryText
+    },
+    timeText: {
+        ...appFonts.smRegular,
+        color: colors.baseText
+    },
+    secondaryText: {
         color: colors.secondaryText
     }
 });

@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     calendarModal: {
         position: 'absolute',
         width: windowSize.width,
-        backgroundColor: 'yellow'
+        backgroundColor: 'yellow',
+        zIndex: 1000
     }
 });
