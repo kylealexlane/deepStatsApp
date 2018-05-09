@@ -267,8 +267,10 @@ export const colors = {
     white: '#FFFFFF',
 
 
-    mainAccent: '#1A237E',
-    highlight: '#20d6ff',
+    mainAccent: '#0A2463',
+    // mainAccent: '#192BC2',
+
+    highlight: '#FE5F55',
 
 };
 

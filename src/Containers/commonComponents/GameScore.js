@@ -36,46 +36,29 @@ export default class GameScore extends React.Component {
         // }
     }
 
-    renderMiddleView(item) {
+    renderMiddleView(item, leader) {
         const {boxscore, profile, broadcasters, homeTeam, awayTeam} = item;
-        let leader = 'none';
-        if(boxscore.homeScore > boxscore.awayScore) {
-            leader = 'home';
-        } else if (boxscore.homeScore < boxscore.awayScore) {
-            leader = 'away';
+
+        let fgpctLeader = 'none';
+        if(homeTeam.score.fgpct > awayTeam.score.fgpct) {
+            fgpctLeader = 'home';
+        } else if (homeTeam.score.fgpct < awayTeam.score.fgpct) {
+            fgpctLeader = 'away';
         }
-        // const fillHome = teamColors[homeTeam.profile.abbr].primary;
-        const fillHome = colors.mainAccent;
-        // const fillAway = teamColors[awayTeam.profile.abbr].primary;
-        const fillAway = colors.mainAccent
 
-        let dataHome = [];
-        let dataAway = [];
+        let asstLeader = 'none';
+        if(homeTeam.score.assists > awayTeam.score.assists) {
+            asstLeader = 'home';
+        } else if (homeTeam.score.assists < awayTeam.score.assists) {
+            asstLeader = 'away';
+        }
 
-        dataAway.push(boxscore.homeScore);
-        dataAway.push(boxscore.awayScore);
-        dataAway.push(boxscore.homeScore);
-
-        dataHome.push(boxscore.homeScore * -1);
-        dataHome.push(boxscore.awayScore * -1);
-        dataHome.push(boxscore.homeScore * -1);
-
-        console.log('homeScore', dataHome);
-        // const CUT_OFF = 200;
-        // const Labels = ({  x, y, bandwidth, data }) => (
-        //     dataHome.map((value, index) => (
-        //         <Text
-        //             key={ index }
-        //             x={ value > CUT_OFF ? x(0) + 10 : x(value) - 10 }
-        //             y={ y(index) + (bandwidth / 2) }
-        //             fontSize={ 3 }
-        //             fill={ value > CUT_OFF ? 'white' : 'black' }
-        //             alignmentBaseline={ 'middle' }
-        //         >
-        //             {value}
-        //         </Text>
-        //     ))
-        // );
+        let rebLeader = 'none';
+        if(homeTeam.score.assists > awayTeam.score.assists) {
+            rebLeader = 'home';
+        } else if (homeTeam.score.assists < awayTeam.score.assists) {
+            rebLeader = 'away';
+        }
 
 
         const data   = [ 50, 10, 40, 95, -4, -24, null, 85, undefined, 0, 35, 53, -53, 24, 50, -20, -80 ];
@@ -91,43 +74,37 @@ export default class GameScore extends React.Component {
             return(
                 <Text>
                     <Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>
-                    <Text style={styles.timeText, styles.secondaryText}>  </Text>
+                    <Text style={styles.timeText}>  </Text>
                     <Text style={styles.timeText}>{name}</Text>
                 </Text>
             );
         }
         return(
             <View style={styles.columnContainer}>
-                <Text>
-                    <Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>
-                    <Text style={styles.timeText, styles.secondaryText}>  </Text>
-                    <Text style={styles.timeText}>{name}</Text>
-                </Text>
+                {/*<Text>*/}
+                    {/*<Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>*/}
+                    {/*<Text style={styles.timeText}>  </Text>*/}
+                    {/*<Text style={styles.timeText}>{name}</Text>*/}
+                {/*</Text>*/}
                 <View style={styles.graphRow}>
-                    <Text style={[styles.scoresText, leader==='away' && styles.underlineScore]}>{boxscore.homeScore}</Text>
-                    <Text style={[styles.scoresText, styles.secondaryText]}>  -  </Text>
-                    <Text style={[styles.scoresText, leader==='home' && styles.underlineScore]}>{boxscore.awayScore}</Text>
-
-                    {/*<BarChart*/}
-                        {/*style={{ height: 40, width: windowSize.width * 0.2 }}*/}
-                        {/*data={ dataHome }*/}
-                        {/*svg={{ fill: fillHome }}*/}
-                        {/*// contentInset={{ top: 16, bottom: 16 }}*/}
-                        {/*horizontal={true}*/}
-                        {/*gridMin={0}*/}
-                    {/*>*/}
-                        {/*/!*<Labels />*!/*/}
-                    {/*</BarChart>*/}
-                    {/*<BarChart*/}
-                        {/*style={{ flex: 1, height: 40, width: windowSize.width * 0.2 }}*/}
-                        {/*data={ dataAway }*/}
-                        {/*svg={{ fill: fillAway }}*/}
-                        {/*// contentInset={{ top: 16, bottom: 16 }}*/}
-                        {/*horizontal={true}*/}
-                        {/*gridMin={0}*/}
-                    {/*>*/}
-                    {/*</BarChart>*/}
-
+                    <Text style={[styles.scoresText, leader==='home' && styles.boldScoreText]}>{boxscore.homeScore}</Text>
+                    <Text style={[styles.scoresText, styles.underlineScore]}>  -  </Text>
+                    <Text style={[styles.scoresText, leader==='away' && styles.boldScoreText]}>{boxscore.awayScore}</Text>
+                </View>
+                <View style={styles.graphRow}>
+                    <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct}</Text>
+                    <Text style={[styles.scoresMiddleText]}>    FG%    </Text>
+                    <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct}</Text>
+                </View>
+                <View style={styles.graphRow}>
+                    <Text style={[styles.otherStatsText, asstLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.assists}</Text>
+                    <Text style={[styles.scoresMiddleText]}>    ASST    </Text>
+                    <Text style={[styles.otherStatsText, asstLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.assists}</Text>
+                </View>
+                <View style={styles.graphRow}>
+                    <Text style={[styles.otherStatsText, rebLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.rebs}</Text>
+                    <Text style={[styles.scoresMiddleText]}>    REB    </Text>
+                    <Text style={[styles.otherStatsText, rebLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.rebs}</Text>
                 </View>
             </View>
         );
@@ -136,25 +113,36 @@ export default class GameScore extends React.Component {
     render() {
         console.log('item', this.props.item);
         const {homeTeam, awayTeam, boxscore, profile, broadcasters} = this.props.item;
+        let leader = 'none';
+        let borderColor = 'transparent';
+        if(boxscore.homeScore > boxscore.awayScore) {
+            leader = 'home';
+            borderColor = teamColors[homeTeam.profile.abbr].primary;
+        } else if (boxscore.homeScore < boxscore.awayScore) {
+            leader = 'away';
+            borderColor = teamColors[awayTeam.profile.abbr].primary;
+        }
         return (
-            <View style={styles.overallContainer}>
-                <View style={styles.columnContainer}>
-                    <SVGImage
-                        style={styles.teamLogo}
-                        source={{uri: `https://ca.global.nba.com/media/img/teams/00/logos/${homeTeam.profile.abbr}_logo.svg`}}
-                    />
-                    {this.renderBottomText(homeTeam, boxscore)}
-                </View>
-                <View>
-                    {this.renderMiddleView(this.props.item)}
-                </View>
-                <View style={styles.columnContainer}>
-                    <SVGImage
-                        style={styles.teamLogo}
-                        source={{uri: `https://ca.global.nba.com/media/img/teams/00/logos/${awayTeam.profile.abbr}_logo.svg`}}
-                    />
-                    {this.renderBottomText(awayTeam, boxscore)}
+            <View style={[ leader === 'home' && styles.shadowLeft, leader === 'away' && styles.shadowRight]}>
+                <View style={[styles.overallContainer, leader === 'home' && {borderLeftColor: colors.mainAccent}, leader === 'away' && {borderRightColor: colors.mainAccent}]}>
+                    <View style={styles.columnContainer}>
+                        <SVGImage
+                            style={styles.teamLogo}
+                            source={{uri: `https://ca.global.nba.com/media/img/teams/00/logos/${homeTeam.profile.abbr}_logo.svg`}}
+                        />
+                        {this.renderBottomText(homeTeam, boxscore)}
                     </View>
+                    <View>
+                        {this.renderMiddleView(this.props.item, leader)}
+                    </View>
+                    <View style={styles.columnContainer}>
+                        <SVGImage
+                            style={styles.teamLogo}
+                            source={{uri: `https://ca.global.nba.com/media/img/teams/00/logos/${awayTeam.profile.abbr}_logo.svg`}}
+                        />
+                        {this.renderBottomText(awayTeam, boxscore)}
+                        </View>
+                </View>
             </View>
         )
     }
@@ -167,15 +155,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: colors.baseBackground,
         paddingVertical: 8,
-        paddingHorizontal: 16,
+        paddingHorizontal: 12,
         marginTop: 32,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: colors.greyLightest,
-        shadowRadius: 3,
+        // borderTopWidth: 1,
+        // borderBottomWidth: 1,
+        shadowRadius: 5,
         shadowColor: colors.greyDarkest,
-        shadowOpacity: 0.15,
-        shadowOffset: {width: 2,height: 2}
+        shadowOpacity: 0.2,
+        shadowOffset: {width: 2,height: 2},
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        borderColor: 'transparent',
 
     },
     columnContainer: {
@@ -184,9 +174,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     teamLogo: {
-        height: 60,
-        width: 60,
-        backgroundColor: colors.greyDarkest
+        height: 70,
+        width: 70,
+        backgroundColor: colors.baseBackground,
+        borderColor: colors.baseBackground
     },
     recordText: {
         ...appFonts.smRegular,
@@ -206,14 +197,42 @@ const styles = StyleSheet.create({
         flexWrap: 'nowrap',
         // width: 300,
         backgroundColor: 'transparent',
-        paddingTop: 8
+        // paddingTop: 8
         // height: 100
     },
     scoresText: {
-        ...appFonts.xlBold,
-        color: colors.mainTextColor
+        ...appFonts.xxxlRegular,
+        color: colors.secondaryText
     },
     underlineScore: {
+        color: colors.secondaryText,
+    },
+    scoresMiddleText: {
+        ...appFonts.xxsRegular,
         color: colors.secondaryText
+    },
+    otherStatsText: {
+        ...appFonts.xsRegular,
+        color: colors.secondaryText
+    },
+    otherStatsTextBold: {
+        color: colors.baseText,
+        ...appFonts.xsBold
+    },
+    shadowLeft: {
+        shadowRadius: 2,
+        shadowColor: colors.mainAccent,
+        shadowOpacity: 0.1,
+        shadowOffset: {width: -windowSize.width * 0.7, height: 2},
+    },
+    shadowRight: {
+        shadowRadius: 2,
+        shadowColor: colors.mainAccent,
+        shadowOpacity: 0.1,
+        shadowOffset: {width: windowSize.width * 0.7, height: 2},
+    },
+    boldScoreText: {
+        color: colors.baseText,
+        ...appFonts.xxxlBold
     }
 });
