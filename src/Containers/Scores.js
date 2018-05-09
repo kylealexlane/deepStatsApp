@@ -11,6 +11,7 @@ import {
     ScrollView,
     ListView,
     SafeAreaView,
+    FlatList,
     Image,
 } from 'react-native'
 import { nbaId, year } from '../config/commonVariables'
@@ -25,7 +26,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Octicons from 'react-native-vector-icons/Octicons'
 import moment from 'moment'
-import SVGImage from 'react-native-svg-image';
+import SVGImage from 'react-native-svg-image'
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
+
+import GameScore from './commonComponents/GameScore'
 
 
 import StatsTab from './playerInfo/StatsTab';
@@ -33,7 +37,8 @@ import VerticalSeperator from "./commonComponents/VerticalSeperator";
 
 export default class Scores extends React.Component {
     static navigationOptions = {
-        // title: params ? params.playerName : 'Shooting',
+        // header: null,
+
         title: 'Scores',
 
         headerStyle: {
@@ -61,8 +66,11 @@ export default class Scores extends React.Component {
         this.moveDateUp = this.moveDateUp.bind(this);
         this.moveDateDown = this.moveDateDown.bind(this);
         this.launchCalendar = this.launchCalendar.bind(this);
+        this.hideCalendar = this.hideCalendar.bind(this);
         this.state ={
-            currentDate: moment().format('YYYY[-]MM[-]DD')
+            currentDate: moment().format('YYYY[-]MM[-]DD'),
+            showCalendar: false,
+            games: []
         }
     }
 
@@ -78,8 +86,12 @@ export default class Scores extends React.Component {
                 response.json())
             .then((responseJson) => {
                 console.log('response from gameday3', responseJson);
+                let games = [];
+                if(responseJson.payload.date && responseJson.payload.date.games.length > 0) {
+                    games = responseJson.payload.date.games;
+                }
                 this.setState({
-                    // dataSource: this.state.dataSource.cloneWithRows(responseJson.resultSets[0].rowSet),
+                    games
                 });
             })
             .catch((error) =>{
@@ -111,14 +123,74 @@ export default class Scores extends React.Component {
     changeDate(date) {
         this.setState({
             currentDate: date.format('YYYY[-]MM[-]DD')
-        })
+        });
+        this.fetchForDate(date.format('YYYY[-]MM[-]DD'));
     }
 
+    launchCalendar() {
+        this.setState({ showCalendar: !this.state.showCalendar });
+    }
+
+    hideCalendar() {
+        this.setState({ showCalendar: false });
+    }
+
+    showCalendarModal() {
+        return(
+            <View style={styles.calendarModal}>
+                <Calendar
+                    current={this.state.currentDate}
+                    minDate={moment().subtract(3650, 'days').format('YYYY[-]MM[-]DD')}
+                    maxDate={moment().add(365, 'days').format('YYYY[-]MM[-]DD')}
+                    onDayPress={(day) => {
+                        console.log(day);
+                        this.changeDate(moment(day.dateString));
+                        this.hideCalendar();
+                    }}
+                    onDayLongPress={(day) => {console.log('selected day', day)}}
+                    monthFormat={'MMM yyyy'}
+                    onMonthChange={(month) => {console.log('month changed', month)}}
+                    hideArrows={false}
+                    renderArrow={(direction) => (<MaterialIcons
+                        name={`chevron-${direction}`}
+                        size={30}
+                        color={colors.yellow}
+                        style={styles.iconStyle}
+                    />)}
+                    hideExtraDays={true}
+                    disableMonthChange={false}
+                    firstDay={1}
+                    hideDayNames={false}
+                    showWeekNumbers={false}
+                    onPressArrowLeft={substractMonth => substractMonth()}
+                    onPressArrowRight={addMonth => addMonth()}
+                />
+            </View>
+        );
+    }
+
+    _onPressItem() {
+        console.log('pressed!!');
+    }
+
+    _renderItem = ({item}) => (
+        <GameScore
+            id={item.id}
+            onPressItem={this._onPressItem}
+            item={item}
+            title={item.title}
+        />
+    );
+
     render() {
+        console.log(this.state.games);
         return (
             <SafeAreaView style={{flex:1, backgroundColor: colors.baseBackground }}>
-                <StatusBar barStyle="light-content" />
-                <ScrollView style={styles.container}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={colors.mainAccent}
+                />
+                <View style={styles.container}>
                     <View style={styles.chooseDateBar}>
                         <MaterialIcons
                             name={'chevron-left'}
@@ -145,8 +217,15 @@ export default class Scores extends React.Component {
                             onPress={this.moveDateUp}
                         />
                     </View>
-
-                </ScrollView>
+                    {this.state.showCalendar && this.showCalendarModal()}
+                    <FlatList
+                        // ItemSeparatorComponent={Platform.OS !== 'android' && ({highlighted}) => (
+                        //     <View style={[style.separator, highlighted && {marginLeft: 0}]} />
+                        //     )}
+                        data={this.state.games}
+                        renderItem={this._renderItem}
+                    />
+                </View>
             </SafeAreaView>
         )
     }
@@ -172,5 +251,10 @@ const styles = StyleSheet.create({
     },
     rowContainer: {
         flexDirection: 'row'
+    },
+    calendarModal: {
+        position: 'absolute',
+        width: windowSize.width,
+        backgroundColor: 'yellow'
     }
 });
