@@ -13,6 +13,7 @@ import {
     SafeAreaView,
     FlatList,
     Image,
+    ActivityIndicator,
 } from 'react-native'
 import { nbaId, year } from '../config/commonVariables'
 import PropTypes from 'prop-types';
@@ -58,6 +59,7 @@ export default class Scores extends React.Component {
         //     source={{uri: params ? params.teamImageURI : ''}}
         // />,
         headerTransparent: false,
+        loading: false,
     };
 
     constructor(props){
@@ -67,6 +69,7 @@ export default class Scores extends React.Component {
         this.moveDateDown = this.moveDateDown.bind(this);
         this.launchCalendar = this.launchCalendar.bind(this);
         this.hideCalendar = this.hideCalendar.bind(this);
+        this.fetchForDate = this.fetchForDate.bind(this);
         this.state ={
             currentDate: moment().format('YYYY[-]MM[-]DD'),
             showCalendar: false,
@@ -80,6 +83,7 @@ export default class Scores extends React.Component {
 
     fetchForDate(date) {
         const tz = '-5';
+        this.setState({ loading: true, error: false });
         return fetch(`https://ca.global.nba.com/stats2/scores/daily.json?countryCode=CA&gameDate=${date}&locale=en&tz=${tz}`)
         // return fetch(`https://ca.global.nba.com/stats2/scores/gamedaystatus.json?gameDate=${date}&locale=en&tz=${tz}`)
             .then((response) =>
@@ -89,13 +93,19 @@ export default class Scores extends React.Component {
                 let games = [];
                 if(responseJson.payload.date && responseJson.payload.date.games.length > 0) {
                     games = responseJson.payload.date.games;
+                    this.setState({
+                        games,
+                        loading: false
+                    });
+                } else {
+                    this.setState({ error: true, loading: false, games: [] });
                 }
-                this.setState({
-                    games
-                });
             })
             .catch((error) =>{
                 console.error(error);
+                this.setState({ loading: false });
+                this.setState({ error: true });
+
             });
     }
 
@@ -182,6 +192,18 @@ export default class Scores extends React.Component {
         />
     );
 
+    showLoadingIndicator() {
+        return (
+            <ActivityIndicator
+            size="large"
+            color={colors.mainAccent}
+            animating={this.state.loading}
+            style={styles.activityIndicator}
+            />
+        );
+    }
+
+
     render() {
         console.log(this.state.games);
         return (
@@ -218,13 +240,22 @@ export default class Scores extends React.Component {
                         />
                     </View>
                     {this.state.showCalendar && this.showCalendarModal()}
-                    <FlatList
-                        // ItemSeparatorComponent={Platform.OS !== 'android' && ({highlighted}) => (
-                        //     <View style={[style.separator, highlighted && {marginLeft: 0}]} />
-                        //     )}
-                        data={this.state.games}
-                        renderItem={this._renderItem}
-                    />
+                    {this.state.loading ? this.showLoadingIndicator() :
+                        ((this.state.games.length === 0) ?
+                            <Text style={styles.noGamesText}>No games</Text>
+                            :
+                            <FlatList
+                            // ItemSeparatorComponent={Platform.OS !== 'android' && ({highlighted}) => (
+                            //     <View style={[style.separator, highlighted && {marginLeft: 0}]} />
+                            //     )}
+                            data={this.state.games}
+                            renderItem={this._renderItem}
+                            style={styles.flatList}
+                            refreshing={this.state.loading}
+                            onRefresh={() => this.fetchForDate(this.state.currentDate)}
+                        />)
+                    }
+
                 </View>
             </SafeAreaView>
         )
@@ -257,5 +288,17 @@ const styles = StyleSheet.create({
         width: windowSize.width,
         backgroundColor: 'yellow',
         zIndex: 1000
+    },
+    activityIndicator: {
+        marginTop: 32,
+    },
+    flatList: {
+        // paddingBottom: 200
+    },
+    noGamesText: {
+        ...appFonts.mdMedium,
+        color: colors.secondaryText,
+        textAlign: 'center',
+        marginTop: 32
     }
 });

@@ -26,6 +26,8 @@ export default class GameScore extends React.Component {
     constructor(props){
         super(props);
         this.renderBottomText = this.renderBottomText.bind(this);
+        this.renderQuarters = this.renderQuarters.bind(this);
+        this.renderQuarter = this.renderQuarter.bind(this);
         this.state ={
         }
     }
@@ -34,6 +36,23 @@ export default class GameScore extends React.Component {
         // if (parseInt(boxscore.status) <= 1) {
             return (<Text style={styles.recordText}>{team.matchup.wins}-{team.matchup.losses}</Text>);
         // }
+    }
+    renderQuarters(homeTeam, awayTeam) {
+        return(<View style={styles.rowContainer}>
+            {this.renderQuarter('Q1', homeTeam.score.q1Score, awayTeam.score.q1Score)}
+            {this.renderQuarter('Q2', homeTeam.score.q2Score, awayTeam.score.q2Score)}
+            {this.renderQuarter('Q3', homeTeam.score.q3Score, awayTeam.score.q3Score)}
+            {this.renderQuarter('Q4', homeTeam.score.q4Score, awayTeam.score.q4Score)}
+        </View>);
+    }
+
+    renderQuarter(header, first, second) {
+        return(
+        <View style={styles.columnContainer}>
+            <Text style={styles.qHeaderText}>{header}</Text>
+            <Text style={styles.qScoreText}>{first}</Text>
+            <Text style={styles.qScoreText}>{second}</Text>
+        </View>);
     }
 
     renderMiddleView(item, leader) {
@@ -78,32 +97,61 @@ export default class GameScore extends React.Component {
                     <Text style={styles.timeText}>{name}</Text>
                 </Text>
             );
+        } else if (boxscore.status === '2'){
+            return(
+                <View style={styles.columnContainer}>
+                    <View style={styles.graphRow}>
+                        <Text style={[styles.gameStatusText]}>{boxscore.statusDesc}</Text>
+                        <Text style={[styles.gameStatusText]}> </Text>
+                        <Text style={[styles.gameStatusText]}>{boxscore.periodClock}</Text>
+                    </View>
+                    <View style={styles.graphRow}>
+                        <Text style={[styles.scoresText, leader==='home' && styles.boldScoreText]}>{boxscore.homeScore}</Text>
+                        <Text style={[styles.scoresText, styles.underlineScore]}>  -  </Text>
+                        <Text style={[styles.scoresText, leader==='away' && styles.boldScoreText]}>{boxscore.awayScore}</Text>
+                    </View>
+                    <View style={styles.graphRow}>
+                        <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct}</Text>
+                        <Text style={[styles.scoresMiddleText]}>      FG%      </Text>
+                        <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct}</Text>
+                    </View>
+                    <View style={styles.graphRow}>
+                        <Text style={[styles.otherStatsText, asstLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.assists}</Text>
+                        <Text style={[styles.scoresMiddleText]}>      ASST      </Text>
+                        <Text style={[styles.otherStatsText, asstLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.assists}</Text>
+                    </View>
+                    <View style={styles.graphRow}>
+                        <Text style={[styles.otherStatsText, rebLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.rebs}</Text>
+                        <Text style={[styles.scoresMiddleText]}>      REB      </Text>
+                        <Text style={[styles.otherStatsText, rebLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.rebs}</Text>
+                    </View>
+                </View>
+            );
         }
         return(
             <View style={styles.columnContainer}>
-                {/*<Text>*/}
-                    {/*<Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>*/}
-                    {/*<Text style={styles.timeText}>  </Text>*/}
-                    {/*<Text style={styles.timeText}>{name}</Text>*/}
-                {/*</Text>*/}
+                {/*{this.renderQuarters(homeTeam, awayTeam)}*/}
+                <View style={styles.graphRow}>
+                    <Text style={[styles.gameStatusText]}>{boxscore.statusDesc}</Text>
+                </View>
                 <View style={styles.graphRow}>
                     <Text style={[styles.scoresText, leader==='home' && styles.boldScoreText]}>{boxscore.homeScore}</Text>
                     <Text style={[styles.scoresText, styles.underlineScore]}>  -  </Text>
                     <Text style={[styles.scoresText, leader==='away' && styles.boldScoreText]}>{boxscore.awayScore}</Text>
                 </View>
                 <View style={styles.graphRow}>
-                    <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct}</Text>
-                    <Text style={[styles.scoresMiddleText]}>    FG%    </Text>
-                    <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct}</Text>
+                    <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct.toFixed(1)}</Text>
+                    <Text style={[styles.scoresMiddleText]}>      FG%      </Text>
+                    <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct.toFixed(1)}</Text>
                 </View>
                 <View style={styles.graphRow}>
                     <Text style={[styles.otherStatsText, asstLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.assists}</Text>
-                    <Text style={[styles.scoresMiddleText]}>    ASST    </Text>
+                    <Text style={[styles.scoresMiddleText]}>      ASST      </Text>
                     <Text style={[styles.otherStatsText, asstLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.assists}</Text>
                 </View>
                 <View style={styles.graphRow}>
                     <Text style={[styles.otherStatsText, rebLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.rebs}</Text>
-                    <Text style={[styles.scoresMiddleText]}>    REB    </Text>
+                    <Text style={[styles.scoresMiddleText]}>      REB      </Text>
                     <Text style={[styles.otherStatsText, rebLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.rebs}</Text>
                 </View>
             </View>
@@ -169,15 +217,17 @@ const styles = StyleSheet.create({
 
     },
     columnContainer: {
+        flex: 0,
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'transparent'
     },
     teamLogo: {
-        height: 70,
-        width: 70,
-        backgroundColor: colors.baseBackground,
-        borderColor: colors.baseBackground
+        height: 80,
+        width: 80,
+        backgroundColor: 'transparent',
+        borderColor: 'transparent'
     },
     recordText: {
         ...appFonts.smRegular,
@@ -216,8 +266,8 @@ const styles = StyleSheet.create({
         color: colors.secondaryText
     },
     otherStatsTextBold: {
-        color: colors.baseText,
-        ...appFonts.xsBold
+        color: colors.secondaryText,
+        ...appFonts.xsRegular
     },
     shadowLeft: {
         shadowRadius: 2,
@@ -234,5 +284,23 @@ const styles = StyleSheet.create({
     boldScoreText: {
         color: colors.baseText,
         ...appFonts.xxxlBold
+    },
+    gameStatusText: {
+        color: colors.baseText,
+        ...appFonts.mdRegular,
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: 100
+    },
+    qScoreText: {
+        ...appFonts.xxsRegular,
+        color: colors.baseText
+    },
+    qHeaderText: {
+        ...appFonts.xxsBold,
+        color: colors.secondaryText
     }
 });
