@@ -41,7 +41,7 @@ export default class Scores extends React.Component {
     static navigationOptions = {
         // header: null,
 
-        title: 'Standings',
+        // title: 'Standings',
 
         headerStyle: {
             backgroundColor: colors.mainAccent,
@@ -60,7 +60,6 @@ export default class Scores extends React.Component {
         //     source={{uri: params ? params.teamImageURI : ''}}
         // />,
         headerTransparent: false,
-        loading: false,
     };
 
     constructor(props){
@@ -71,9 +70,11 @@ export default class Scores extends React.Component {
             teams: [],
             loading: false,
             error: false,
-            tableHeadOverall: ['TYPE', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadOverall: ['TEAM', 'WINS', 'LOSSES', 'WIN%', 'GB', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A'],
             tableDataOverall: [],
             widthArrOverall: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            arrayOfConferences: [],
+            tabSelected: 'Conference'
         }
     }
 
@@ -89,29 +90,32 @@ export default class Scores extends React.Component {
                 response.json())
             .then((responseJson) => {
                 console.log('response from gameday3', responseJson);
-                if(responseJson.league.standard && responseJson.league.standard.teams.length > 0) {
+                if(responseJson.payload.standingGroups && responseJson.payload.standingGroups.length > 0) {
                     const teams = responseJson.payload.standingGroups;
                     const season = responseJson.payload.season.statsSeasonYearDisplay;
-                    let arrayOfArrays = [];
+                    console.log('teatssss', teams);
                     // const streak = obj.isWinStreak ? `won ${obj.streak}` : `lost ${obj.streak}`;
-                    // teams.forEach((obj) => {
-                    //     console.log(obj);
-                    //     let rowArray = [];
-                    //     rowArray.push(obj.win,
-                    //         obj.loss,
-                    //         obj.winPctV2,
-                    //         obj.gamesBehind,
-                    //         `${obj.confWin}-${obj.confLoss}`,
-                    //         `${obj.homeWin}-${obj.homeLoss}`,
-                    //         `${obj.awayWin}-${obj.awayLoss}`,
-                    //         `${obj.lastTenWin}-${obj.lastTenLoss}`,
-                    //         streak,
-                    //         obj.
-                    //     );
-                    //     console.log('rowArray', rowArray);
-                    // });
+                    let arrayOfConferences = [];
+                    teams.forEach((obj) => {
+                        let arrayOfTeamsInConference = [];
+                        const displayHeader = obj.displayConference;
+
+                        obj.teams.forEach((teamObj)=>{
+                            const {profile, standings} = teamObj;
+                            const arrayOfTeamInfo = [
+                                `${standings.confRank} ${profile.displayAbbr}`,
+                                standings.wins,
+                                standings.losses,
+                                standings.winPct,
+                                standings.confGamesBehind
+                            ];
+                            arrayOfTeamsInConference[standings.confRank-1] = arrayOfTeamInfo;
+                            console.log('arrayOfTeamsInConference',arrayOfTeamsInConference);
+                        });
+                        arrayOfConferences.push( arrayOfTeamsInConference );
+                    });
                     this.setState({
-                        tableDataOverall: result,
+                        arrayOfConferences,
                         loading: false
                     });
                 } else {
@@ -137,17 +141,24 @@ export default class Scores extends React.Component {
     }
 
     renderTabHeader(title, position) {
+        const isTabSelected = this.state.tabSelected === title;
+        console.log(title, this.state.tabSelected);
         return(
-            <View style={styles.tabHeaderContainer}>
-                <Text>testing</Text>
-
+            <View style={[
+                styles.tabHeaderContainer,
+                isTabSelected && styles.selectedTabContainer
+            ]}>
+                <Text style={[
+                    styles.tabHeaderText,
+                    isTabSelected && styles.selectedTabText
+                ]}>{title}</Text>
             </View>
         );
     }
 
 
     render() {
-        console.log(this.state.games);
+        console.log('state', this.state.arrayOfConferences);
         return (
             <SafeAreaView style={{flex:1, backgroundColor: colors.baseBackground }}>
                 <StatusBar
@@ -180,15 +191,19 @@ export default class Scores extends React.Component {
                             {/*style={styles.iconStyle}*/}
                             {/*onPress={this.moveDateUp}*/}
                         {/*/>*/}
-                        {this.renderTabHeader('test', 'center')}
+                        {this.renderTabHeader('Conference', 'center')}
+                        {this.renderTabHeader('Division', 'center')}
+                        {this.renderTabHeader('Overall', 'center')}
+
                     </View>
                     {this.state.loading ? this.showLoadingIndicator() :
+                        this.state.arrayOfConferences.length > 1 &&
                         <GeneralTable
                             showHideIcon={true}
                             errorMessage={this.state.error ? 'Data not available' : ''}
-                            title={'OVERALL'}
+                            title={'EAST'}
                             headerRow={this.state.tableHeadOverall}
-                            rowsData={this.state.tableDataOverall}
+                            rowsData={this.state.arrayOfConferences[0]}
                             widthArr={this.state.widthArrOverall}
                             titleStyle={{ backgroundColor: hexToRgbA(colors.mainAccent, 1) }}
                             headerStyle={{ backgroundColor: hexToRgbA(colors.mainAccent, 1) }}
@@ -208,10 +223,11 @@ const styles = StyleSheet.create({
     },
     chooseDateBar: {
         width: '100%',
-        paddingVertical: 8,
+        // paddingTop: 8,
+        // paddingHorizontal: 1,
         backgroundColor: colors.mainAccent,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center'
     },
     dateText: {
@@ -223,7 +239,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     tabHeaderContainer: {
-
+        flex: 1,
+        backgroundColor: colors.mainAccent,
+        paddingVertical: 8
+    },
+    tabHeaderText: {
+        ...appFonts.mdRegular,
+        color: colors.greyBase,
+        textAlign: 'center',
+    },
+    selectedTabContainer: {
+        // backgroundColor: colors.mainAccent,
+        // borderTopRightRadius: 4,
+        // borderTopLeftRadius: 4
+    },
+    selectedTabText: {
+        ...appFonts.mdRegular,
+        color: colors.white,
+        textAlign: 'center'
     },
     activityIndicator: {
         marginTop: 32,
