@@ -317,7 +317,7 @@ export default class PlayerDashboard extends React.Component {
                         </View>
                     </View>}
                     {!this.state.isLoading && !this.state.isLoadingBio &&
-                    <View>
+                    <View style={{ backgroundColor: primaryColor}}>
                         {this.state.selectedTab === "stats" ?
                             <View style={[styles.tabRowContainer]}>
                                 <TouchableOpacity
@@ -412,7 +412,10 @@ const styles = StyleSheet.create({
         // borderTopWidth: 1,
         // borderRightWidth: 1,
         // borderColor: colors.white,
-        backgroundColor: colors.white
+        backgroundColor: colors.white,
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
+        marginTop: 2
     },
     tabSelectedText: {
         ...appFonts.xlBold,

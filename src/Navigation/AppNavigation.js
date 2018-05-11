@@ -61,10 +61,21 @@ const ScoresStack = StackNavigator({
     }
 });
 
+const StandingsStack = StackNavigator({
+    home: { screen: Standings },
+},{
+    navigationOptions: {
+        // header: null,
+        headerStyle: {borderBottomWidth: 0},
+        // title: 'Test',
+        // headerTintColor: 'white',
+    }
+});
+
 const TabStack = TabNavigator(
     {
         scores: { screen: ScoresStack },
-        standings: { screen: Standings },
+        standings: { screen: StandingsStack },
         playerStats: { screen: PlayerStatsStack },
         teamStats: { screen: TeamStats },
         leaders: {screen: Leaders},
@@ -78,12 +89,14 @@ const TabStack = TabNavigator(
                     iconName = `ios-stats${focused ? '' : '-outline'}`;
                 } else if (routeName === 'playerStats') {
                     iconName = `ios-search${focused ? '' : '-outline'}`;
-                } else if (routeName === 'teamStats') {
+                }
+                else if (routeName === 'teamStats') {
                     iconName = `ios-people${focused ? '' : '-outline'}`;
-                } else if (routeName === 'leaders') {
+                }
+                else if (routeName === 'leaders') {
                     iconName = `ios-star${focused ? '' : '-outline'}`;
                 } else if (routeName === 'scores') {
-                    iconName = `ios-stats${focused ? '' : '-outline'}`;
+                    iconName = `ios-calendar${focused ? '' : '-outline'}`;
                 }
                 // if (routeName === 'standings') {
                 //     iconName = `sort-ascending`;
@@ -97,25 +110,27 @@ const TabStack = TabNavigator(
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Ionicons name={iconName} size={30} color={tintColor} />;
+                return <Ionicons name={iconName} size={26} color={tintColor} />;
             },
-        // tabBarLabel: ({ focused, tintColor }) => {
-        //         const { routeName } = navigation.state;
-        //         let label;
-        //         if (routeName === 'standings') {
-        //             label = `Standings`;
-        //         } else if (routeName === 'playerStats') {
-        //             label = `Players`;
-        //         } else if (routeName === 'teamStats') {
-        //             label = `Teams`;
-        //         } else if (routeName === 'leaders') {
-        //             label = 'Leaders';
-        //         }
-        //
-        //         // You can return any component that you like here! We usually use an
-        //         // icon component from react-native-vector-icons
-        //         return `${label}`;
-        //     },
+        tabBarLabel: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state;
+                let label;
+                if (routeName === 'standings') {
+                    label = `Standings`;
+                } else if (routeName === 'playerStats') {
+                    label = `Search`;
+                } else if (routeName === 'scores') {
+                    label = `Scores`;
+                } else if (routeName === 'teamStats') {
+                    label = `Teams`;
+                } else if (routeName === 'leaders') {
+                    label = 'Leaders';
+                }
+
+                // You can return any component that you like here! We usually use an
+                // icon component from react-native-vector-icons
+                return `${label}`;
+            },
         }),
         tabBarOptions: {
             activeTintColor: colors.greyDarkest,
