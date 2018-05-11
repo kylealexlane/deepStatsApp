@@ -13,7 +13,7 @@ export default class VerticalSeperator extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, this.props.style]}>
                 <View
                     style={styles.seperator}
                 />
