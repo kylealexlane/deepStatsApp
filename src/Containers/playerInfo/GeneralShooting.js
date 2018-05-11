@@ -24,6 +24,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 import EntypoIcon from 'react-native-vector-icons/Entypo'
+import VerticalSeperator from '../commonComponents/VerticalSeperator'
+
 
 
 import RNPickerSelect from 'react-native-picker-select';
@@ -150,8 +152,14 @@ export default class GeneralShooting extends React.Component {
     render() {
         const state = this.state;
         const tableDataOverall = state.tableDataOverall;
-        console.log('seasonSelected', this.state.seasonSelected);
+        console.log('state', this.state);
         const firstLast = this.props.navigation.state.params.playerName.split(" ");
+        let topGeneralStats = ['','','','','','','','','','','','','','',''];
+        if(state.tableDataOverall.length > 0) {
+            topGeneralStats = state.tableDataOverall[state.tableDataOverall.length-1];
+        }
+        console.log('topGeneralStats', topGeneralStats);
+
         return (
             <ScrollView
                 style={styles.container}
@@ -163,7 +171,7 @@ export default class GeneralShooting extends React.Component {
                         {/*<Text style={styles.nameText}>{firstLast[1]}</Text>*/}
                     {/*</Text>*/}
                 {/*</View>*/}
-                <View style={{backgroundColor: colors.baseBackground, borderBottomWidth: 1,borderBottomColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest}}>
+                <View style={{backgroundColor: colors.baseBackground, borderBottomWidth: 0, borderBottomColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest}}>
                     <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
                         {/*<View style={[containerStyle.rowContainer, {paddingHorizontal: 8, paddingVertical: 16, justifyContent: 'center'}]}>*/}
                         <View style={styles.displayContainerSelector}>
@@ -214,6 +222,30 @@ export default class GeneralShooting extends React.Component {
                             <Text style={styles.besideSelectorSecondaryText}>TEAM</Text>
                             <Text style={styles.besideSelectorText}>{this.state.seasonSelected[4]}</Text>
                         </View>
+                    </View>
+                </View>
+                <View>
+                    <View style={[{paddingHorizontal: 16, paddingBottom: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                        <View style={styles.displayContainer}>
+                            <Text style={styles.genStatsHeaderText}>FG%</Text>
+                            <Text style={styles.genStatsNumberText}>{(topGeneralStats[4]*100).toFixed(1)}</Text>
+                        </View>
+                        <VerticalSeperator style={{height: 40}}/>
+                        <View style={styles.displayContainer}>
+                            <Text style={styles.genStatsHeaderText}>EFG%</Text>
+                            <Text style={styles.genStatsNumberText}>{(topGeneralStats[5]*100).toFixed(1)}</Text>
+                        </View>
+                        <VerticalSeperator style={{height: 40}}/>
+                        <View style={styles.displayContainer}>
+                            <Text style={styles.genStatsHeaderText}>3FREQ(%)</Text>
+                            <Text style={styles.genStatsNumberText}>{(topGeneralStats[10]*100).toFixed(1)}</Text>
+                        </View>
+                        <VerticalSeperator style={{height: 40}}/>
+                        <View style={styles.displayContainer}>
+                            <Text style={styles.genStatsHeaderText}>FG3%</Text>
+                            <Text style={styles.genStatsNumberText}>{(topGeneralStats[13]*100).toFixed(1)}</Text>
+                        </View>
+
                     </View>
                 </View>
                 <GeneralTable
@@ -304,9 +336,9 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 16
+        // paddingLeft: 16
     },
     displayContainerSelector: {
         flex: 0,
@@ -323,6 +355,28 @@ const styles = StyleSheet.create({
     besideSelectorSecondaryText: {
         color: colors.secondaryText,
         ...appFonts.lgBold
+    },
+    statsRowContainer: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 20
+    },
+    statsRowSubContainer: {
+        width: '15%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    genStatsNumberText: {
+        ...appFonts.lgBold,
+        color: colors.baseText
+    },
+    genStatsHeaderText: {
+        ...appFonts.mdRegular,
+        color: colors.secondaryText
     }
 });
 

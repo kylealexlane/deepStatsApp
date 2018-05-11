@@ -49,8 +49,6 @@ export default class GeneralTable extends React.Component {
 
         if (rowsData.length > 0) {
             rowsData = rowsData.map((row, index) => {
-                console.log('row', row);
-                console.log(row.slice(1, row.length));
                 return row.slice(1, row.length);
             });
         }
@@ -59,7 +57,6 @@ export default class GeneralTable extends React.Component {
         const firstColWidth = widthArr.slice(0, 1);
         widthArr = widthArr.slice(1, widthArr.length);
 
-        console.log('error', this.props.errorMessage);
 
         return (
             <View style={this.props.containerStyle}>
