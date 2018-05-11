@@ -4433,6 +4433,12 @@ react-native-elements@1.0.0-beta4:
     prop-types "^15.5.8"
     react-native-touchable-scale "2.0.0"
 
+react-native-ios-status-bar-padding@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-ios-status-bar-padding/-/react-native-ios-status-bar-padding-1.2.0.tgz#6790e8c6811ab542686707ba49a2dd4218a19565"
+  dependencies:
+    react-native-status-bar-size "^0.3.2"
+
 react-native-linear-gradient@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.0.tgz#51d8ea12bb72a59bede9edc87b694b16b64cf435"
@@ -4450,6 +4456,10 @@ react-native-safe-area-view@^0.7.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
   dependencies:
     hoist-non-react-statics "^2.3.1"
+
+react-native-status-bar-size@^0.3.2:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-status-bar-size/-/react-native-status-bar-size-0.3.3.tgz#009ea83f0d0a7a849bcb7cf3da9f0b8f9e048a1f"
 
 react-native-svg-charts@^5.0.0:
   version "5.0.0"

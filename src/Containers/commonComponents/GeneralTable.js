@@ -89,11 +89,13 @@ export default class GeneralTable extends React.Component {
                         <View style={{ width: firstColWidth[0] ? firstColWidth[0] : 0 }}>
                             <View>
                                 <Table borderStyle={{borderColor: this.props.headerStyle.backgroundColor ? this.props.headerStyle.backgroundColor : 'transparent'}}>
+                                    {/*<Table borderStyle={{borderColor: this.props.headerStyle.backgroundColor ? 'yellow' : 'transparent'}}>*/}
+
                                     <Row
                                         data={firstColumnHeader}
                                         widthArr={firstColWidth}
                                         style={[styles.header, this.props.headerStyle]}
-                                        textStyle={[styles.headerText, styles.firstColumnText, appFonts.xsBold]}
+                                        textStyle={[styles.headerText, styles.firstColumnText, appFonts.smBold]}
                                     />
                                 </Table>
                                 <Table borderStyle={{borderColor: 'transparent'}}>
@@ -111,7 +113,11 @@ export default class GeneralTable extends React.Component {
                                 </Table>
                             </View>
                         </View>
-                        <ScrollView horizontal={true}>
+                        <ScrollView
+                            horizontal={true}
+                            alwaysBounceHorizontal={false}
+                            bounces={false}
+                        >
                             <View>
                                 <Table borderStyle={{borderColor: this.props.headerStyle.backgroundColor ? this.props.headerStyle.backgroundColor : 'transparent'}}>
                                     <Row data={headerRow} widthArr={widthArr} style={[styles.header, this.props.headerStyle]} textStyle={styles.headerText}/>
@@ -168,9 +174,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'nowrap',
     },
-    header: { height: 18, borderLeftWidth: 0 },
+    header: { height: 24, borderLeftWidth: 0 },
     text: { textAlign: 'center', ...appFonts.smRegular, color: colors.mainTextColor },
-    headerText: { textAlign: 'center', ...appFonts.xsBold, color: colors.greyLighter },
+    headerText: { textAlign: 'center', ...appFonts.smBold, color: colors.greyLighter },
     dataWrapper: { marginTop: -1 },
     row: { height: 28, backgroundColor: colors.baseBackground, borderBottomColor: colors.black, borderBottomWidth: 0 },
     secondaryRow: {

@@ -33,17 +33,22 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
 import GameScore from './commonComponents/GameScore'
 
 import GeneralTable from './commonComponents/GeneralTable'
+import PageTitle from './commonComponents/PageTitle'
+
+import StatusBarPaddingIOS from 'react-native-ios-status-bar-padding';
+
 
 import StatsTab from './playerInfo/StatsTab';
 import VerticalSeperator from "./commonComponents/VerticalSeperator";
 
-export default class Scores extends React.Component {
+export default class Standings extends React.Component {
     static navigationOptions = {
         // header: null,
 
-        // title: 'Standings',
+        title: 'Standings',
 
         headerStyle: {
+            height: 0,
             backgroundColor: colors.mainAccent,
             // borderBottomColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.greyDarkest
             borderBottomColor: colors.mainAccent,
@@ -64,27 +69,33 @@ export default class Scores extends React.Component {
 
     constructor(props){
         super(props);
-        this.fetchOverallStandings = this.fetchOverallStandings.bind(this);
+        this.fetchStandings = this.fetchStandings.bind(this);
         this.renderTabHeader = this.renderTabHeader.bind(this);
         this.state ={
             teams: [],
             loading: false,
             error: false,
-            tableHeadOverall: ['TEAM', 'WINS', 'LOSSES', 'WIN%', 'GB', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A'],
-            tableDataOverall: [],
-            widthArrOverall: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            tableHeadOverall: ['TEAM', 'W', 'L', 'WIN%', 'PF', 'PA', 'DIFF', 'GB', 'CONF', 'HOME', 'ROAD', 'O>500','LAST10', 'STREAK' ],
+            arrayOfDivisions: [],
+            arrayOverall: [],
+            widthArrOverall: [80, 50, 50, 60, 60, 50, 50, 50, 70, 70, 70, 70, 70, 70 ],
             arrayOfConferences: [],
+            arrayOfDivisions: [],
             tabSelected: 'Conference'
         }
     }
 
     componentDidMount() {
-        this.fetchOverallStandings();
+        this.fetchStandings(this.state.tabSelected);
     }
 
-    fetchOverallStandings() {
+    fetchStandings(tabSelected) {
         this.setState({ loading: true, error: false });
-        return fetch(`https://ca.global.nba.com/stats2/season/conferencestanding.json?locale=en`)
+        let urlKey = 'conferencestanding';
+        if(tabSelected === 'Division'){
+            urlKey = 'divisionstanding';
+        }
+        return fetch(`https://ca.global.nba.com/stats2/season/${urlKey}.json?locale=en`)
         // return fetch(`https://ca.global.nba.com/stats2/scores/gamedaystatus.json?gameDate=${date}&locale=en&tz=${tz}`)
             .then((response) =>
                 response.json())
@@ -96,26 +107,45 @@ export default class Scores extends React.Component {
                     console.log('teatssss', teams);
                     // const streak = obj.isWinStreak ? `won ${obj.streak}` : `lost ${obj.streak}`;
                     let arrayOfConferences = [];
+                    let arrayOfDivisions = [];
                     teams.forEach((obj) => {
-                        let arrayOfTeamsInConference = [];
+                        let arrayOfTeamsInGroup = [];
                         const displayHeader = obj.displayConference;
 
                         obj.teams.forEach((teamObj)=>{
                             const {profile, standings} = teamObj;
+                            let rank = standings.confRank
+                            if(tabSelected === 'Division'){
+                                rank = standings.divRank;
+                            }
                             const arrayOfTeamInfo = [
-                                `${standings.confRank} ${profile.displayAbbr}`,
+                                `${rank}.   ${profile.displayAbbr}`,
                                 standings.wins,
                                 standings.losses,
                                 standings.winPct,
-                                standings.confGamesBehind
+                                standings.pointsFor,
+                                standings.pointsAgainst,
+                                standings.pointsDiff,
+                                standings.confGamesBehind,
+                                `${standings.confWin}-${standings.confLoss}`,
+                                `${standings.homeWin}-${standings.homeLoss}`,
+                                `${standings.roadWin}-${standings.roadLoss}`,
+                                `${standings.oppover500Win}-${standings.oppover500Loss}`,
+                                standings.last10,
+                                standings.streak
                             ];
-                            arrayOfTeamsInConference[standings.confRank-1] = arrayOfTeamInfo;
-                            console.log('arrayOfTeamsInConference',arrayOfTeamsInConference);
+                            if(tabSelected === 'Division'){
+                                arrayOfTeamsInGroup[standings.divRank-1] = arrayOfTeamInfo;
+                            } else {
+                                arrayOfTeamsInGroup[standings.confRank-1] = arrayOfTeamInfo;
+                            }
+                            console.log('arrayOfTeamsInGroup',arrayOfTeamsInGroup);
                         });
-                        arrayOfConferences.push( arrayOfTeamsInConference );
+                        tabSelected === 'Division' ? arrayOfDivisions.push( arrayOfTeamsInGroup): arrayOfConferences.push( arrayOfTeamsInGroup );
                     });
                     this.setState({
                         arrayOfConferences,
+                        arrayOfDivisions,
                         loading: false
                     });
                 } else {
@@ -144,73 +174,157 @@ export default class Scores extends React.Component {
         const isTabSelected = this.state.tabSelected === title;
         console.log(title, this.state.tabSelected);
         return(
-            <View style={[
+            <TouchableOpacity
+                style={[
                 styles.tabHeaderContainer,
                 isTabSelected && styles.selectedTabContainer
-            ]}>
+                ]}
+                onPress={()=>this.pressTab(title)}
+            >
                 <Text style={[
                     styles.tabHeaderText,
                     isTabSelected && styles.selectedTabText
                 ]}>{title}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    pressTab(tabSelected){
+        this.setState({ tabSelected: tabSelected});
+        this.fetchStandings(tabSelected);
+    }
+
+    showDivisionTables() {
+        return(
+            <View>
+                <GeneralTable
+                    containerStyle={styles.tableContainer}
+                    showHideIcon={true}
+                    errorMessage={this.state.error ? 'Data not available' : ''}
+                    title={'ATLANTIC'}
+                    headerRow={this.state.tableHeadOverall}
+                    rowsData={this.state.arrayOfDivisions[0]}
+                    widthArr={this.state.widthArrOverall}
+                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                />
+                <GeneralTable
+                    containerStyle={styles.tableContainer}
+                    showHideIcon={true}
+                    errorMessage={this.state.error ? 'Data not available' : ''}
+                    title={'CENTRAL'}
+                    headerRow={this.state.tableHeadOverall}
+                    rowsData={this.state.arrayOfDivisions[1]}
+                    widthArr={this.state.widthArrOverall}
+                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                />
+                <GeneralTable
+                    containerStyle={styles.tableContainer}
+                    showHideIcon={true}
+                    errorMessage={this.state.error ? 'Data not available' : ''}
+                    title={'SOUTHEAST'}
+                    headerRow={this.state.tableHeadOverall}
+                    rowsData={this.state.arrayOfDivisions[2]}
+                    widthArr={this.state.widthArrOverall}
+                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                />
+                <GeneralTable
+                    containerStyle={styles.tableContainer}
+                    showHideIcon={true}
+                    errorMessage={this.state.error ? 'Data not available' : ''}
+                    title={'NORTHWEST'}
+                    headerRow={this.state.tableHeadOverall}
+                    rowsData={this.state.arrayOfDivisions[3]}
+                    widthArr={this.state.widthArrOverall}
+                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                />
+                <GeneralTable
+                    containerStyle={styles.tableContainer}
+                    showHideIcon={true}
+                    errorMessage={this.state.error ? 'Data not available' : ''}
+                    title={'PACIFIC'}
+                    headerRow={this.state.tableHeadOverall}
+                    rowsData={this.state.arrayOfDivisions[4]}
+                    widthArr={this.state.widthArrOverall}
+                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                />
+                <GeneralTable
+                    containerStyle={styles.tableContainer}
+                    showHideIcon={true}
+                    errorMessage={this.state.error ? 'Data not available' : ''}
+                    title={'SOUTHWEST'}
+                    headerRow={this.state.tableHeadOverall}
+                    rowsData={this.state.arrayOfDivisions[5]}
+                    widthArr={this.state.widthArrOverall}
+                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                />
             </View>
         );
     }
 
+    showConferenceTables() {
+        return(<View>
+            <GeneralTable
+                containerStyle={styles.tableContainer}
+                showHideIcon={true}
+                errorMessage={this.state.error ? 'Data not available' : ''}
+                title={'EAST'}
+                headerRow={this.state.tableHeadOverall}
+                rowsData={this.state.arrayOfConferences[0]}
+                widthArr={this.state.widthArrOverall}
+                titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40 }}
+                headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+            />
+            <GeneralTable
+                containerStyle={styles.tableContainer}
+                showHideIcon={true}
+                errorMessage={this.state.error ? 'Data not available' : ''}
+                title={'WEST'}
+                headerRow={this.state.tableHeadOverall}
+                rowsData={this.state.arrayOfConferences[1]}
+                widthArr={this.state.widthArrOverall}
+                titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
+                headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+            />
+        </View>);
+    }
+
 
     render() {
-        console.log('state', this.state.arrayOfConferences);
+        console.log('state', this.state);
         return (
             <SafeAreaView style={{flex:1, backgroundColor: colors.baseBackground }}>
                 <StatusBar
                     barStyle="light-content"
-                    backgroundColor={colors.mainAccent}
                 />
-                <View style={styles.container}>
-                    <View style={styles.chooseDateBar}>
-                        {/*<MaterialIcons*/}
-                            {/*name={'chevron-left'}*/}
-                            {/*size={30}*/}
-                            {/*color={colors.white}*/}
-                            {/*style={styles.iconStyle}*/}
-                            {/*onPress={this.moveDateDown}*/}
-                        {/*/>*/}
-                        {/*<View style={styles.rowContainer}>*/}
-                            {/*<Text style={styles.dateText}>{this.getCurrentDateDisplay()}</Text>*/}
-                            {/*<Octicons*/}
-                                {/*name={'calendar'}*/}
-                                {/*size={20}*/}
-                                {/*color={colors.white}*/}
-                                {/*style={styles.iconStyle}*/}
-                                {/*onPress={this.launchCalendar}*/}
-                            {/*/>*/}
-                        {/*</View>*/}
-                        {/*<MaterialIcons*/}
-                            {/*name={'chevron-right'}*/}
-                            {/*size={30}*/}
-                            {/*color={colors.white}*/}
-                            {/*style={styles.iconStyle}*/}
-                            {/*onPress={this.moveDateUp}*/}
-                        {/*/>*/}
-                        {this.renderTabHeader('Conference', 'center')}
-                        {this.renderTabHeader('Division', 'center')}
-                        {this.renderTabHeader('Overall', 'center')}
-
-                    </View>
+                <PageTitle
+                    title={'Standings'}
+                />
+                <View style={styles.chooseDateBar}>
+                    {this.renderTabHeader('Conference', 'center')}
+                    {this.renderTabHeader('Division', 'center')}
+                    {this.renderTabHeader('Overall', 'center')}
+                </View>
+                <ScrollView
+                    style={styles.container}
+                >
                     {this.state.loading ? this.showLoadingIndicator() :
-                        this.state.arrayOfConferences.length > 1 &&
-                        <GeneralTable
-                            showHideIcon={true}
-                            errorMessage={this.state.error ? 'Data not available' : ''}
-                            title={'EAST'}
-                            headerRow={this.state.tableHeadOverall}
-                            rowsData={this.state.arrayOfConferences[0]}
-                            widthArr={this.state.widthArrOverall}
-                            titleStyle={{ backgroundColor: hexToRgbA(colors.mainAccent, 1) }}
-                            headerStyle={{ backgroundColor: hexToRgbA(colors.mainAccent, 1) }}
-                        />
+                        (this.state.arrayOfConferences.length > 0 || this.state.arrayOfDivisions.length > 0) &&
+                        <View>
+                            {this.state.tabSelected === 'Division' ?
+                                this.showDivisionTables()
+                            :
+                                this.showConferenceTables()
+                            }
+                        </View>
                     }
 
-                </View>
+                </ScrollView>
             </SafeAreaView>
         )
     }
@@ -224,6 +338,7 @@ const styles = StyleSheet.create({
     chooseDateBar: {
         width: '100%',
         // paddingTop: 8,
+        // paddingBottom: 8,
         // paddingHorizontal: 1,
         backgroundColor: colors.mainAccent,
         flexDirection: 'row',
@@ -241,7 +356,7 @@ const styles = StyleSheet.create({
     tabHeaderContainer: {
         flex: 1,
         backgroundColor: colors.mainAccent,
-        paddingVertical: 8
+        paddingVertical: 8,
     },
     tabHeaderText: {
         ...appFonts.mdRegular,
@@ -249,14 +364,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     selectedTabContainer: {
-        // backgroundColor: colors.mainAccent,
+        backgroundColor: colors.mainAccent,
+        // borderTopRightRadius: 8,
+        // borderTopLeftRadius: 8,
         // borderTopRightRadius: 4,
         // borderTopLeftRadius: 4
     },
     selectedTabText: {
-        ...appFonts.mdRegular,
         color: colors.white,
-        textAlign: 'center'
+        ...appFonts.mdRegular,
+        textAlign: 'center',
     },
     activityIndicator: {
         marginTop: 32,
@@ -269,5 +386,8 @@ const styles = StyleSheet.create({
         color: colors.secondaryText,
         textAlign: 'center',
         marginTop: 32
+    },
+    tableContainer: {
+        paddingTop: 16
     }
 });

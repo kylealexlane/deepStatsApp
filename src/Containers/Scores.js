@@ -31,7 +31,8 @@ import SVGImage from 'react-native-svg-image'
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
 
 import GameScore from './commonComponents/GameScore'
-
+import PageTitle from './commonComponents/PageTitle'
+import StatusBarPaddingIOS from 'react-native-ios-status-bar-padding';
 
 import StatsTab from './playerInfo/StatsTab';
 import VerticalSeperator from "./commonComponents/VerticalSeperator";
@@ -43,6 +44,7 @@ export default class Scores extends React.Component {
         title: 'Scores',
 
         headerStyle: {
+            height: 0,
             backgroundColor: colors.mainAccent,
             // borderBottomColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.greyDarkest
             borderBottomColor: colors.mainAccent,
@@ -59,7 +61,6 @@ export default class Scores extends React.Component {
         //     source={{uri: params ? params.teamImageURI : ''}}
         // />,
         headerTransparent: false,
-        loading: false,
     };
 
     constructor(props){
@@ -213,6 +214,11 @@ export default class Scores extends React.Component {
                     backgroundColor={colors.mainAccent}
                 />
                 <View style={styles.container}>
+                    <PageTitle
+                        title={'Scores'}
+                        iconName={'ios-calendar-outline'}
+                        iconColor={colors.white}
+                    />
                     <View style={styles.chooseDateBar}>
                         <MaterialIcons
                             name={'chevron-left'}
