@@ -71,21 +71,21 @@ export default class GeneralShooting extends React.Component {
         console.log('passedParams', this.props.navigation.state.params);
         this.state = {
             // tableHeadOverall: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
-            tableHeadOverall: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadOverall: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataOverall: [],
-            widthArrOverall: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrOverall: [130, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
-            tableHeadShotClock: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadShotClock: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataShotClock: [],
-            widthArrShotClock: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrShotClock: [130, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
-            tableHeadDribble: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadDribble: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataDribble: [],
-            widthArrDribble: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrDribble: [130, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
-            tableHeadClosestD: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadClosestD: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataClosestD: [],
-            widthArrClosestD: [150, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrClosestD: [150, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
             seasonSelected: this.props.navigation.state.params.seasonSelected,
             seasons: this.props.navigation.state.params.seasons,
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
         // flexGrow: 4
     },

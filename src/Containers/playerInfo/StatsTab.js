@@ -31,6 +31,9 @@ import HorizontalSeperator from "../commonComponents/HorizontalSeperator"
 import Logo from '../commonComponents/Logo'
 
 import RNPickerSelect from 'react-native-picker-select';
+import Carousel from 'react-native-snap-carousel';
+import PlayerHistoryGraph from '../commonComponents/PlayerHistoryGraph';
+
 
 
 export default class StatsTab extends React.Component {
@@ -43,6 +46,7 @@ export default class StatsTab extends React.Component {
         this.state ={
             seasons: [
             ],
+            carouselData: [],
             seasonSelected: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1],
             teamIdArray: []
             // seasonSelected: null,
@@ -55,6 +59,7 @@ export default class StatsTab extends React.Component {
 
     componentWillMount() {
         this.putSeasonsInArray();
+        this.generateCarouselData();
     }
 
     putSeasonsInArray() {
@@ -110,13 +115,68 @@ export default class StatsTab extends React.Component {
         });
     }
 
+    generateCarouselData() {
+        const currentYearStats = this.state.seasonSelected;
+        console.log('currentYearStatsss', currentYearStats);
+        console.log('parentState', this.props.parentState.playerStats);
+        const seasonTotalsReg = this.props.parentState.playerStats[0].rowSet;
+        let shootingDataFG = [];
+        let shootingData3FG = [];
+        let shootingDataFT = [];
+        seasonTotalsReg.forEach((season) => {
+            shootingDataFG.push({value: season[11]*100, label: season[1].substring(2)});
+            shootingData3FG.push({value: season[14]*100, label: season[1].substring(2)});
+            shootingDataFT.push({value: season[17]*100, label: season[1].substring(2)});
+        });
+        const seasonRankingsReg = this.props.parentState.playerStats[10];
+        const carouselData = [
+            {
+                title: 'Shooting',
+                headers: ['FG%', 'FG3%', 'FT%'],
+                headersData: [currentYearStats[11], currentYearStats[14], currentYearStats[17]],
+                dataY: [0, 100],
+                graphDataColor: colors.mainAccent,
+                graphData2Color: colors.highlight,
+                graphData3Color: colors.highlight,
+                graphData: [...shootingDataFG],
+                graphData2: [...shootingData3FG],
+                graphData3: [...shootingDataFT],
+            },
+            {
+                title: 'Shooting',
+                headers: ['FG%', 'FG3%', 'FT%'],
+                headersData: [currentYearStats[11], currentYearStats[14], currentYearStats[17]],
+                dataY: [0, 100],
+                graphDataColor: colors.mainAccent,
+                graphData2Color: colors.highlight,
+                graphData3Color: colors.highlight,
+                graphData: [...shootingDataFG],
+                graphData2: [...shootingData3FG],
+            },
+        ];
+        this.setState({ carouselData });
+    }
+
+
+    _renderItem ({item, index}) {
+        return (
+            <View>
+                <PlayerHistoryGraph
+                    item={item}
+                    index={index}
+                />
+            </View>
+        );
+    }
+
 
     render() {
-        console.log('props', this.props);
         const primaryColor = teamColors[this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]].primary;
         // const currentYearStats = this.props.parentState.playerStats[0].rowSet[this.state.seasonIndex];
         const currentYearStats = this.state.seasonSelected;
         const careerStats = this.props.parentState.playerStats[1].rowSet[0];
+        const sliderWidth = windowSize.width;
+        const itemWidth = windowSize.width* 0.7 + 40;
         return (
             <View style={styles.statsContainer}>
                 <View style={[styles.statsRowContainer]}>
@@ -127,6 +187,7 @@ export default class StatsTab extends React.Component {
                             }}
                             items={this.state.seasons}
                             onValueChange={(value, index) => {
+                                this.generateCarouselData();
                                 this.setState({
                                     seasonSelected: value,
                                     seasonSelectedLabel: this.state.seasons[index].label
@@ -303,6 +364,14 @@ export default class StatsTab extends React.Component {
                         {/*</Text>*/}
                     {/*</View>*/}
                 {/*</View>*/}
+
+                <Carousel
+                    ref={(c) => { this._carousel = c; }}
+                    data={this.state.carouselData}
+                    renderItem={this._renderItem}
+                    sliderWidth={sliderWidth}
+                    itemWidth={itemWidth}
+                />
                 <View style={{height: 100}} />
 
 

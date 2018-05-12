@@ -277,8 +277,8 @@ export default class Standings extends React.Component {
                 headerRow={this.state.tableHeadOverall}
                 rowsData={this.state.arrayOfConferences[0]}
                 widthArr={this.state.widthArrOverall}
-                titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40 }}
-                headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                titleStyle={{ backgroundColor: colors.highlight, height: 40 }}
+                headerStyle={{ backgroundColor: colors.mainAccent, height: 30 }}
             />
             <GeneralTable
                 containerStyle={styles.tableContainer}
@@ -288,8 +288,8 @@ export default class Standings extends React.Component {
                 headerRow={this.state.tableHeadOverall}
                 rowsData={this.state.arrayOfConferences[1]}
                 widthArr={this.state.widthArrOverall}
-                titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                titleStyle={{ backgroundColor: colors.highlight, height: 40 }}
+                headerStyle={{ backgroundColor: colors.mainAccent, height: 30 }}
             />
         </View>);
     }
@@ -360,8 +360,9 @@ const styles = StyleSheet.create({
     },
     tabHeaderText: {
         ...appFonts.mdRegular,
-        color: colors.greyBase,
+        color: colors.white,
         textAlign: 'center',
+        opacity: 0.6
     },
     selectedTabContainer: {
         backgroundColor: colors.mainAccent,
@@ -374,6 +375,7 @@ const styles = StyleSheet.create({
         color: colors.white,
         ...appFonts.mdRegular,
         textAlign: 'center',
+        opacity: 1
     },
     activityIndicator: {
         marginTop: 32,
