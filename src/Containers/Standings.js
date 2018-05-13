@@ -205,8 +205,8 @@ export default class Standings extends React.Component {
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.arrayOfDivisions[0]}
                     widthArr={this.state.widthArrOverall}
-                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                    titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
@@ -216,8 +216,8 @@ export default class Standings extends React.Component {
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.arrayOfDivisions[1]}
                     widthArr={this.state.widthArrOverall}
-                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                    titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
@@ -227,8 +227,8 @@ export default class Standings extends React.Component {
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.arrayOfDivisions[2]}
                     widthArr={this.state.widthArrOverall}
-                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                    titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
@@ -238,8 +238,8 @@ export default class Standings extends React.Component {
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.arrayOfDivisions[3]}
                     widthArr={this.state.widthArrOverall}
-                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                    titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
@@ -249,8 +249,8 @@ export default class Standings extends React.Component {
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.arrayOfDivisions[4]}
                     widthArr={this.state.widthArrOverall}
-                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                    titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
                 />
                 <GeneralTable
                     containerStyle={styles.tableContainer}
@@ -260,8 +260,8 @@ export default class Standings extends React.Component {
                     headerRow={this.state.tableHeadOverall}
                     rowsData={this.state.arrayOfDivisions[5]}
                     widthArr={this.state.widthArrOverall}
-                    titleStyle={{ backgroundColor: colorLuminance(colors.mainAccent, 0.5), height: 40}}
-                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.1), height: 30 }}
+                    titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                    headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
                 />
             </View>
         );
@@ -277,8 +277,8 @@ export default class Standings extends React.Component {
                 headerRow={this.state.tableHeadOverall}
                 rowsData={this.state.arrayOfConferences[0]}
                 widthArr={this.state.widthArrOverall}
-                titleStyle={{ backgroundColor: colors.highlight, height: 40 }}
-                headerStyle={{ backgroundColor: colors.mainAccent, height: 30 }}
+                titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
             />
             <GeneralTable
                 containerStyle={styles.tableContainer}
@@ -288,8 +288,8 @@ export default class Standings extends React.Component {
                 headerRow={this.state.tableHeadOverall}
                 rowsData={this.state.arrayOfConferences[1]}
                 widthArr={this.state.widthArrOverall}
-                titleStyle={{ backgroundColor: colors.highlight, height: 40 }}
-                headerStyle={{ backgroundColor: colors.mainAccent, height: 30 }}
+                titleStyle={{ backgroundColor: colors.mainAccent, height: 40 }}
+                headerStyle={{ backgroundColor: colorLuminance(colors.mainAccent, -0.4), height: 30 }}
             />
         </View>);
     }

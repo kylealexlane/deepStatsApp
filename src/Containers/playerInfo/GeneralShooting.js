@@ -163,7 +163,7 @@ export default class GeneralShooting extends React.Component {
         return (
             <ScrollView
                 style={styles.container}
-                stickyHeaderIndices={[0]}
+                stickyHeaderIndices={[1]}
             >
                 {/*<View style={[styles.displayContainer, {paddingTop: 16}]}>*/}
                     {/*<Text>*/}
@@ -171,8 +171,9 @@ export default class GeneralShooting extends React.Component {
                         {/*<Text style={styles.nameText}>{firstLast[1]}</Text>*/}
                     {/*</Text>*/}
                 {/*</View>*/}
+                <View style={{ height: 16, width: '100%' }}/>
                 <View style={{backgroundColor: colors.baseBackground, borderBottomWidth: 0, borderBottomColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest}}>
-                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row' }]}>
                         {/*<View style={[containerStyle.rowContainer, {paddingHorizontal: 8, paddingVertical: 16, justifyContent: 'center'}]}>*/}
                         <View style={styles.displayContainerSelector}>
                             <Text style={styles.besideSelectorSecondaryText}>YEAR</Text>
@@ -225,7 +226,7 @@ export default class GeneralShooting extends React.Component {
                     </View>
                 </View>
                 <View>
-                    <View style={[{paddingHorizontal: 16, paddingBottom: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                    <View style={[{paddingHorizontal: 16, paddingBottom: 32, justifyContent: 'space-around', flexDirection: 'row'}]}>
                         <View style={styles.displayContainer}>
                             <Text style={styles.genStatsHeaderText}>FG%</Text>
                             <Text style={styles.genStatsNumberText}>{(topGeneralStats[4]*100).toFixed(1)}</Text>
@@ -375,7 +376,7 @@ const styles = StyleSheet.create({
         color: colors.baseText
     },
     genStatsHeaderText: {
-        ...appFonts.mdRegular,
+        ...appFonts.smRegular,
         color: colors.secondaryText
     }
 });

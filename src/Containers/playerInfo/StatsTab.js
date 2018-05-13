@@ -123,35 +123,78 @@ export default class StatsTab extends React.Component {
         let shootingDataFG = [];
         let shootingData3FG = [];
         let shootingDataFT = [];
+        let offReb = [];
+        let defReb = [];
+        let reb = [];
+        let assists = [];
+        let steals = [];
+        let blocks = [];
+        let tov = [];
+        let fouls = [];
+        let pts = [];
         seasonTotalsReg.forEach((season) => {
             shootingDataFG.push({value: season[11]*100, label: season[1].substring(2)});
             shootingData3FG.push({value: season[14]*100, label: season[1].substring(2)});
             shootingDataFT.push({value: season[17]*100, label: season[1].substring(2)});
+            offReb.push({value: season[18], label: season[1].substring(2)});
+            defReb.push({value: season[19], label: season[1].substring(2)});
+            reb.push({value: season[20], label: season[1].substring(2)});
+            assists.push({value: season[21], label: season[1].substring(2)});
+            steals.push({value: season[22], label: season[1].substring(2)});
+            blocks.push({value: season[23], label: season[1].substring(2)});
+            tov.push({value: season[24], label: season[1].substring(2)});
+            fouls.push({value: season[25], label: season[1].substring(2)});
+            pts.push({value: season[26], label: season[1].substring(2)});
         });
         const seasonRankingsReg = this.props.parentState.playerStats[10];
         const carouselData = [
             {
                 title: 'Shooting',
-                headers: ['FG%', 'FG3%', 'FT%'],
-                headersData: [currentYearStats[11], currentYearStats[14], currentYearStats[17]],
+                headers: ['FT%', 'FG%', 'FG3%'],
+                // headersData: [(currentYearStats[11]*100).toFixed(1), (currentYearStats[14]*100).toFixed(1), (currentYearStats[17]*100).toFixed(1)],
+                headersData: [(currentYearStats[17]*100).toFixed(1), (currentYearStats[11]*100).toFixed(1), (currentYearStats[14]*100).toFixed(1)],
                 dataY: [0, 100],
-                graphDataColor: colors.mainAccent,
-                graphData2Color: colors.highlight,
-                graphData3Color: colors.highlight,
-                graphData: [...shootingDataFG],
-                graphData2: [...shootingData3FG],
-                graphData3: [...shootingDataFT],
+                graphDataColor: colors.graphColor1,
+                graphData2Color: colors.graphColor2,
+                graphData3Color: colors.graphColor3,
+                graphData2: [...shootingDataFG],
+                graphData3: [...shootingData3FG],
+                graphData: [...shootingDataFT],
+                onPress: this.navigateToGeneralShooting
             },
             {
-                title: 'Shooting',
-                headers: ['FG%', 'FG3%', 'FT%'],
-                headersData: [currentYearStats[11], currentYearStats[14], currentYearStats[17]],
-                dataY: [0, 100],
-                graphDataColor: colors.mainAccent,
-                graphData2Color: colors.highlight,
-                graphData3Color: colors.highlight,
-                graphData: [...shootingDataFG],
-                graphData2: [...shootingData3FG],
+                title: 'Scoring',
+                headers: ['PTS', 'AST'],
+                headersData: [currentYearStats[26], currentYearStats[21]],
+                dataY: [0, 30],
+                graphDataColor: colors.graphColor1,
+                graphData2Color: colors.graphColor2,
+                graphData3Color: colors.graphColor3,
+                graphData: [...pts],
+                graphData2: [...assists],
+            },
+            {
+                title: 'Rebounding',
+                headers: ['REB', 'DREB', 'OREB'],
+                headersData: [currentYearStats[20], currentYearStats[19], currentYearStats[18]],
+                dataY: [0, 20],
+                graphDataColor: colors.graphColor1,
+                graphData2Color: colors.graphColor2,
+                graphData3Color: colors.graphColor3,
+                graphData: [...reb],
+                graphData2: [...defReb],
+                graphData3: [...offReb],
+            },
+            {
+                title: 'Possession',
+                headers: ['TOV', 'STL'],
+                headersData: [currentYearStats[24], currentYearStats[22]],
+                dataY: [0, 5],
+                graphDataColor: colors.graphColor1,
+                graphData2Color: colors.graphColor2,
+                graphData3Color: colors.graphColor3,
+                graphData: [...tov],
+                graphData2: [...steals],
             },
         ];
         this.setState({ carouselData });
@@ -160,12 +203,15 @@ export default class StatsTab extends React.Component {
 
     _renderItem ({item, index}) {
         return (
-            <View>
+            <TouchableOpacity
+                style={{paddingTop: 16, marginLeft: 16}}
+                onPress={item.onPress}
+            >
                 <PlayerHistoryGraph
                     item={item}
                     index={index}
                 />
-            </View>
+            </TouchableOpacity>
         );
     }
 
@@ -176,7 +222,7 @@ export default class StatsTab extends React.Component {
         const currentYearStats = this.state.seasonSelected;
         const careerStats = this.props.parentState.playerStats[1].rowSet[0];
         const sliderWidth = windowSize.width;
-        const itemWidth = windowSize.width* 0.7 + 40;
+        const itemWidth = windowSize.width* 0.7;
         return (
             <View style={styles.statsContainer}>
                 <View style={[styles.statsRowContainer]}>
@@ -371,6 +417,11 @@ export default class StatsTab extends React.Component {
                     renderItem={this._renderItem}
                     sliderWidth={sliderWidth}
                     itemWidth={itemWidth}
+                    loop={true}
+                    activeSlideAlignment={'start'}
+                    inactiveSlideOpacity={0.5}
+                    inactiveSlideScale={0.8}
+                    inactiveSlideShift={0}
                 />
                 <View style={{height: 100}} />
 

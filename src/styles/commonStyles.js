@@ -272,6 +272,11 @@ export const colors = {
 
     highlight: '#1E88E5',
 
+    graphColor1: '#1E88E5',
+    graphColor2: '#0D47A1',
+    graphColor3: '#e040fb',
+
+
 };
 
 export const fontSize = {
