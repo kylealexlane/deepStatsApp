@@ -12,6 +12,7 @@ import {
     ListView,
     SafeAreaView,
     Image,
+    ActivityIndicator,
 } from 'react-native'
 import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
@@ -42,6 +43,7 @@ export default class PlayerDashboard extends React.Component {
 
     constructor(props){
         super(props);
+        this.showLoadingIndicator = this.showLoadingIndicator.bind(this);
         this.state ={
             isLoading: true,
             isLoadingBio: true,
@@ -247,6 +249,17 @@ export default class PlayerDashboard extends React.Component {
         }
     }
 
+    showLoadingIndicator() {
+        return (
+            <ActivityIndicator
+                size="large"
+                color={colors.mainAccent}
+                animating={this.state.loading}
+                style={styles.activityIndicator}
+            />
+        );
+    }
+
     render() {
         let primaryColor = '#000000';
         let teamAbbr = '';
@@ -261,7 +274,10 @@ export default class PlayerDashboard extends React.Component {
                     barStyle="light-content"
                     backgroundColor={colors.greyDarkest}
                 />
-                <ScrollView style={styles.container}>
+                <ScrollView
+                    style={styles.container}
+                    stickyHeaderIndices={[1]}
+                >
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                     <View style={[styles.headerContainer, { backgroundColor: this.state.isLoading ? colors.greyBase : hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.2) }]}>
                         {/*<Image*/}
@@ -293,18 +309,18 @@ export default class PlayerDashboard extends React.Component {
                             <View style={{ height: '100%', width: '50%'}}>
                             </View>
                             <View style={{ width: '50%', height: '100%', alignItems: 'flex-start', justifyContent: 'center', paddingVertical: 16 }}>
-                                <Text style={[appFonts.lgRegular, { color: colors.white }]}>
+                                <Text style={[appFonts.lgRegular, { color: colors.greyLighter }]}>
                                     {this.state.playerBio[0].rowSet[0][1]}
                                 </Text>
                                 <Text style={[styles.mainTextColor, appFonts.xxxlBold, { color: colors.white }]}>
                                     {this.state.playerBio[0].rowSet[0][2]}
                                 </Text>
                                 <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
-                                    #{this.state.playerBio[0].rowSet[0][13]}  {this.state.playerBio[0].rowSet[0][18]}
+                                    #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
                                 </Text>
-                                <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
-                                    {this.state.playerBio[0].rowSet[0][14]}
-                                </Text>
+                                {/*<Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>*/}
+                                    {/*{this.state.playerBio[0].rowSet[0][14]}*/}
+                                {/*</Text>*/}
                             </View>
                             {/*<Text style={[ appFonts.mdRegular, {color: colors.white, position: 'absolute', top: 8, right: 16 }]}>*/}
                                 {/*<Text>{this.state.playerBio[0].rowSet[0][10].split("-")[0]}</Text>*/}
@@ -354,6 +370,9 @@ export default class PlayerDashboard extends React.Component {
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                 this.showSelectedTab()
                 }
+                    {this.state.isLoading || this.state.isLoadingBio &&
+                    this.showLoadingIndicator()
+                    }
                 </ScrollView>
             </SafeAreaView>
         );
@@ -404,22 +423,25 @@ const styles = StyleSheet.create({
         ...appFonts.xlBold
     },
     tabText: {
-        ...appFonts.xlBold,
-        color: colors.white
+        ...appFonts.lgRegular,
+        color: colors.white,
+        opacity: 0.7
     },
     tabTextSelected: {
         // borderLeftWidth: 1,
         // borderTopWidth: 1,
         // borderRightWidth: 1,
         // borderColor: colors.white,
-        backgroundColor: colors.white,
-        borderTopRightRadius: 8,
-        borderTopLeftRadius: 8,
-        marginTop: 2
+        backgroundColor: 'transparent',
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: 0,
+        // marginTop: 3
     },
     tabSelectedText: {
-        ...appFonts.xlBold,
-        color: colors.mainTextColor
+        ...appFonts.lgBold,
+        // color: colors.mainTextColor,
+        color: colors.white,
+        opacity: 1
     },
     tabContainer: {
         flex: 1,
@@ -428,13 +450,15 @@ const styles = StyleSheet.create({
     },
     statsContainer: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: colors.baseBackground
     },
     bioContainer: {
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        backgroundColor: colors.baseBackground
     },
     bioTextLarge: {
         ...appFonts.lgBold
@@ -472,7 +496,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         // paddingVertical: 8,
         paddingHorizontal: 0,
-        height: 38
+        height: 42
     },
     upperRightSubText: {
         color: colors.greyLight,
@@ -482,7 +506,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    activityIndicator: {
+        marginTop: 32,
+    },
 });
 
 AppRegistry.registerComponent(

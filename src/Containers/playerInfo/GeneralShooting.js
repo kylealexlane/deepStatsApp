@@ -71,21 +71,21 @@ export default class GeneralShooting extends React.Component {
         console.log('passedParams', this.props.navigation.state.params);
         this.state = {
             // tableHeadOverall: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
-            tableHeadOverall: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadOverall: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataOverall: [],
-            widthArrOverall: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrOverall: [130, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
-            tableHeadShotClock: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadShotClock: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataShotClock: [],
-            widthArrShotClock: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrShotClock: [130, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
-            tableHeadDribble: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadDribble: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataDribble: [],
-            widthArrDribble: [120, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrDribble: [130, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
-            tableHeadClosestD: ['', 'FREQ', 'FGM', 'FGA', 'FG%', 'EFG%', '2FREQ', 'FG2M', 'FG2A', 'FG2%', '3FREQ', 'FG3M', 'FG3A', 'FG3%',],
+            tableHeadClosestD: ['', 'FREQ', 'FGM*', 'FGA*', 'FG%', 'EFG%', '2FREQ', 'FG2M*', 'FG2A*', 'FG2%', '3FREQ', 'FG3M*', 'FG3A*', 'FG3%',],
             tableDataClosestD: [],
-            widthArrClosestD: [150, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 ],
+            widthArrClosestD: [150, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60 ],
 
             seasonSelected: this.props.navigation.state.params.seasonSelected,
             seasons: this.props.navigation.state.params.seasons,
@@ -163,7 +163,7 @@ export default class GeneralShooting extends React.Component {
         return (
             <ScrollView
                 style={styles.container}
-                stickyHeaderIndices={[0]}
+                stickyHeaderIndices={[1]}
             >
                 {/*<View style={[styles.displayContainer, {paddingTop: 16}]}>*/}
                     {/*<Text>*/}
@@ -171,8 +171,9 @@ export default class GeneralShooting extends React.Component {
                         {/*<Text style={styles.nameText}>{firstLast[1]}</Text>*/}
                     {/*</Text>*/}
                 {/*</View>*/}
+                <View style={{ height: 16, width: '100%' }}/>
                 <View style={{backgroundColor: colors.baseBackground, borderBottomWidth: 0, borderBottomColor: this.props.navigation.state.params.playerTeamShort ?  hexToRgbA(teamColors[this.props.navigation.state.params.playerTeamShort].primary, 1) : colors.greyDarkest}}>
-                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                    <View style={[{paddingHorizontal: 16, paddingVertical: 16, justifyContent: 'space-around', flexDirection: 'row' }]}>
                         {/*<View style={[containerStyle.rowContainer, {paddingHorizontal: 8, paddingVertical: 16, justifyContent: 'center'}]}>*/}
                         <View style={styles.displayContainerSelector}>
                             <Text style={styles.besideSelectorSecondaryText}>YEAR</Text>
@@ -225,7 +226,7 @@ export default class GeneralShooting extends React.Component {
                     </View>
                 </View>
                 <View>
-                    <View style={[{paddingHorizontal: 16, paddingBottom: 16, justifyContent: 'space-around', flexDirection: 'row'}]}>
+                    <View style={[{paddingHorizontal: 16, paddingBottom: 32, justifyContent: 'space-around', flexDirection: 'row'}]}>
                         <View style={styles.displayContainer}>
                             <Text style={styles.genStatsHeaderText}>FG%</Text>
                             <Text style={styles.genStatsNumberText}>{(topGeneralStats[4]*100).toFixed(1)}</Text>
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection: 'column',
         // flexWrap: 'nowrap',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
         // flexGrow: 4
     },
@@ -375,7 +376,7 @@ const styles = StyleSheet.create({
         color: colors.baseText
     },
     genStatsHeaderText: {
-        ...appFonts.mdRegular,
+        ...appFonts.smRegular,
         color: colors.secondaryText
     }
 });
