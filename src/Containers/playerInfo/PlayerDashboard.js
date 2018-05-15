@@ -261,7 +261,10 @@ export default class PlayerDashboard extends React.Component {
                     barStyle="light-content"
                     backgroundColor={colors.greyDarkest}
                 />
-                <ScrollView style={styles.container}>
+                <ScrollView
+                    style={styles.container}
+                    stickyHeaderIndices={[1]}
+                >
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                     <View style={[styles.headerContainer, { backgroundColor: this.state.isLoading ? colors.greyBase : hexToRgbA(teamColors[this.state.playerStats[0].rowSet[this.state.currentTeamIndex][4]].primary, 0.2) }]}>
                         {/*<Image*/}
@@ -431,13 +434,15 @@ const styles = StyleSheet.create({
     },
     statsContainer: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: colors.baseBackground
     },
     bioContainer: {
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        backgroundColor: colors.baseBackground
     },
     bioTextLarge: {
         ...appFonts.lgBold

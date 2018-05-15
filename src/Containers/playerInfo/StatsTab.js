@@ -71,6 +71,12 @@ export default class StatsTab extends React.Component {
         if (playerStats[6].rowSet.length > 0){
             this.generateSeasonTableData(playerStats[6].rowSet, [...playerStats[7].rowSet[0]], 'collegeSeasonTableData', false);
         }
+        if (playerStats[8].rowSet.length > 0){
+            this.generateSeasonTableData(playerStats[8].rowSet, [...playerStats[9].rowSet[0]], 'preSeasonTableData', false);
+        }
+        if (playerStats[10].rowSet.length > 0){
+            this.generateSeasonTableData(playerStats[10].rowSet, [], 'seasonRankingTableData', false);
+        }
         this.generateCarouselData(this.state.seasonSelected);
     }
 
@@ -399,7 +405,7 @@ export default class StatsTab extends React.Component {
                     inactiveSlideScale={0.8}
                     inactiveSlideShift={0}
                 />
-                <View style={styles.statsRowContainerNoPadding}>
+                <View style={[styles.statsRowContainerNoPadding]}>
                     <GeneralTable
                         // containerStyle={styles.tableContainer}
                         showHideIcon={true}
@@ -408,7 +414,20 @@ export default class StatsTab extends React.Component {
                         headerRow={this.state.seasonTableHeaders}
                         rowsData={this.state.seasonTableData}
                         widthArr={this.state.seasonWidthArr}
-                        titleStyle={{ backgroundColor: primaryColor, height: 40 }}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40, width: windowSize.width }}
+                        headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
+                    />
+                </View>
+                <View style={styles.statsRowContainerNoPadding}>
+                    <GeneralTable
+                        // containerStyle={styles.tableContainer}
+                        showHideIcon={true}
+                        errorMessage={''}
+                        title={'SEASON RANKINGS'}
+                        headerRow={this.state.seasonTableHeaders}
+                        rowsData={this.state.seasonRankingTableData}
+                        widthArr={this.state.seasonWidthArr}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40, width: windowSize.width }}
                         headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
                     />
                 </View>
@@ -421,7 +440,20 @@ export default class StatsTab extends React.Component {
                         headerRow={this.state.seasonTableHeaders}
                         rowsData={this.state.postSeasonTableData}
                         widthArr={this.state.seasonWidthArr}
-                        titleStyle={{ backgroundColor: primaryColor, height: 40 }}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40, width: windowSize.width }}
+                        headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
+                    />
+                </View>
+                <View style={styles.statsRowContainerNoPadding}>
+                    <GeneralTable
+                        // containerStyle={styles.tableContainer}
+                        showHideIcon={true}
+                        errorMessage={''}
+                        title={'PRE SEASON'}
+                        headerRow={this.state.seasonTableHeaders}
+                        rowsData={this.state.preSeasonTableData}
+                        widthArr={this.state.seasonWidthArr}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40, width: windowSize.width }}
                         headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
                     />
                 </View>
@@ -434,7 +466,7 @@ export default class StatsTab extends React.Component {
                         headerRow={this.state.seasonTableHeaders}
                         rowsData={this.state.collegeSeasonTableData}
                         widthArr={this.state.seasonWidthArr}
-                        titleStyle={{ backgroundColor: primaryColor, height: 40 }}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40, width: windowSize.width }}
                         headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
                     />
                 </View>
@@ -516,11 +548,10 @@ const styles = StyleSheet.create({
     statsRowContainerNoPadding: {
         flex: 1,
         width: '100%',
-        backgroundColor: 'transparent',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 20,
+        marginTop: 20,
         paddingHorizontal: 0
     },
     statsRowSubContainer: {
