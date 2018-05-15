@@ -12,6 +12,7 @@ import {
     ListView,
     SafeAreaView,
     Image,
+    ActivityIndicator,
 } from 'react-native'
 import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
@@ -42,6 +43,7 @@ export default class PlayerDashboard extends React.Component {
 
     constructor(props){
         super(props);
+        this.showLoadingIndicator = this.showLoadingIndicator.bind(this);
         this.state ={
             isLoading: true,
             isLoadingBio: true,
@@ -247,6 +249,17 @@ export default class PlayerDashboard extends React.Component {
         }
     }
 
+    showLoadingIndicator() {
+        return (
+            <ActivityIndicator
+                size="large"
+                color={colors.mainAccent}
+                animating={this.state.loading}
+                style={styles.activityIndicator}
+            />
+        );
+    }
+
     render() {
         let primaryColor = '#000000';
         let teamAbbr = '';
@@ -357,6 +370,9 @@ export default class PlayerDashboard extends React.Component {
                     {!this.state.isLoading && !this.state.isLoadingBio &&
                 this.showSelectedTab()
                 }
+                    {this.state.isLoading || this.state.isLoadingBio &&
+                    this.showLoadingIndicator()
+                    }
                 </ScrollView>
             </SafeAreaView>
         );
@@ -480,7 +496,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         // paddingVertical: 8,
         paddingHorizontal: 0,
-        height: 38
+        height: 42
     },
     upperRightSubText: {
         color: colors.greyLight,
@@ -490,7 +506,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    activityIndicator: {
+        marginTop: 32,
+    },
 });
 
 AppRegistry.registerComponent(
