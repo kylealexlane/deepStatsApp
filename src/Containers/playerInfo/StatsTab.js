@@ -18,7 +18,7 @@ import { nbaId, year } from '../../config/commonVariables'
 import PropTypes from 'prop-types';
 import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
 import { colors, teamColors, windowSize, appFonts } from '../../styles/commonStyles'
-import { round } from "../../helpers/Helpers"
+import {colorLuminance, round} from "../../helpers/Helpers"
 import LinearGradient from 'react-native-linear-gradient'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -34,13 +34,15 @@ import RNPickerSelect from 'react-native-picker-select';
 import Carousel from 'react-native-snap-carousel';
 import PlayerHistoryGraph from '../commonComponents/PlayerHistoryGraph';
 
+import GeneralTable from '../commonComponents/GeneralTable'
 
 
 export default class StatsTab extends React.Component {
     constructor(props){
         super(props);
         this.navigateToGeneralShooting = this.navigateToGeneralShooting.bind(this);
-        this.navigateToCareerStats = this.navigateToCareerStats.bind(this);
+        // this.navigateToCareerStats = this.navigateToCareerStats.bind(this);
+        this.generateSeasonTableData = this.generateSeasonTableData.bind(this);
         this.inputRefs = {};
 
         this.state ={
@@ -48,18 +50,64 @@ export default class StatsTab extends React.Component {
             ],
             carouselData: [],
             seasonSelected: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1],
-            teamIdArray: []
+            teamIdArray: [],
             // seasonSelected: null,
 
             // seasonSelectedLabel: this.props.parentState.playerStats[0].rowSet[this.props.parentState.playerStats[0].rowSet.length -1][1],
             // seasonSelectedLabel: null,
 
+            seasonTableHeaders: ['SEASON', 'TEAM', 'AGE', 'GP', 'GS', 'MIN', 'FGM', 'FGA', 'FG%', 'FG3M', 'FG3A', 'FG3%','FTM', 'FTA', 'FT%', 'OREB', 'DREB', 'REB', 'AST','STL', 'BLK', 'TOV', 'PF', 'PTS' ],
+            seasonTableData: [],
+            postSeasonTableData: [],
+            collegeSeasonTableData: [],
+            seasonWidthArr: [80, 50, 50, 60, 60, 50, 50, 50, 70, 70, 70, 70, 70, 70, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70 ],
         }
     }
 
     componentWillMount() {
+        const { playerStats } = this.props.parentState;
         this.putSeasonsInArray();
-        this.generateCarouselData();
+        this.generateSeasonTableData(playerStats[2].rowSet, [...playerStats[3].rowSet[0]], 'postSeasonTableData', false);
+        if (playerStats[6].rowSet.length > 0){
+            this.generateSeasonTableData(playerStats[6].rowSet, [...playerStats[7].rowSet[0]], 'collegeSeasonTableData', false);
+        }
+        this.generateCarouselData(this.state.seasonSelected);
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        console.log('nexttt',nextState);
+        console.log(this.state);
+        if(nextState.seasonSelected[1] !== this.state.seasonSelected[1]) {
+            this.generateCarouselData(nextState.seasonSelected);
+        }
+        if(nextState.seasons !== this.state.seasons) {
+            this.generateSeasonTableData(nextState.seasons, [...this.props.parentState.playerStats[1].rowSet[0]], 'seasonTableData', true);
+        }
+    }
+
+    generateSeasonTableData(seasons, careerSeason, labelInState, withValue) {
+        let seasonDataForTable = [];
+        console.log(seasons);
+        console.log(careerSeason);
+        if (seasons && seasons.length > 0) {
+            const seasonCopy = JSON.parse(JSON.stringify( seasons ));
+            seasonCopy.forEach((row) => {
+                let s = row;
+                if(withValue) {
+                    s = row.value;
+                }
+                s.splice(0, 1);
+                console.log('1', s);
+                s.splice(1, 2);
+                console.log(s);
+                seasonDataForTable.push(s);
+            });
+            if(careerSeason.length > 0) {
+                careerSeason.splice(0, 3);
+                seasonDataForTable.push(['CAREER', '', ''].concat(careerSeason));
+            }
+            this.setState({ [labelInState]: seasonDataForTable });
+        }
     }
 
     putSeasonsInArray() {
@@ -80,6 +128,7 @@ export default class StatsTab extends React.Component {
             console.log('newSeasons', newSeasons);
             // previousYear = year;
         });
+        this.generateSeasonTableData(newSeasons, [...this.props.parentState.playerStats[1].rowSet[0]], 'seasonTableData', true);
         this.setState({
             seasons: newSeasons,
             teamIdArray: newTeamIdArray
@@ -100,26 +149,26 @@ export default class StatsTab extends React.Component {
         });
     }
 
-    navigateToCareerStats() {
-        console.log('moving to career', this.props);
-        this.props.navigation.push('careerStats', {
-            playerStats: this.props.parentState.playerStats,
-            seasons: this.state.seasons,
-            seasonSelected: this.state.seasonSelected,
-            playerId: this.props.navigation.state.params.playerId,
-            // teamId: this.props.parentState.playerBio[0].rowSet[0][16],
-            teamIdArray: this.state.teamIdArray,
-            playerName: this.props.parentState.playerBio[0].rowSet[0][3],
-            playerTeamShort: this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4],
-            teamImageURI: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]}.png`
-        });
-    }
+    // navigateToCareerStats() {
+    //     console.log('moving to career', this.props);
+    //     this.props.navigation.push('careerStats', {
+    //         playerStats: this.props.parentState.playerStats,
+    //         seasons: this.state.seasons,
+    //         seasonSelected: this.state.seasonSelected,
+    //         playerId: this.props.navigation.state.params.playerId,
+    //         // teamId: this.props.parentState.playerBio[0].rowSet[0][16],
+    //         teamIdArray: this.state.teamIdArray,
+    //         playerName: this.props.parentState.playerBio[0].rowSet[0][3],
+    //         playerTeamShort: this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4],
+    //         teamImageURI: `https://i.cdn.turner.com/nba/nba/.element/img/1.0/teamsites/logos/teamlogos_500x500/${this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]}.png`
+    //     });
+    // }
 
-    generateCarouselData() {
-        const currentYearStats = this.state.seasonSelected;
+    generateCarouselData(seasonSelected) {
+        const currentYearStats = [...seasonSelected];
         console.log('currentYearStatsss', currentYearStats);
         console.log('parentState', this.props.parentState.playerStats);
-        const seasonTotalsReg = this.props.parentState.playerStats[0].rowSet;
+        const seasonTotalsReg = [...this.props.parentState.playerStats[0].rowSet];
         let shootingDataFG = [];
         let shootingData3FG = [];
         let shootingDataFT = [];
@@ -149,6 +198,17 @@ export default class StatsTab extends React.Component {
         const seasonRankingsReg = this.props.parentState.playerStats[10];
         const carouselData = [
             {
+                title: 'Scoring',
+                headers: ['PTS', 'AST'],
+                headersData: [currentYearStats[26], currentYearStats[21]],
+                dataY: [0, 30],
+                graphDataColor: colors.graphColor1,
+                graphData2Color: colors.graphColor2,
+                graphData3Color: colors.graphColor3,
+                graphData: [...pts],
+                graphData2: [...assists],
+            },
+            {
                 title: 'Shooting',
                 headers: ['FT%', 'FG%', 'FG3%'],
                 // headersData: [(currentYearStats[11]*100).toFixed(1), (currentYearStats[14]*100).toFixed(1), (currentYearStats[17]*100).toFixed(1)],
@@ -161,17 +221,6 @@ export default class StatsTab extends React.Component {
                 graphData3: [...shootingData3FG],
                 graphData: [...shootingDataFT],
                 onPress: this.navigateToGeneralShooting
-            },
-            {
-                title: 'Scoring',
-                headers: ['PTS', 'AST'],
-                headersData: [currentYearStats[26], currentYearStats[21]],
-                dataY: [0, 30],
-                graphDataColor: colors.graphColor1,
-                graphData2Color: colors.graphColor2,
-                graphData3Color: colors.graphColor3,
-                graphData: [...pts],
-                graphData2: [...assists],
             },
             {
                 title: 'Rebounding',
@@ -217,6 +266,7 @@ export default class StatsTab extends React.Component {
 
 
     render() {
+        console.log('render', this.props.parentState);
         const primaryColor = teamColors[this.props.parentState.playerStats[0].rowSet[this.props.parentState.currentTeamIndex][4]].primary;
         // const currentYearStats = this.props.parentState.playerStats[0].rowSet[this.state.seasonIndex];
         const currentYearStats = this.state.seasonSelected;
@@ -233,7 +283,6 @@ export default class StatsTab extends React.Component {
                             }}
                             items={this.state.seasons}
                             onValueChange={(value, index) => {
-                                this.generateCarouselData();
                                 this.setState({
                                     seasonSelected: value,
                                     seasonSelectedLabel: this.state.seasons[index].label
@@ -260,7 +309,7 @@ export default class StatsTab extends React.Component {
                             this.inputRefs.picker.togglePicker();
                         }}/>
                     </View>
-                    <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>(Per Game)</Text>
+                    {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>(Per Game)</Text>*/}
                     {/*<View>*/}
                         {/*<MaterialCommunityIcon name="chevron-right" size={20} color={colors.highlight} />*/}
                     {/*</View>*/}
@@ -338,79 +387,6 @@ export default class StatsTab extends React.Component {
                 </View>
 
                 <View style={{paddingTop: 10}}/>
-                {/*<HorizontalSeperator containerStyles={{width: '100%', marginVertical: 4}}/>*/}
-
-                {/*<View style={[styles.statsRowContainer, { paddingTop: 10 }]}>*/}
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                                {/*PTS*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                                {/*{currentYearStats[26]}*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-
-                    {/*<VerticalSeperator/>*/}
-
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                                {/*AST*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                                {/*{currentYearStats[21]}*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-
-                    {/*<VerticalSeperator/>*/}
-
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                                {/*REB*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                                {/*{currentYearStats[20]}*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-
-                    {/*<VerticalSeperator/>*/}
-
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                                {/*STL*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                        {/*<Text>*/}
-                            {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                                {/*{currentYearStats[22]}*/}
-                            {/*</Text>*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-
-                    {/*<VerticalSeperator/>*/}
-
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*BLK*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{currentYearStats[23]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-                {/*</View>*/}
-
                 <Carousel
                     ref={(c) => { this._carousel = c; }}
                     data={this.state.carouselData}
@@ -423,134 +399,45 @@ export default class StatsTab extends React.Component {
                     inactiveSlideScale={0.8}
                     inactiveSlideShift={0}
                 />
-                <View style={{height: 100}} />
-
-
-
-
-
-
-
-
-
-
-                <TouchableOpacity
-                    onPress={this.navigateToGeneralShooting}
-                    style={[styles.statsRowContainer, styles.darkBorderTop]}>
-                    <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                        Shooting
-                    </Text>
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                            FT%
-                        </Text>
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            {currentYearStats[17]}
-                        </Text>
-                    </View>
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                            3%
-                        </Text>
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            {currentYearStats[14]}
-                        </Text>
-                    </View>
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*FG%*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{currentYearStats[11]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-                    <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
-                    </View>
-                </TouchableOpacity>
-
-
-                <TouchableOpacity
-                    style={[styles.statsRowContainer, styles.darkBorderTop]}
-                    onPress={this.navigateToCareerStats}
-                >
-                    <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                        Career
-                    </Text>
-                    <View style={[styles.statsRowSubContainer]}>
-                        <Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>
-                            PTS
-                        </Text>
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            {careerStats[23]}
-                        </Text>
-                    </View>
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*AST*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{currentYearStats[18]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-                    {/*<View style={[styles.statsRowSubContainer]}>*/}
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextSmaller]}>*/}
-                            {/*BLK*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.mainTextColor, styles.statsTextLarge]}>*/}
-                            {/*{currentYearStats[20]}*/}
-                        {/*</Text>*/}
-                    {/*</View>*/}
-                    <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
-                    </View>
-                </TouchableOpacity>
-
-
-                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
-                    <Text>
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>*/}
-                            {/*Deep{' '}*/}
-                        {/*</Text>*/}
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            Rebounding
-                        </Text>
-                    </Text>
-                    <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
-                    </View>
+                <View style={styles.statsRowContainerNoPadding}>
+                    <GeneralTable
+                        // containerStyle={styles.tableContainer}
+                        showHideIcon={true}
+                        errorMessage={''}
+                        title={'SEASONS'}
+                        headerRow={this.state.seasonTableHeaders}
+                        rowsData={this.state.seasonTableData}
+                        widthArr={this.state.seasonWidthArr}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40 }}
+                        headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
+                    />
                 </View>
-
-                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
-                    <Text>
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>*/}
-                            {/*Deep{' '}*/}
-                        {/*</Text>*/}
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            Defense
-                        </Text>
-                    </Text>
-                    <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
-                    </View>
+                <View style={styles.statsRowContainerNoPadding}>
+                    <GeneralTable
+                        // containerStyle={styles.tableContainer}
+                        showHideIcon={true}
+                        errorMessage={''}
+                        title={'POST SEASONS'}
+                        headerRow={this.state.seasonTableHeaders}
+                        rowsData={this.state.postSeasonTableData}
+                        widthArr={this.state.seasonWidthArr}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40 }}
+                        headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
+                    />
                 </View>
-
-                <View style={[styles.statsRowContainer, styles.darkBorderTop]}>
-                    <Text>
-                        {/*<Text style={[styles.statsSubTextColor, styles.statsTextLarge]}>*/}
-                            {/*Deep{' '}*/}
-                        {/*</Text>*/}
-                        <Text style={[styles.mainTextColor, styles.statsTextLarge]}>
-                            Shooting Locations
-                        </Text>
-                    </Text>
-                    <View>
-                        <MaterialCommunityIcon name="chevron-right" size={20} color={primaryColor} />
-                    </View>
+                <View style={styles.statsRowContainerNoPadding}>
+                    <GeneralTable
+                        // containerStyle={styles.tableContainer}
+                        showHideIcon={true}
+                        errorMessage={''}
+                        title={'COLLEGE'}
+                        headerRow={this.state.seasonTableHeaders}
+                        rowsData={this.state.collegeSeasonTableData}
+                        widthArr={this.state.seasonWidthArr}
+                        titleStyle={{ backgroundColor: primaryColor, height: 40 }}
+                        headerStyle={{ backgroundColor: colorLuminance(primaryColor, -0.4), height: 30 }}
+                    />
                 </View>
-
-
-
             </View>
         );
     }
@@ -611,7 +498,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingHorizontal: 16
+        // paddingHorizontal: 16
     },
     statsTextLarge: {
         ...appFonts.lgBold
@@ -623,7 +510,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 20
+        paddingTop: 20,
+        paddingHorizontal: 16
+    },
+    statsRowContainerNoPadding: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingHorizontal: 0
     },
     statsRowSubContainer: {
         width: '15%',

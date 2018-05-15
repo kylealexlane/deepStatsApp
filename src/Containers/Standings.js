@@ -76,7 +76,6 @@ export default class Standings extends React.Component {
             loading: false,
             error: false,
             tableHeadOverall: ['TEAM', 'W', 'L', 'WIN%', 'PF', 'PA', 'DIFF', 'GB', 'CONF', 'HOME', 'ROAD', 'O>500','LAST10', 'STREAK' ],
-            arrayOfDivisions: [],
             arrayOverall: [],
             widthArrOverall: [80, 50, 50, 60, 60, 50, 50, 50, 70, 70, 70, 70, 70, 70 ],
             arrayOfConferences: [],

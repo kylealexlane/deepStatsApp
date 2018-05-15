@@ -52,13 +52,7 @@ export default class PlayerHistoryGraph extends React.Component {
             // data3.push({value: data3[0].value, label: ''});
             data3.unshift({value: 0, label: ''});
         }
-
-        console.log('playerHistData', data);
-        console.log(data2);
-
         const dataY = this.props.item.dataY;
-        console.log('data', data);
-
         const axesSvg = { fontSize: 10, fill: 'grey' };
         const xAxesSvg = {
             fill: 'black',
@@ -73,9 +67,6 @@ export default class PlayerHistoryGraph extends React.Component {
         const xAxisHeight = 30;
 
         const Decorator = ({ x, y, data }) => {
-            console.log(x);
-            console.log(y);
-            console.log(data);
             let color = dataColor;
             if (this.count === 1){
                 color = data2Color;
@@ -84,7 +75,6 @@ export default class PlayerHistoryGraph extends React.Component {
             }
             // this.count = this.count + 1;
             return data.map((value, index) => {
-                console.log('val', value);
                 return(
                 <Circle
                     key={index}

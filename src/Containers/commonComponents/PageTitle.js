@@ -25,16 +25,17 @@ export default class PageTitle extends React.Component {
 
 const styles = StyleSheet.create({
     pageTitleContainer: {
-        paddingVertical: 16,
+        paddingVertical: 12,
         paddingHorizontal: 16,
         backgroundColor: colors.mainAccent,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     pageTitleText: {
-        ...appFonts.xxxxlRegular,
+        ...appFonts.lgBold,
         color: colors.white,
-        textAlign: 'left',
+        // textAlign: 'center',
         // marginLeft: 16
         // letterSpacing: 4
     }
