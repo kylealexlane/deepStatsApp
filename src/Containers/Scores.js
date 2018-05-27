@@ -180,16 +180,17 @@ export default class Scores extends React.Component {
         );
     }
 
-    _onPressItem() {
-        console.log('pressed!!');
-    }
+    // _onPressItem() {
+    //     console.log('pressed!!');
+    // }
 
     _renderItem = ({item}) => (
         <GameScore
             id={item.id}
-            onPressItem={this._onPressItem}
+            // onPressItem={this._onPressItem}
             item={item}
             title={item.title}
+            navigation={this.props.navigation}
         />
     );
 

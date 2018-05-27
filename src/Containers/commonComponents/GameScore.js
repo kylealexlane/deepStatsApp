@@ -55,6 +55,16 @@ export default class GameScore extends React.Component {
         </View>);
     }
 
+    goToGameInfo() {
+        console.log('props when moving', this.props);
+        this.props.navigation.push('gameInfo', {
+            id: this.props.id,
+            onPressItem: this.props.onPressItem,
+            item: this.props.item,
+            title: this.props.title,
+        });
+    }
+
     renderMiddleView(item, leader) {
         const {boxscore, profile, broadcasters, homeTeam, awayTeam} = item;
 
@@ -91,41 +101,14 @@ export default class GameScore extends React.Component {
         date.setUTCMilliseconds(profile.utcMillis);
         if (boxscore.status === '1' || boxscore.status === '0') {
             return(
+              <View>
                 <Text>
                     <Text style={styles.timeText}>{moment(date.toString()).format('h:mm a')}</Text>
-                    <Text style={styles.timeText}>  </Text>
-                    <Text style={styles.timeText}>{name}</Text>
                 </Text>
-            );
-        } else if (boxscore.status === '2'){
-            return(
-                <View style={styles.columnContainer}>
-                    <View style={styles.graphRow}>
-                        <Text style={[styles.gameStatusText]}>{boxscore.statusDesc}</Text>
-                        <Text style={[styles.gameStatusText]}> </Text>
-                        <Text style={[styles.gameStatusText]}>{boxscore.periodClock}</Text>
-                    </View>
-                    <View style={styles.graphRow}>
-                        <Text style={[styles.scoresText, leader==='home' && styles.boldScoreText]}>{boxscore.homeScore}</Text>
-                        <Text style={[styles.scoresText, styles.underlineScore]}>  -  </Text>
-                        <Text style={[styles.scoresText, leader==='away' && styles.boldScoreText]}>{boxscore.awayScore}</Text>
-                    </View>
-                    <View style={styles.graphRow}>
-                        <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct}</Text>
-                        <Text style={[styles.scoresMiddleText]}>      FG%      </Text>
-                        <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct}</Text>
-                    </View>
-                    <View style={styles.graphRow}>
-                        <Text style={[styles.otherStatsText, asstLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.assists}</Text>
-                        <Text style={[styles.scoresMiddleText]}>      ASST      </Text>
-                        <Text style={[styles.otherStatsText, asstLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.assists}</Text>
-                    </View>
-                    <View style={styles.graphRow}>
-                        <Text style={[styles.otherStatsText, rebLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.rebs}</Text>
-                        <Text style={[styles.scoresMiddleText]}>      REB      </Text>
-                        <Text style={[styles.otherStatsText, rebLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.rebs}</Text>
-                    </View>
-                </View>
+                    {/*// <Text style={styles.timeText}>  </Text>*/}
+                    <Text style={styles.timeText}>{name}</Text>
+              </View>
+
             );
         }
         return(
@@ -139,10 +122,12 @@ export default class GameScore extends React.Component {
                     <Text style={[styles.scoresText, styles.underlineScore]}>  -  </Text>
                     <Text style={[styles.scoresText, leader==='away' && styles.boldScoreText]}>{boxscore.awayScore}</Text>
                 </View>
+              {this.props.fromGameInfo ? null :
+                <View>
                 <View style={styles.graphRow}>
-                    <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct.toFixed(1)}</Text>
-                    <Text style={[styles.scoresMiddleText]}>      FG%      </Text>
-                    <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct.toFixed(1)}</Text>
+                  <Text style={[styles.otherStatsText, fgpctLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.fgpct.toFixed(1)}</Text>
+                  <Text style={[styles.scoresMiddleText]}>      FG%      </Text>
+                  <Text style={[styles.otherStatsText, fgpctLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.fgpct.toFixed(1)}</Text>
                 </View>
                 <View style={styles.graphRow}>
                     <Text style={[styles.otherStatsText, asstLeader==='home' && styles.otherStatsTextBold]}>{homeTeam.score.assists}</Text>
@@ -154,6 +139,8 @@ export default class GameScore extends React.Component {
                     <Text style={[styles.scoresMiddleText]}>      REB      </Text>
                     <Text style={[styles.otherStatsText, rebLeader==='away' && styles.otherStatsTextBold]}>{awayTeam.score.rebs}</Text>
                 </View>
+                </View>
+              }
             </View>
         );
     }
@@ -171,8 +158,16 @@ export default class GameScore extends React.Component {
             borderColor = teamColors[awayTeam.profile.abbr].primary;
         }
         return (
-            <View style={[ leader === 'home' && styles.shadowLeft, leader === 'away' && styles.shadowRight]}>
-                <View style={[styles.overallContainer, leader === 'home' && {borderLeftColor: colors.mainAccent}, leader === 'away' && {borderRightColor: colors.mainAccent}]}>
+            <View style={[ leader === 'home' && styles.shadowLeft, leader === 'away' && styles.shadowRight, this.props.fromGameInfo && { shadowOpacity: 0 }]}>
+                <TouchableOpacity
+                    style={[
+                      styles.overallContainer,
+                      leader === 'home' && {borderLeftColor: colors.mainAccent},
+                      leader === 'away' && {borderRightColor: colors.mainAccent},
+                      this.props.fromGameInfo && { marginTop: 0, borderWidth: 0, shadowOpacity: 0 }
+                      ]}
+                    onPress={() => this.goToGameInfo()}
+                >
                     <View style={styles.columnContainer}>
                         <SVGImage
                             style={styles.teamLogo}
@@ -190,7 +185,7 @@ export default class GameScore extends React.Component {
                         />
                         {this.renderBottomText(awayTeam, boxscore)}
                         </View>
-                </View>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -235,7 +230,8 @@ const styles = StyleSheet.create({
     },
     timeText: {
         ...appFonts.smRegular,
-        color: colors.baseText
+        color: colors.baseText,
+        textAlign: 'center',
     },
     secondaryText: {
         color: colors.secondaryText

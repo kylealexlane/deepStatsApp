@@ -15,6 +15,7 @@ import DrawerContainer from '../Containers/DrawerContainer';
 import { colors } from '../styles/commonStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Scores from '../Containers/Scores';
+import GameInfo from "../Containers/GameInfo";
 
 // https://github.com/react-community/react-navigation/issues/1254
 const noTransitionConfig = () => ({
@@ -53,6 +54,7 @@ const PlayerStatsStack = StackNavigator({
 
 const ScoresStack = StackNavigator({
     home: { screen: Scores },
+    gameInfo: { screen: GameInfo }
 },{
     navigationOptions: {
         headerStyle: {borderBottomWidth: 0},
