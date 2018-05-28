@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
   AppRegistry,
   StatusBar,
@@ -13,46 +13,55 @@ import {
   SafeAreaView,
   FlatList,
   Image,
-  ActivityIndicator,
-} from 'react-native'
-import { nbaId, year } from '../config/commonVariables'
-import PropTypes from 'prop-types';
-import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
-import { colors, teamColors, windowSize, appFonts } from '../styles/commonStyles'
-import {playerPic, hexToRgbA, capitalizeFirstLetter, colorLuminance} from "../helpers/Helpers"
-import LinearGradient from 'react-native-linear-gradient'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import Octicons from 'react-native-vector-icons/Octicons'
-import moment from 'moment'
-import SVGImage from 'react-native-svg-image'
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
+  ActivityIndicator
+} from "react-native";
+import { nbaId, year } from "../config/commonVariables";
+import PropTypes from "prop-types";
+import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
+import {
+  colors,
+  teamColors,
+  windowSize,
+  appFonts
+} from "../styles/commonStyles";
+import {
+  playerPic,
+  hexToRgbA,
+  capitalizeFirstLetter,
+  colorLuminance
+} from "../helpers/Helpers";
+import LinearGradient from "react-native-linear-gradient";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Octicons from "react-native-vector-icons/Octicons";
+import moment from "moment";
+import SVGImage from "react-native-svg-image";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 
-import GameScore from './commonComponents/GameScore'
-import TeamTab from './GameInfoComponents/TeamTab'
+import GameScore from "./commonComponents/GameScore";
+import TeamTab from "./GameInfoComponents/TeamTab";
 
-import GeneralTable from './commonComponents/GeneralTable'
-import PageTitle from './commonComponents/PageTitle'
+import GeneralTable from "./commonComponents/GeneralTable";
+import PageTitle from "./commonComponents/PageTitle";
 
-import StatusBarPaddingIOS from 'react-native-ios-status-bar-padding';
+import StatusBarPaddingIOS from "react-native-ios-status-bar-padding";
 
-
-import StatsTab from './playerInfo/StatsTab';
+import StatsTab from "./playerInfo/StatsTab";
 import VerticalSeperator from "./commonComponents/VerticalSeperator";
 
 export default class GameInfo extends React.Component {
   static navigationOptions = {
     // header: null,
 
-    title: '',
+    title: "",
 
     headerStyle: {
       // height: 0,
       backgroundColor: colors.mainAccent,
       // borderBottomColor: params.playerTeamShort ? teamColors[params.playerTeamShort].secondary : colors.greyDarkest
-      borderBottomColor: colors.mainAccent,
+      borderBottomColor: colors.mainAccent
     },
     // headerTitleStyle: {
     //   ...appFonts.lgBold,
@@ -65,28 +74,43 @@ export default class GameInfo extends React.Component {
     //     style={styles.headerBackgroundLogo}
     //     source={{uri: params ? params.teamImageURI : ''}}
     // />,
-    headerTransparent: false,
+    headerTransparent: false
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.showTeamTab = this.showTeamTab.bind(this);
     // this.renderTabHeader = this.renderTabHeader.bind(this);
-    this.state ={
+    this.state = {
       teams: [],
       loading: false,
       error: false,
-      tableHeadOverall: ['TEAM', 'W', 'L', 'WIN%', 'PF', 'PA', 'DIFF', 'GB', 'CONF', 'HOME', 'ROAD', 'O>500','LAST10', 'STREAK' ],
+      tableHeadOverall: [
+        "TEAM",
+        "W",
+        "L",
+        "WIN%",
+        "PF",
+        "PA",
+        "DIFF",
+        "GB",
+        "CONF",
+        "HOME",
+        "ROAD",
+        "O>500",
+        "LAST10",
+        "STREAK"
+      ],
       arrayOverall: [],
-      widthArrOverall: [80, 50, 50, 60, 60, 50, 50, 50, 70, 70, 70, 70, 70, 70 ],
+      widthArrOverall: [80, 50, 50, 60, 60, 50, 50, 50, 70, 70, 70, 70, 70, 70],
       arrayOfConferences: [],
       arrayOfDivisions: [],
-      tabSelected: 'Teams'
-    }
+      tabSelected: "Teams"
+    };
   }
 
   componentDidMount() {
-    console.log('game info props', this.props);
+    console.log("game info props", this.props);
     // this.fetchStandings(this.state.tabSelected);
   }
 
@@ -104,42 +128,40 @@ export default class GameInfo extends React.Component {
   renderTabHeader(title, position) {
     const isTabSelected = this.state.tabSelected === title;
     console.log(title, this.state.tabSelected);
-    return(
+    return (
       <TouchableOpacity
         style={[
           styles.tabHeaderContainer,
           isTabSelected && styles.selectedTabContainer
         ]}
-        onPress={()=>this.pressTab(title)}
+        onPress={() => this.pressTab(title)}
       >
-        <Text style={[
-          styles.tabHeaderText,
-          isTabSelected && styles.selectedTabText
-        ]}>{title}</Text>
+        <Text
+          style={[
+            styles.tabHeaderText,
+            isTabSelected && styles.selectedTabText
+          ]}
+        >
+          {title}
+        </Text>
       </TouchableOpacity>
     );
   }
 
-  pressTab(tabSelected){
-    this.setState({ tabSelected: tabSelected});
+  pressTab(tabSelected) {
+    this.setState({ tabSelected: tabSelected });
   }
 
   showTeamTab() {
-    return(
-      <TeamTab parentProps={this.props.navigation.state.params} />
-    )
+    return <TeamTab parentProps={this.props.navigation.state.params} />;
   }
 
   render() {
     const props = this.props.navigation.state.params;
     return (
-      <SafeAreaView style={{flex:1, backgroundColor: colors.baseBackground }}>
-        <StatusBar
-          barStyle="light-content"
-        />
-        <ScrollView
-          style={styles.container}
-        >
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.baseBackground }}>
+        <StatusBar barStyle="light-content" />
+        <ScrollView style={styles.container}>
           <GameScore
             id={props.id}
             item={props.item}
@@ -148,66 +170,69 @@ export default class GameInfo extends React.Component {
             fromGameInfo={true}
           />
           <View style={styles.chooseDateBar}>
-            {this.renderTabHeader('Teams', 'center')}
-            {this.renderTabHeader('Players', 'center')}
-            {this.renderTabHeader('Game Log', 'center')}
+            {this.renderTabHeader("Teams", "center")}
+            {this.renderTabHeader("Players", "center")}
+            {this.renderTabHeader("Game Log", "center")}
           </View>
-          {this.state.loading ? this.showLoadingIndicator() :
+          {this.state.loading ? (
+            this.showLoadingIndicator()
+          ) : (
             <View>
-              {this.state.tabSelected === 'Teams' ?
-                this.showTeamTab()
-                :
-                this.showTeamTab()
-              }
+              {this.state.tabSelected === "Teams"
+                ? this.showTeamTab()
+                : this.showTeamTab()}
             </View>
-          }
-
+          )}
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.baseBackground,
+    backgroundColor: colors.baseBackground
   },
   chooseDateBar: {
-    width: '100%',
+    width: "100%",
     // paddingTop: 8,
     // paddingBottom: 8,
     // paddingHorizontal: 1,
     // backgroundColor: colors.mainAccent,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: colors.white,
+    marginTop: 8
   },
   rowContainer: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   tabHeaderContainer: {
     flex: 1,
     // backgroundColor: colors.mainAccent,
-    paddingVertical: 8,
+    paddingVertical: 8
   },
   tabHeaderText: {
     ...appFonts.mdRegular,
     color: colors.baseText,
-    textAlign: 'center',
+    textAlign: "center",
     opacity: 0.6
   },
   selectedTabContainer: {
     marginVertical: 8,
+    borderBottomColor: colors.mainAccent,
+    borderBottomWidth: 3
   },
   selectedTabText: {
     color: colors.baseText,
     ...appFonts.mdRegular,
-    textAlign: 'center',
+    textAlign: "center",
     opacity: 1
   },
   activityIndicator: {
-    marginTop: 32,
+    marginTop: 32
   },
   flatList: {
     // paddingBottom: 200
@@ -215,7 +240,7 @@ const styles = StyleSheet.create({
   noGamesText: {
     ...appFonts.mdMedium,
     color: colors.secondaryText,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 32
   },
   tableContainer: {
