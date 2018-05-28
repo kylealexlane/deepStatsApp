@@ -48,9 +48,9 @@ export default class TwoBarsCompare extends React.Component {
     return (
       <View style={[styles.overallContainer, this.props.container]}>
         <View style={styles.rowForHeaders}>
-          <Text style={[styles.numberHeadingText, leftSmaller && styles.secondaryText]}>{this.props.leftStat}</Text>
+          <Text style={[styles.numberHeadingText, leftSmaller && styles.secondaryText]}>{this.props.leftStatLabel || this.props.leftStat}</Text>
           <Text style={styles.headingText}>{this.props.title}</Text>
-          <Text style={[styles.numberHeadingText, rightSmaller && styles.secondaryText]}>{this.props.rightStat}</Text>
+          <Text style={[styles.numberHeadingText, rightSmaller && styles.secondaryText]}>{this.props.rightStatLabel ||this.props.rightStat}</Text>
         </View>
         <View style={styles.rowForBars}>
           <View style={[styles.barLeft, { width: leftWidth, backgroundColor: this.props.leftBackground || colors.mainAccent }]} />
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     color: colors.secondaryText
   },
   numberHeadingText: {
-    ...appFonts.smMedium,
+    ...appFonts.smBold,
     color: colors.baseText
   },
   secondaryText: {

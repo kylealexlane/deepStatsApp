@@ -45,136 +45,137 @@ export default class TeamTab extends React.Component {
 
     return (
       <View style={styles.overallContainer}>
+        {/*<FlatList*/}
+          {/*data={teamStats}*/}
+          {/*// keyExtractor={this._keyExtractor}*/}
+          {/*renderItem={this._renderItem}*/}
+        {/*/>*/}
+        <QuartersScore gameInfo={this.props.parentProps.item} />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.fga}
-          leftStat={awayScore.fga}
+          leftStat={homeScore.fastBreakPoints}
+          rightStat={awayScore.fastBreakPoints}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Field Goals Attempted"}
+          title={'Fast Break Points'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.fgm}
-          leftStat={awayScore.fgm}
+          leftStat={homeScore.pointsInPaint}
+          rightStat={awayScore.pointsInPaint}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Field Goals Made"}
+          title={'Points In Paint'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.fgpct}
-          leftStat={awayScore.fgpct}
+          leftStat={homeScore.pointsOffTurnovers}
+          rightStat={awayScore.pointsOffTurnovers}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Field Goal %"}
+          title={'Points Off Turnovers'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.assists}
-          leftStat={awayScore.assists}
+          leftStat={homeScore.fgm}
+          leftStatLabel={`${homeScore.fgm}/${homeScore.fga}`}
+          rightStat={awayScore.fgm}
+          rightStatLabel={`${awayScore.fgm}/${awayScore.fga}`}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Assists"}
+          title={'Field Goals'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.rebs}
-          leftStat={awayScore.rebs}
+          leftStat={homeScore.fgpct}
+          rightStat={awayScore.fgpct}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Rebounds"}
+          title={'Field Goal %'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.steals}
-          leftStat={awayScore.steals}
+          leftStat={homeScore.assists}
+          rightStat={awayScore.assists}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Steals"}
+          title={'Assists'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.turnovers}
-          leftStat={awayScore.turnovers}
+          leftStat={homeScore.rebs}
+          rightStat={awayScore.rebs}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Turnovers"}
+          title={'Rebounds'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.fouls}
-          leftStat={awayScore.fouls}
+          leftStat={homeScore.steals}
+          rightStat={awayScore.steals}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Fouls"}
+          title={'Steals'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.fta}
-          leftStat={awayScore.fta}
+          leftStat={homeScore.turnovers}
+          rightStat={awayScore.turnovers}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Free Throw Attempts"}
+          title={'Turnovers'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.ftm}
-          leftStat={awayScore.ftm}
+          leftStat={homeScore.fouls}
+          rightStat={awayScore.fouls}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Free Throws Made"}
+          title={'Fouls'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.ftpct}
-          leftStat={awayScore.ftpct}
+          leftStat={homeScore.fta}
+          rightStat={awayScore.fta}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Free Throw %"}
+          title={'Free Throw Attempts'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.fastBreakPoints}
-          leftStat={awayScore.fastBreakPoints}
+          leftStat={homeScore.ftm}
+          leftStatLabel={`${homeScore.ftm}/${homeScore.fta}`}
+          rightStat={awayScore.ftm}
+          rightStatLabel={`${awayScore.ftm}/${awayScore.fta}`}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Fast Break Points"}
+          title={'Free Throws'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.pointsInPaint}
-          leftStat={awayScore.pointsInPaint}
+          leftStat={homeScore.ftpct}
+          rightStat={awayScore.ftpct}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={"Points In Paint"}
+          title={'Free Throw %'}
         />
         <TwoBarsCompare
           container={styles.overallBarContainer}
-          rightStat={homeScore.pointsOffTurnovers}
-          leftStat={awayScore.pointsOffTurnovers}
-          leftBackground={homeColor}
-          rightBackground={awayColor}
-          margins={32}
-          title={"Points Off Turnovers"}
-        />
-        <TwoBarsCompare
-          container={styles.overallBarContainer}
-          rightStat={homeScore.biggestLead}
-          leftStat={awayScore.biggestLead}
+          leftStat={homeScore.biggestLead}
+          rightStat={awayScore.biggestLead}
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}

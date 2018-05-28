@@ -156,6 +156,12 @@ export default class GameInfo extends React.Component {
     return <TeamTab parentProps={this.props.navigation.state.params} />;
   }
 
+  showPlayerTab() {
+    return(
+      <PlayerTab parentProps={this.props.navigation.state.params} />
+    )
+  }
+
   render() {
     const props = this.props.navigation.state.params;
     return (
@@ -178,9 +184,8 @@ export default class GameInfo extends React.Component {
             this.showLoadingIndicator()
           ) : (
             <View>
-              {this.state.tabSelected === "Teams"
-                ? this.showTeamTab()
-                : this.showTeamTab()}
+              {this.state.tabSelected === 'Teams' && this.showTeamTab()}
+              {this.state.tabSelected === 'Players' && this.showPlayerTab()}
             </View>
           )}
         </ScrollView>
