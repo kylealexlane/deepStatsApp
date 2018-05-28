@@ -410,24 +410,24 @@ const styles = StyleSheet.create({
   },
   tabHeaderContainer: {
     flex: 1,
-    backgroundColor: colors.primaryBackground,
+    backgroundColor: colors.mainAccent,
     paddingVertical: 12,
-    borderBottomColor: colors.primaryBackground,
-    borderBottomWidth: 5
+    borderBottomColor: colors.mainAccent,
+    borderBottomWidth: 4
   },
   tabHeaderText: {
     ...appFonts.mdRegular,
-    color: colors.greyDarkest,
+    color: colors.greyLightest,
     textAlign: "center",
     opacity: 0.6
   },
   selectedTabContainer: {
-    backgroundColor: colors.primaryBackground,
+    backgroundColor: colors.mainAccent,
     borderBottomColor: colors.secondary,
-    borderBottomWidth: 5
+    borderBottomWidth: 4
   },
   selectedTabText: {
-    color: colors.baseText,
+    color: colors.white,
     ...appFonts.mdRegular,
     textAlign: "center",
     opacity: 1
@@ -445,6 +445,6 @@ const styles = StyleSheet.create({
     marginTop: 32
   },
   tableContainer: {
-    paddingTop: 8
+    paddingTop: 16
   }
 });
