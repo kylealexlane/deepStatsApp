@@ -130,6 +130,12 @@ export default class GameInfo extends React.Component {
     )
   }
 
+  showPlayerTab() {
+    return(
+      <PlayerTab parentProps={this.props.navigation.state.params} />
+    )
+  }
+
   render() {
     const props = this.props.navigation.state.params;
     return (
@@ -139,6 +145,7 @@ export default class GameInfo extends React.Component {
         />
         <ScrollView
           style={styles.container}
+          stickyHeaderIndices={[1]}
         >
           <GameScore
             id={props.id}
@@ -147,18 +154,17 @@ export default class GameInfo extends React.Component {
             navigation={props.navigation}
             fromGameInfo={true}
           />
-          <View style={styles.chooseDateBar}>
-            {this.renderTabHeader('Teams', 'center')}
-            {this.renderTabHeader('Players', 'center')}
-            {this.renderTabHeader('Game Log', 'center')}
+          <View>
+            <View style={styles.chooseDateBar}>
+              {this.renderTabHeader('Teams', 'center')}
+              {this.renderTabHeader('Players', 'center')}
+              {this.renderTabHeader('Game Log', 'center')}
+            </View>
           </View>
           {this.state.loading ? this.showLoadingIndicator() :
             <View>
-              {this.state.tabSelected === 'Teams' ?
-                this.showTeamTab()
-                :
-                this.showTeamTab()
-              }
+              {this.state.tabSelected === 'Teams' && this.showTeamTab()}
+              {this.state.tabSelected === 'Players' && this.showPlayerTab()}
             </View>
           }
 
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
     // paddingTop: 8,
     // paddingBottom: 8,
     // paddingHorizontal: 1,
-    // backgroundColor: colors.mainAccent,
+    backgroundColor: colors.baseBackground,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center'
@@ -188,7 +194,7 @@ const styles = StyleSheet.create({
   },
   tabHeaderContainer: {
     flex: 1,
-    // backgroundColor: colors.mainAccent,
+    backgroundColor: colors.baseBackground,
     paddingVertical: 8,
   },
   tabHeaderText: {

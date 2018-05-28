@@ -309,15 +309,17 @@ export default class PlayerDashboard extends React.Component {
                             <View style={{ height: '100%', width: '50%'}}>
                             </View>
                             <View style={{ width: '50%', height: '100%', alignItems: 'flex-start', justifyContent: 'center', paddingVertical: 16 }}>
-                                <Text style={[appFonts.lgRegular, { color: colors.greyLighter }]}>
-                                    {this.state.playerBio[0].rowSet[0][1]}
-                                </Text>
-                                <Text style={[styles.mainTextColor, appFonts.xxxlBold, { color: colors.white }]}>
-                                    {this.state.playerBio[0].rowSet[0][2]}
-                                </Text>
-                                <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
-                                    #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
-                                </Text>
+                                {/*<View style={{ borderLeftColor: colors.baseBackground, borderLeftWidth: 1, paddingLeft: 16 }}>*/}
+                                    <Text style={[appFonts.lgRegular, { color: colors.greyLighter }]}>
+                                        {this.state.playerBio[0].rowSet[0][1]}
+                                    </Text>
+                                    <Text style={[styles.mainTextColor, appFonts.xxxlBold, { color: colors.white }]}>
+                                        {this.state.playerBio[0].rowSet[0][2]}
+                                    </Text>
+                                    <Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>
+                                        #{this.state.playerBio[0].rowSet[0][13]} | {this.state.playerBio[0].rowSet[0][14]}
+                                    </Text>
+                                {/*</View>*/}
                                 {/*<Text style={[styles.mainTextColor, appFonts.xlBold, { color: colors.white }]}>*/}
                                     {/*{this.state.playerBio[0].rowSet[0][14]}*/}
                                 {/*</Text>*/}
