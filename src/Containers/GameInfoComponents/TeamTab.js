@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import {
   AppRegistry,
   StatusBar,
@@ -11,54 +11,37 @@ import {
   ScrollView,
   ListView,
   SafeAreaView,
-  Image,
-} from 'react-native'
-import { List, ListItem, SearchBar, Avatar } from 'react-native-elements'
-import { colors, teamColors, windowSize, appFonts, fontSize } from '../../styles/commonStyles'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import moment from 'moment'
-import { BarChart, Labels } from 'react-native-svg-charts'
-import TwoBarsCompare from '../commonComponents/TwoBarsCompare'
-import QuartersScore from '../commonComponents/QuartersScore'
+  Image
+} from "react-native";
+import { List, ListItem, SearchBar, Avatar } from "react-native-elements";
+import {
+  colors,
+  teamColors,
+  windowSize,
+  appFonts,
+  fontSize
+} from "../../styles/commonStyles";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import moment from "moment";
+import { BarChart, Labels } from "react-native-svg-charts";
+import TwoBarsCompare from "../commonComponents/TwoBarsCompare";
 
-import SVGImage from 'react-native-svg-image'
-
-// const teamStats = [
-//   { stat: 'fastBreakPoints',
-//     title: 'Fast Break Points'
-//   },
-//   { stat: 'fastBreakPoints',
-//     title: 'Fast Break Points'
-//   },
-//   ];
+import SVGImage from "react-native-svg-image";
 
 export default class TeamTab extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state ={
-      homeColor: teamColors[this.props.parentProps.item.awayTeam.profile.abbr].primary,
-
-    }
+    this.state = {};
   }
 
-  // _renderItem = ({item}) => (
-  //   <TwoBarsCompare
-  //     container={styles.overallBarContainer}
-  //     leftStat={homeScore[item.stat]}
-  //     rightStat={awayScore[item.stat]}
-  //     leftBackground={awayColor}
-  //     rightBackground={awayColor}
-  //     margins={32}
-  //     title={'Fast Break Points'}
-  //   />
-  // );
-
   render() {
-    console.log('props team tab', this.props);
+    console.log("props team tab", this.props);
     const awayScore = this.props.parentProps.item.awayTeam.score;
     const homeScore = this.props.parentProps.item.homeTeam.score;
-    const awayColor = teamColors[this.props.parentProps.item.awayTeam.profile.abbr].primary;
-    const homeColor = teamColors[this.props.parentProps.item.homeTeam.profile.abbr].primary;
+    const awayColor =
+      teamColors[this.props.parentProps.item.awayTeam.profile.abbr].primary;
+    const homeColor =
+      teamColors[this.props.parentProps.item.homeTeam.profile.abbr].primary;
 
     return (
       <View style={styles.overallContainer}>
@@ -196,23 +179,23 @@ export default class TeamTab extends React.Component {
           leftBackground={homeColor}
           rightBackground={awayColor}
           margins={32}
-          title={'Biggest Lead'}
+          title={"Biggest Lead"}
         />
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   overallContainer: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: colors.baseBackground,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: colors.white,
     paddingVertical: 8,
-    marginHorizontal: 16,
+    paddingHorizontal: 16
   },
   overallBarContainer: {
-    paddingTop: 12,
+    paddingTop: 12
   }
 });
